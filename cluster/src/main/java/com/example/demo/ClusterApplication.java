@@ -10,5 +10,4 @@ public class ClusterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ClusterApplication.class, args);
 	}
-
 }
