@@ -1,14 +1,32 @@
 package com.example.demo.controller;
 
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.entity.ClassCategory;
+import com.example.demo.entity.Creator;
 import com.example.demo.entity.Offclass;
+import com.example.demo.service.OffclassService;
+import com.example.demo.util.MediaUtils;
+import com.example.demo.util.UploadFileUtils;
 
 @Controller
 @RequestMapping("/creator")
@@ -16,31 +34,106 @@ public class CreatorController {
 	
 	private static final Logger log = LoggerFactory.getLogger(CreatorController.class);
 	
+	@Autowired
+	private OffclassService service;
+	
+	@Value("${upload.path}")
+	private String uploadPath;
+	
 	@GetMapping("/")
-	public String home(Model model) throws Exception {
+	public String home(Creator creator, Model model) throws Exception {
 		log.info("creator home()");
 		
-		//model.addAttribute("list", service.classList());
-		
+		model.addAttribute("list", service.classList());
+				
 		return "/creator/home";
 	}
 	
 	@GetMapping("/register")
-	public String register(Model model) throws Exception{
+	public String register(Creator creator, Model model) throws Exception{
 		log.info("creator register()");
 		
-		//model.addAttribute("list", service.registerList());
+		model.addAttribute("list", service.checkList());
 		
 		return "/creator/register";
 	}
 
 	@GetMapping("/registerForm")
-	public String registerForm(Model model) {
+	public String registerForm(Creator creator, Model model) throws Exception {
 		log.info("creator registerForm()");
 		
+		List<ClassCategory> categoryList = service.categoryList();
+		
+		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(new Offclass());
-				
+		
+		log.info("categoryList = "+ categoryList);
+		
 		return "/creator/registerForm";
+	}
+	
+	@PostMapping("/registerForm")
+	public String registClass(Offclass offclass, Model model) throws Exception{
+		log.info("creator registClass(): " + offclass);
+		
+		String[] files = offclass.getFiles();
+		
+		log.info("files : " +files);
+		
+		for(int i = 0; i < files.length; i++) {
+			log.info("files[i] = "+files[i]);
+		}
+		
+		service.registClass(offclass);
+				
+		return "redirect:register";
+	}
+	
+	@PostMapping(value = "/uploadAjax", produces = "text/plain; charset=UTF-8")
+	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception{
+		log.info("원본 파일명 : " + file.getOriginalFilename());
+		
+		String savedName = UploadFileUtils.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
+		log.info("savedName: " + savedName);
+		
+		return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/displayFile")
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception{
+		
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		
+		log.info("파일명: " + fileName);
+		
+		try {
+			String formatName = fileName.substring(fileName.lastIndexOf(".")+1);
+			
+			MediaType mType = MediaUtils.getMediaType(formatName);
+			
+			HttpHeaders headers = new HttpHeaders();
+			
+			in = new FileInputStream(uploadPath + fileName );
+			
+			if(mType != null) {
+				headers.setContentType(mType);
+			}else {
+				fileName = fileName.substring(fileName.indexOf("_")+1);
+				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				headers.add("Content-Disposition", "attachment; filename=\""+new String(fileName.getBytes("UTF-8"), "ISO-8859-1")+"\""); 
+			}
+			
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			in.close();
+		}
+		
+		return entity;
 	}
 	
 	
