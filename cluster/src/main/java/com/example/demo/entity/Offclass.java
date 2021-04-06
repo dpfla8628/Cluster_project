@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Arrays;
 
-public class Offclass {
+public class Offclass implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private int classNo;
 	private String className;
 	private String classInfo;
@@ -13,11 +16,11 @@ public class Offclass {
 	private String classEndCheck;
 	private Date classStart;
 	private Date classEnd;
+	private Date classRegdate;
 	private String classPlace;
 	private int classMemberSet;
 	private String classTalk;
-	private String classImage;
-	private String[] classImages;
+	private String[] files;
 	private int categoryNo;
 	private int creatorNo;
 	public int getClassNo() {
@@ -68,6 +71,12 @@ public class Offclass {
 	public void setClassEnd(Date classEnd) {
 		this.classEnd = classEnd;
 	}
+	public Date getClassRegdate() {
+		return classRegdate;
+	}
+	public void setClassRegdate(Date classRegdate) {
+		this.classRegdate = classRegdate;
+	}
 	public String getClassPlace() {
 		return classPlace;
 	}
@@ -86,17 +95,11 @@ public class Offclass {
 	public void setClassTalk(String classTalk) {
 		this.classTalk = classTalk;
 	}
-	public String getClassImage() {
-		return classImage;
+	public String[] getFiles() {
+		return files;
 	}
-	public void setClassImage(String classImage) {
-		this.classImage = classImage;
-	}
-	public String[] getClassImages() {
-		return classImages;
-	}
-	public void setClassImages(String[] classImages) {
-		this.classImages = classImages;
+	public void setFiles(String[] files) {
+		this.files = files;
 	}
 	public int getCategoryNo() {
 		return categoryNo;
@@ -110,16 +113,17 @@ public class Offclass {
 	public void setCreatorNo(int creatorNo) {
 		this.creatorNo = creatorNo;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	@Override
 	public String toString() {
 		return "Offclass [classNo=" + classNo + ", className=" + className + ", classInfo=" + classInfo
 				+ ", classPrice=" + classPrice + ", classCheck=" + classCheck + ", classEndCheck=" + classEndCheck
-				+ ", classStart=" + classStart + ", classEnd=" + classEnd + ", classPlace=" + classPlace
-				+ ", classMemberSet=" + classMemberSet + ", classTalk=" + classTalk + ", classImage=" + classImage
-				+ ", classImages=" + Arrays.toString(classImages) + ", categoryNo=" + categoryNo + ", creatorNo="
-				+ creatorNo + "]";
+				+ ", classStart=" + classStart + ", classEnd=" + classEnd + ", classRegdate=" + classRegdate
+				+ ", classPlace=" + classPlace + ", classMemberSet=" + classMemberSet + ", classTalk=" + classTalk
+				+ ", files=" + Arrays.toString(files) + ", categoryNo=" + categoryNo + ", creatorNo=" + creatorNo + "]";
 	}
 	
-	
-	
+		
 }
