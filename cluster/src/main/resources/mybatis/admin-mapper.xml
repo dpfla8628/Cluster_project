@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.khfinal2.cluster.repository.AdminRepository">
+
+	<select id="memberList" resultType="AdminMemberVO" parameterType="map">
+		select * from (
+   			select rownum rn, TMP.* from(
+     			select 
+       				M.member_no, M.member_id, M.member_Nick, M.member_phone, 
+         			M.member_date, M.member_auth, count(O.member_no) order_count
+    			from member M left outer join classorder O on M.member_no = O.member_no
+     			group by M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
+     			order by M.member_no asc
+    		)TMP
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="searchMember" parameterType="map" resultType="Member">
+		select * from member where instr(${type}, #{key}) > 0 
+		order by member_no asc 
+	</select>
+	
+	<select id="countMemberList" resultType="int">
+		select count(*) from member order by member_no desc
+	</select>
+	
+	<select id="getTopSales" resultType="AdminTopSalesVO">
+		select * from (
+   			select rownum rn, TMP.* from (
+        		select 
+            		C.class_name,
+            		sum(O.order_price) sales,
+            		dense_rank() over(order by sum(O.order_price) desc) rank
+        		from classorder O 
+                		inner join offclass C on O.class_no = C.class_no
+        		group by C.class_name
+        
+    		)TMP
+		) where rank between 1 and 10
+	</select>
+	
+	<select id="getNumberOfMember" resultType="AdminMemberCountVO">
+		select * from (
+    		select rownum rn, TMP.* from(
+      		  select 
+            	extract(year from member_date) join_year, extract(month from member_date) join_month, count(*) count, sum(count(*)) over(order by extract(year from member_date) asc, extract(month from member_date) asc) total 
+        	  from 
+           		member 
+        	  group by 
+            	extract(year from member_date), extract(month from member_date)
+        	  order by 
+            	extract(year from member_date) desc, extract(month from member_date) desc
+    		)TMP
+		)
+		where rn between 1 and 7
+		order by rn desc
+	</select>
+	
+	
+</mapper>
