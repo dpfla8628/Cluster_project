@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.demo.repository.MypageRepository">
+<mapper namespace="com.kh.cluster.repository.MypageRepository">
 	
 	<select id="count" resultType="Integer">
 		select count(*) from member m left outer join classorder co on m.member_no=co.member_no where order_ok='입금완료' and m.member_no=#{memberNo}

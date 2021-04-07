@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.kh.cluster.controller;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -25,14 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.entity.MyClassOrder;
-import com.example.demo.entity.MyMember;
-import com.example.demo.entity.MyClassLike;
-import com.example.demo.entity.MyCoupon;
-import com.example.demo.entity.MyReview;
-import com.example.demo.service.MypageService;
-import com.example.demo.util.MediaUtils;
-import com.example.demo.util.UploadFileUtils;
+import com.kh.cluster.util.MediaUtils;
+import com.kh.cluster.util.UploadFileUtils;
+import com.kh.cluster.entity.MyClassLike;
+import com.kh.cluster.entity.MyClassOrder;
+import com.kh.cluster.entity.MyCoupon;
+import com.kh.cluster.entity.MyMember;
+import com.kh.cluster.entity.MyReview;
+import com.kh.cluster.service.MypageService;
 
 @Controller
 @RequestMapping("/mypage")
