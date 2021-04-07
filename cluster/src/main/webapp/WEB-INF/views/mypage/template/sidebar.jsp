@@ -26,6 +26,17 @@ $(document).ready(function(){
 
   
 		<li>
+		<!-- 만약 크리에이터 권한이 있다면??? -->
+			<li>
+            <a href="#">
+              <span class="link-title">크리에이터 페이지 이동하기</span>
+              <i class="mdi mdi-arrow-right-bold"></i>
+            </a>
+            </li>
+            <hr><br>
+         <!--  --> 
+          
+          <li>
             <a href="#myinfo" data-toggle="collapse" aria-expanded="false">
               <span class="link-title">내 정보</span>
               <i class="mdi mdi-account-box"></i>

@@ -11,7 +11,7 @@
     	font-weight: bold;
 	}
 	.showcase_content_area{
-		width: 115px;
+		width: 150px;
     	margin: 1rem;
     	margin-left: auto;		
 	}
@@ -42,7 +42,6 @@
 <div class="col-lg-6">
   <div class="grid">
     <p class="grid-header">주문 내역</p>
-    <h1>sel자리 : ${sel }</h1>
        <div class="col-md-9 showcase_content_area">
          <select class="custom-select" id="orderCheck" name="orderCheck">
            <option value="0" id="order_all" selected="selected">전체 보기</option>

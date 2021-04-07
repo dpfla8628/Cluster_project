@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -34,11 +35,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.UploadFileUtils;
 import com.sun.javafx.collections.MappingChange.Map;
+import com.kh.cluster.entity.AuthMember;
 import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.MyClassOrder;
 import com.kh.cluster.entity.MyCoupon;
 import com.kh.cluster.entity.MyMember;
 import com.kh.cluster.entity.MyReview;
+import com.kh.cluster.repository.AuthRepository;
 import com.kh.cluster.service.MypageService;
 
 @Controller
@@ -55,6 +58,8 @@ public class MypageController {
 	private String uploadPath;
 	
 	//session으로 받아와야하는 멤버 번호이다 일단은 1으로 생각하고 쓰자
+
+	
 	int memberNo=1;
 	
 	//오늘 날짜
