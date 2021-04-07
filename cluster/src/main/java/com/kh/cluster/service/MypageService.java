@@ -28,4 +28,5 @@ public interface MypageService {
 	public List<MyCoupon> couponlist(Integer memberNo) throws Exception;
 	public List<String> getAttach(Integer memberNo) throws Exception;
 	public void delete(Integer memberNo) throws Exception;
+	public List<MyClassOrder> orderlisttest(Integer memberNo) throws Exception;
 }

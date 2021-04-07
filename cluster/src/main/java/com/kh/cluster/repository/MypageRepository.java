@@ -30,4 +30,5 @@ public interface MypageRepository {
 	public List<String> getAttach(Integer memberNo) throws Exception;
 	public Integer getMemberNo() throws Exception;
 	public void delete(Integer memberNo) throws Exception;
+	public List<MyClassOrder> orderlisttest(Integer memberNo) throws Exception;
 }
