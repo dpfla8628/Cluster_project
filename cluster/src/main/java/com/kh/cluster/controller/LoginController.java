@@ -42,6 +42,14 @@ public class LoginController {
 		return "/auth/login";
 	}
 	
+	@GetMapping("/logout")
+	public String getLogout(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		session.invalidate();
+		
+		return "/auth/login";
+	}
+	
 	@GetMapping("/find")
 	public String getFind() {
 		return "/auth/find-password";
