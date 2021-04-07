@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.kh.cluster.controller;
 
 
 import java.io.FileInputStream;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Creator;
-import com.example.demo.entity.Offclass;
-import com.example.demo.service.OffclassService;
-import com.example.demo.util.MediaUtils;
-import com.example.demo.util.UploadFileUtils;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Creator;
+import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.service.OffclassService;
+import com.kh.cluster.util.MediaUtils;
+import com.kh.cluster.util.UploadFileUtils;
 
 @Controller
 @RequestMapping("/creator")

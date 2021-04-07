@@ -1,9 +1,9 @@
-package com.example.demo.repository;
+package com.kh.cluster.repository;
 
 import java.util.List;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Offclass;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Offclass;
 
 public interface OffclassRepository {
 

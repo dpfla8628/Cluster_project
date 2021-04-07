@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.kh.cluster.service;
 
 import java.util.List;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Offclass;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Offclass;
 
 public interface OffclassService {
 

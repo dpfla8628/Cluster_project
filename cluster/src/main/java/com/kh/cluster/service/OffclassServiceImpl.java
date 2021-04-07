@@ -1,13 +1,13 @@
-package com.example.demo.service;
+package com.kh.cluster.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Offclass;
-import com.example.demo.repository.OffclassRepository;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.repository.OffclassRepository;
 
 @Service
 public class OffclassServiceImpl implements OffclassService{
