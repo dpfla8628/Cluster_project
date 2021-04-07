@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.cluster.entity.ClassCategory;
@@ -26,6 +27,7 @@ import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.service.OffclassService;
 import com.kh.cluster.util.MediaUtils;
+import com.kh.cluster.util.PagingVO;
 import com.kh.cluster.util.UploadFileUtils;
 
 @Controller
@@ -40,20 +42,49 @@ public class CreatorController {
 	@Value("${upload.path}")
 	private String uploadPath;
 	
-	@GetMapping("/")
-	public String home(Creator creator, Model model) throws Exception {
+	@GetMapping("/home")
+	public String home(Creator creator, PagingVO vo, Model model
+					,@RequestParam(value="nowPage", required = false)String nowPage
+					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator home()");
 		
-		model.addAttribute("list", service.classList());
+		int total = service.countClass();
+		if(nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		}else if(nowPage == null) {
+			nowPage = "1";
+		}else if(cntPerPage == null) {
+			cntPerPage = "5";
+		}
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		model.addAttribute("paging", vo);
+		model.addAttribute("list", service.selectClass(vo));
+		//model.addAttribute("list", service.classList());
 				
 		return "/creator/home";
 	}
 	
 	@GetMapping("/register")
-	public String register(Creator creator, Model model) throws Exception{
+	public String register(Creator creator, PagingVO vo, Model model
+					,@RequestParam(value="nowPage", required = false)String nowPage
+					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator register()");
 		
-		model.addAttribute("list", service.checkList());
+		int total = service.countClass();
+		if(nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		}else if(nowPage == null) {
+			nowPage = "1";
+		}else if(cntPerPage == null) {
+			cntPerPage = "5";
+		}
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		model.addAttribute("paging", vo);
+		model.addAttribute("list", service.selectCheck(vo));
+		
+		//model.addAttribute("list", service.checkList());
 		
 		return "/creator/register";
 	}

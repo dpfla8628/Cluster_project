@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.util.PagingVO;
 
 public interface OffclassService {
 
@@ -18,6 +19,15 @@ public interface OffclassService {
 	
 	// 강의 상세정보 확인
 	public Offclass classDetail(Integer classNo) throws Exception;
+	
+	// 강의 총 개수
+	public int countClass();
+	
+	// 페이징 처리 후 강의목록 확인
+	public List<Offclass> selectClass(PagingVO vo);
+	
+	// 페이징 처리 후 검수 진행 목록 확인
+	public List<Offclass> selectCheck(PagingVO vo);
 	
 	// 검수 진행 중 강의 삭제
 	public void classRemove(Integer classNo) throws Exception;

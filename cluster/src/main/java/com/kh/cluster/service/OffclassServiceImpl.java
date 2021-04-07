@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.repository.OffclassRepository;
+import com.kh.cluster.util.PagingVO;
 
 @Service
 public class OffclassServiceImpl implements OffclassService{
@@ -70,6 +71,24 @@ public class OffclassServiceImpl implements OffclassService{
 	@Override
 	public String getPicture(Integer classNo) throws Exception {
 		return repository.getPicture(classNo);
+	}
+
+
+	@Override
+	public int countClass() {
+		return repository.countClass();
+	}
+
+
+	@Override
+	public List<Offclass> selectClass(PagingVO vo) {
+		return repository.selectClass(vo);
+	}
+
+
+	@Override
+	public List<Offclass> selectCheck(PagingVO vo) {
+		return repository.selectCheck(vo);
 	}
 
 }
