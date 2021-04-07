@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -22,11 +25,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.UploadFileUtils;
+import com.sun.javafx.collections.MappingChange.Map;
 import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.MyClassOrder;
 import com.kh.cluster.entity.MyCoupon;
@@ -161,10 +168,12 @@ public class MypageController {
 	
 	
 	@GetMapping("/myorder")
-	public String myorder(Model model)throws Exception{
+	public void myorder(Model model, HttpServletRequest req)throws Exception{
 		log.info("myorder()");
+		//String str = req.getParameter("orderCheck");
+		//System.out.println(str);
+		//model.addAttribute("sel",str);
 		model.addAttribute("orderList", service.orderlist(memberNo));
-		return "mypage/myorder";
 	}
 	
 	@GetMapping("/myquestion")
@@ -235,4 +244,5 @@ public class MypageController {
 		
 		return service.getAttach(memberNo);
 	}
+
 }

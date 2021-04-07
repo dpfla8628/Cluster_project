@@ -126,6 +126,11 @@ public class MypageServiceImpl implements MypageService{
 		repository.delete(memberNo);
 	}
 
+	@Override
+	public List<MyClassOrder> orderlisttest(Integer memberNo) throws Exception {
+		return repository.orderlisttest(memberNo);
+	}
+
 
 
 }

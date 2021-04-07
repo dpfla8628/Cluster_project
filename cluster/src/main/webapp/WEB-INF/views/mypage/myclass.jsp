@@ -24,6 +24,7 @@
 
 <jsp:include page="/WEB-INF/views/mypage/template/sidebar.jsp"></jsp:include>
 
+
 <div class="col-lg-6">
   <div class="grid">
     <p class="grid-header">나의 클래스</p>

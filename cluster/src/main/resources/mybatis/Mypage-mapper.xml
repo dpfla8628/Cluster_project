@@ -9,11 +9,9 @@
 		select count(*) from member m left outer join classorder co on m.member_no=co.member_no where order_ok='입금완료' and m.member_no=#{memberNo}
 	</select>
 	
-	<!-- 쿠폰 갯수 (아직 테이블 완성 안됨)-->
 	<select id="couponcount" resultType="Integer">
 		select count(*) from member_coupon where member_no=#{memberNo}
 	</select>
-	<!-- 멤버의 쿠폰 정보 (아직 테이블 완성 안됨)-->
 	
 	<select id="classlike" resultType="MyClassLike">
 		select * from classlike l left outer join offclass o on l.class_no=o.class_no where member_no=#{memberNo}
@@ -39,10 +37,19 @@
 		inner join review r on r.class_no = o.class_no
 		where o.member_no=#{memberNo}
 	</select>
+	<select id="orderlisttest" resultType="MyClassOrder">
+		select * from classorder o 
+		inner join offclass c on o.class_no=c.class_no 
+		inner join review r on r.class_no = o.class_no
+		where o.member_no=#{memberNo} and order_ok='입금대기'
+	</select>
 	
 	<!-- 입금완료 된 것만 !!!! -->
 	<select id="reviewlist" resultType="MyReview">
-		select * from review r left outer join offclass c on r.class_no=c.class_no where member_no=#{memberNo}
+		select * from offclass oc
+		left outer join review r on r.class_no=oc.class_no
+		left outer join classorder co on r.class_no=co.class_no
+		where co.order_ok='입금완료'and r.member_no=#{memberNo}
 	</select>
 	
 	<select id="reviewcheck" resultType="MyReview">
