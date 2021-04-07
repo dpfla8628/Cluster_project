@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.kh.cluster.entity;
 
 import java.sql.Date;
 

@@ -1,13 +1,13 @@
-package com.example.demo.repository;
+package com.kh.cluster.repository;
 
 import java.util.List;
 
-import com.example.demo.entity.MyClassOrder;
-import com.example.demo.entity.MyMember;
-import com.example.demo.entity.MyClassLike;
-import com.example.demo.entity.MyCoupon;
-import com.example.demo.entity.MyClassQuestion;
-import com.example.demo.entity.MyReview;
+import com.kh.cluster.entity.MyClassLike;
+import com.kh.cluster.entity.MyClassOrder;
+import com.kh.cluster.entity.MyClassQuestion;
+import com.kh.cluster.entity.MyCoupon;
+import com.kh.cluster.entity.MyMember;
+import com.kh.cluster.entity.MyReview;
 
 public interface MypageRepository {
 	public MyMember read(Integer memberNo) throws Exception;

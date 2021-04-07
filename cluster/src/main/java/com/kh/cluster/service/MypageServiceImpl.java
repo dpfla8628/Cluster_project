@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.kh.cluster.service;
 
 import java.util.List;
 
@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.MyClassLike;
-import com.example.demo.entity.MyClassOrder;
-import com.example.demo.entity.MyClassQuestion;
-import com.example.demo.entity.MyCoupon;
-import com.example.demo.entity.MyMember;
-import com.example.demo.entity.MyReview;
-import com.example.demo.repository.MypageRepository;
+import com.kh.cluster.entity.MyClassLike;
+import com.kh.cluster.entity.MyClassOrder;
+import com.kh.cluster.entity.MyClassQuestion;
+import com.kh.cluster.entity.MyCoupon;
+import com.kh.cluster.entity.MyMember;
+import com.kh.cluster.entity.MyReview;
+import com.kh.cluster.repository.MypageRepository;
 
 @Service
 public class MypageServiceImpl implements MypageService{
