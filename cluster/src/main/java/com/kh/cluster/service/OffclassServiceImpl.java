@@ -1,13 +1,13 @@
-package com.example.demo.service;
+package com.kh.cluster.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Offclass;
-import com.example.demo.repository.OffclassRepository;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.repository.OffclassRepository;
 
 @Service
 public class OffclassServiceImpl implements OffclassService{
@@ -64,6 +64,12 @@ public class OffclassServiceImpl implements OffclassService{
 	@Override
 	public Integer getClassNo() throws Exception {
 		return repository.getClassNo();
+	}
+
+
+	@Override
+	public String getPicture(Integer classNo) throws Exception {
+		return repository.getPicture(classNo);
 	}
 
 }

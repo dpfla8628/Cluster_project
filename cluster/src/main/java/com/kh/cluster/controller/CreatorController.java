@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.kh.cluster.controller;
 
 
 import java.io.FileInputStream;
@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Creator;
-import com.example.demo.entity.Offclass;
-import com.example.demo.service.OffclassService;
-import com.example.demo.util.MediaUtils;
-import com.example.demo.util.UploadFileUtils;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Creator;
+import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.service.OffclassService;
+import com.kh.cluster.util.MediaUtils;
+import com.kh.cluster.util.UploadFileUtils;
 
 @Controller
 @RequestMapping("/creator")
@@ -74,7 +74,7 @@ public class CreatorController {
 	
 	@PostMapping("/registerForm")
 	public String registClass(Offclass offclass, Model model) throws Exception{
-		log.info("creator registClass(): " + offclass);
+		log.info("creator registClass()");
 		
 		String[] files = offclass.getFiles();
 		
@@ -87,6 +87,16 @@ public class CreatorController {
 		service.registClass(offclass);
 				
 		return "redirect:register";
+	}
+	
+	@GetMapping("test")
+	public String test(Offclass offclass, Model model) throws Exception{
+		log.info("creator test()");
+		
+		int classNo = 5;
+		model.addAttribute("image", service.getImage(classNo));
+				
+		return "/creator/mainImage";
 	}
 	
 	@PostMapping(value = "/uploadAjax", produces = "text/plain; charset=UTF-8")

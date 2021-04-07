@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.example.demo.repository.OffclassRepository">
+<mapper namespace="com.kh.cluster.repository.OffclassRepository">
 
 	<insert id="create">
 		insert into offclass
@@ -43,4 +43,9 @@
 	<select id="getClassNo" resultType="Integer">
 		select offclass_seq.currval from dual
 	</select>
+	
+	<select id="getPicture">
+	
+	</select>
+	
 </mapper>	
