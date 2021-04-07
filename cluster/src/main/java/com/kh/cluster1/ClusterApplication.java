@@ -1,4 +1,4 @@
-package com.kh.cluster;
+package com.kh.cluster1;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

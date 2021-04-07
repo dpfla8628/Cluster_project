@@ -43,4 +43,9 @@
 	<select id="getClassNo" resultType="Integer">
 		select offclass_seq.currval from dual
 	</select>
+	
+	<select id="getPicture">
+	
+	</select>
+	
 </mapper>	
