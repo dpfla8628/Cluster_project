@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.util.PagingVO;
 
 public interface OffclassRepository {
 
@@ -26,6 +27,12 @@ public interface OffclassRepository {
 	public Integer getClassNo() throws Exception;
 
 	public String getPicture(Integer classNo) throws Exception;
+
+	public int countClass();
+
+	public List<Offclass> selectClass(PagingVO vo);
+
+	public List<Offclass> selectCheck(PagingVO vo);
 
 	
 }

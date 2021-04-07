@@ -18,6 +18,30 @@
 		]]>			
 	</select>
 
+	<!-- 페이징 처리 후 강의  조회-->
+	<select id="selectClass" resultType="Offclass">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from offclass where class_check = '검수완료' order by class_no desc 
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+
+	<!-- 페이징 처리 후 검수 진행 중 강의  조회-->
+	<select id="selectCheck" resultType="Offclass">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from offclass where class_check = '검수대기' or class_check = '반려' order by class_no desc 
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+
 	<select id="classList" resultType="Offclass">
 		<![CDATA[
 			select * from offclass 
@@ -44,8 +68,10 @@
 		select offclass_seq.currval from dual
 	</select>
 	
-	<select id="getPicture">
-	
+	<select id="countClass" resultType="int">
+		select count(*) from offclass
 	</select>
+	
+	
 	
 </mapper>	
