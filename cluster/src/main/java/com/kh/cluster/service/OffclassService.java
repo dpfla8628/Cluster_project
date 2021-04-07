@@ -1,9 +1,9 @@
-package com.example.demo.service;
+package com.kh.cluster.service;
 
 import java.util.List;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Offclass;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Offclass;
 
 public interface OffclassService {
 
@@ -25,8 +25,8 @@ public interface OffclassService {
 	// 카테고리 목록 확인
 	public List<ClassCategory> categoryList() throws Exception;
 	
-	// 
-	//public String getPicture(Integer itemId) throws Exception;
+	// 이미지 출력 테스트
+	public String getPicture(Integer classNo) throws Exception;
 	
 	// 강의에 연결된 이미지 확인
 	public List<String> getImage(Integer classNo) throws Exception;

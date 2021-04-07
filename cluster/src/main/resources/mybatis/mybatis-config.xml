@@ -8,6 +8,6 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 	<typeAliases>
-		<package name="com.khfinal2.cluster.entity"/>
+		<package name="com.kh.cluster.entity"/>
 	</typeAliases>
 </configuration>

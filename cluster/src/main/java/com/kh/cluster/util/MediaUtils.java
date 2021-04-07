@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.kh.cluster.util;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package com.example.demo.repository;
+package com.kh.cluster.repository;
 
 import java.util.List;
 
-import com.example.demo.entity.ClassCategory;
-import com.example.demo.entity.Offclass;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Offclass;
 
 public interface OffclassRepository {
 
@@ -21,9 +21,11 @@ public interface OffclassRepository {
 
 	public void addImage(String fullName, Integer imageJoinNo) throws Exception;
 	
-	public List<String> getImage(Integer classNo)throws Exception;
+	public List<String> getImage(Integer classNo) throws Exception;
 
 	public Integer getClassNo() throws Exception;
+
+	public String getPicture(Integer classNo) throws Exception;
 
 	
 }
