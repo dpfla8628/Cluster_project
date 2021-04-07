@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.cluster.repository.MypageRepository">
+	
+	<select id="count" resultType="Integer">
+		select count(*) from member m left outer join classorder co on m.member_no=co.member_no where order_ok='입금완료' and m.member_no=#{memberNo}
+	</select>
+	
+	<!-- 쿠폰 갯수 (아직 테이블 완성 안됨)-->
+	<select id="couponcount" resultType="Integer">
+		select count(*) from member_coupon where member_no=#{memberNo}
+	</select>
+	<!-- 멤버의 쿠폰 정보 (아직 테이블 완성 안됨)-->
+	
+	<select id="classlike" resultType="MyClassLike">
+		select * from classlike l left outer join offclass o on l.class_no=o.class_no where member_no=#{memberNo}
+	</select>
+	
+	<select id="list" resultType="MyMember">
+		select * from member
+	</select>
+	
+	<select id="read" resultType="MyMember">
+		select * from member m
+		left outer join profile p on m.member_no=p.profile_member_no
+		where member_no=#{memberNo}
+	</select>
+	
+	<select id="readq" resultType="MyClassQuestion">
+		select * from classquestion  q left outer join offclass c on q.class_no=c.class_no where member_no=#{memberNo}
+	</select>
+	
+	<select id="orderlist" resultType="MyClassOrder">
+		select * from classorder o 
+		inner join offclass c on o.class_no=c.class_no 
+		inner join review r on r.class_no = o.class_no
+		where o.member_no=#{memberNo}
+	</select>
+	
+	<!-- 입금완료 된 것만 !!!! -->
+	<select id="reviewlist" resultType="MyReview">
+		select * from review r left outer join offclass c on r.class_no=c.class_no where member_no=#{memberNo}
+	</select>
+	
+	<select id="reviewcheck" resultType="MyReview">
+		select * from review r left outer join offclass c on r.class_no=c.class_no where review_no=#{reviewNo}
+	</select>
+	
+	<select id="reviewwrite" resultType="MyReview">
+		select * from review r left outer join offclass c on r.class_no=c.class_no where c.class_no=#{classNo}
+	</select>
+	
+	<select id="couponlist" resultType="MyCoupon">
+		select * from member_coupon mc 
+			left outer join coupon c on mc.coupon_no=c.coupon_no
+			left outer join event e on c.event_no=e.event_no
+			where mc.member_no=#{memberNo}
+	</select>
+	
+	<update id="update">
+		update member set member_nick= #{memberNick}, 
+		member_phone = #{memberPhone} where member_no = #{memberNo}
+	</update>
+	
+	<delete id="reviewremove">
+		delete from review where review_no=#{reviewNo}
+	</delete>
+	
+	<delete id="orderremove">
+		delete from classorder where order_no=#{orderNo}
+	</delete>
+	
+	<delete id="questionremove">
+		delete from classquestion where classq_no=#{classqNo}
+	</delete>
+	
+	<update id="reviewedit">
+		update review set review_context= #{reviewContext} where review_no = #{reviewNo}
+	</update>
+	
+	<insert id="addAttach">
+		insert into profile (profile_no, fullname, profile_member_no) 
+		<!-- values (#{fullName}, LAST_INSERT_ID()) -->
+		values (profile_seq.nextval, #{fullName}, #{memberNo})
+	</insert>
+	
+	<delete id="delete">
+		delete profile where profile_member_no=#{memberNo}
+	</delete>
+	
+	<select id="getAttach" resultType="String">
+		select fullname from profile
+		where profile_member_no = #{memberNo}
+		order by regdate
+	</select>
+	
+	
+</mapper>
