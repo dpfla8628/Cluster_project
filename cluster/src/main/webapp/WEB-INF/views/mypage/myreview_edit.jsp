@@ -19,7 +19,7 @@
           <p class="grid-header">리뷰관리</p>
           <div class="grid-body">
             <div class="item-wrapper">
-              <form:form modelAttribute="review" action="/mypage/myreview_edit" method="post">
+              <form:form modelAttribute="myreview" action="/mypage/myreview_edit" method="post">
                 <form:hidden path="reviewNo"/>
                 <div class="form-group">
                 <!-- 강의명은 수정 불가능 -->

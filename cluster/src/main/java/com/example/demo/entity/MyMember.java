@@ -1,8 +1,9 @@
 package com.example.demo.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Member {
+public class MyMember implements Serializable{
 	private int memberNo;
 	private String memberId;
 	private String memberPw;
@@ -12,6 +13,26 @@ public class Member {
 	private String memberAuth;
 	private String memberAccessToken;
 	private String memberRefreshToken;
+	private String fullName;
+	private String[] files;
+	
+
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(String[] files) {
+		this.files = files;
+	}
 	
 	public int getMemberNo() {
 		return memberNo;

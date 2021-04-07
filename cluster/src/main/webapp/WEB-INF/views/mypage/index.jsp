@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:include page="/WEB-INF/views/mypage/template/header.jsp"></jsp:include>
 <link rel="stylesheet" href="../resources/package/swiper-bundle.min.css">
 <style>
@@ -9,13 +10,16 @@
 		float:left;
 	}
 	.user-profile{
-		margin:5rem;
+		padding: 3rem;
+	    background-color: linen;
+	    margin: 3rem;
+	    border-radius: 39px;
 	}
 	.user-info>li{
 		margin:5px;
 	}
 	.display-avatar{
-		.margin-right:10px
+		margin: 3rem;
 	}
 	
 	a{
@@ -50,6 +54,25 @@
       -webkit-align-items: center;
       align-items: center;
     }
+    
+    .likeimg:hover{
+    	border: 4px solid orange;
+    }
+    .likeimg{
+    	width: 190px;
+    	height: 135px;
+    }
+    .clsname{
+    	position: absolute;
+    	top: 78%;;
+    }
+    .hello{
+    	color: lightslategrey;
+    }
+    .likecss{
+    	color: firebrick;
+    	font-weight: bold;
+    }
 </style>
 
 
@@ -73,13 +96,23 @@ $(document).ready(function(){
              
              <div class="user-profile">
 			    <div class="display-avatar">
-			      	<img class="profile-img img-lg rounded-circle" src="assets/images/profile/male/image_1.png" alt="profile image">
+			    <c:set var="fullname" value="${mymember.fullName }"></c:set>
+			    	<c:if test="${empty mymember.fullName }">
+			    	<img class="profile-img img-lg rounded-circle" src="../resources/image/profile.jpg" alt="profile image">
+			    	</c:if>
+			    	<c:if test="${!empty mymember.fullName }">
+			      	<img class="profile-img img-lg rounded-circle" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}" alt="profile image">
+			    	</c:if>
 			    </div>
-				
-			    	<h1>${member.memberNick }님 반갑습니다😊</h1>
+			    	<h1 class="hello">${mymember.memberNick }님 반갑습니다😊</h1>
 			    	<ul class="user-info">
 			    		<!-- member_coupon / 해당 member_no에 맞는 coupon_no 카운팅 -->
-			    		<li><a href="coupon">내 쿠폰()</a></li>
+			    		<li>
+			    			내 쿠폰
+			    			<a href="mycoupon">
+				    			<div class="btn btn-outline-danger btn-rounded btn-xs">${couponcount}</div>
+				    		</a>	
+			    		</li>
 			    		
 			    		<!-- order / order_ok='입금 완료' 카운팅 -->
 			    		<li>
@@ -93,22 +126,18 @@ $(document).ready(function(){
           </div>
           
           <div class="user-like">
-          	<h4><i class="mdi mdi-heart-box-outline"></i>찜한 강의</h4>
+          	<h4 class="likecss"><i class="mdi mdi-heart-box-outline"></i>찜한 강의</h4>
           	
 			  <!-- Swiper -->
 			  <div class="swiper-container">
 			    <div class="swiper-wrapper">
+			    <c:forEach items="${likeList}" var="likelist">
 			    <!-- offclass 메인 이미지 불러오기 (classlike랑 join해서 로그인한 member_no가 찜한걸로) -->
-			      <div class="swiper-slide">Slide 1</div>
-			      <div class="swiper-slide">Slide 2</div>
-			      <div class="swiper-slide">Slide 3</div>
-			      <div class="swiper-slide">Slide 4</div>
-			      <div class="swiper-slide">Slide 5</div>
-			      <div class="swiper-slide">Slide 6</div>
-			      <div class="swiper-slide">Slide 7</div>
-			      <div class="swiper-slide">Slide 8</div>
-			      <div class="swiper-slide">Slide 9</div>
-			      <div class="swiper-slide">Slide 10</div>
+			      <div class="swiper-slide">
+			      	<div><a href="#"><img class="likeimg" src="../resources/image/test.PNG"></a></div>
+			      	<div class="clsname">${likelist.className}</div>
+			      </div>
+			      </c:forEach>
 			    </div>
 			    <!-- Add Pagination -->
 			    <div class="swiper-pagination"></div>
@@ -129,7 +158,7 @@ $(document).ready(function(){
       loopFillGroupWithBlank: true,
       centeredSlides: true,
       autoplay: {
-        delay: 2500,
+        delay: 3500,
         disableOnInteraction: false,
       },
       pagination: {

@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-public class ClassQuestion {
+public class MyClassQuestion {
 	private int classqNo;
 	private int classNo;
 	private int memberNo;

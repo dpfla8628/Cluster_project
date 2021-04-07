@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 import java.sql.Date;
 
-public class Review {
+public class MyReview {
 	private int reviewNo;
 	private int memberNo;
 	private int classNo;

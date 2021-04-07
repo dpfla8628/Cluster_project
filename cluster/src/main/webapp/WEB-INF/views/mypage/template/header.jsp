@@ -31,6 +31,10 @@
 	a{
 		color:black;
 	}
+	a:hover{
+		font-weight:bold;
+		color:orange;
+	}
 </style>
 
 </head>

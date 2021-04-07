@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 import java.sql.Date;
 
-public class ClassOrder {
+public class MyClassOrder {
 	private int orderNo;
 	private int classNo;
 	private int memberNo;
@@ -11,7 +11,37 @@ public class ClassOrder {
 	private int orderPrice;
 	private Date orderDate;
 	private String orderOk;
+	private String classImage;
+	private Date classEnd;
+	private String classTalk;
+	private String reviewContext;
 	
+	
+	
+	public String getReviewContext() {
+		return reviewContext;
+	}
+	public void setReviewContext(String reviewContext) {
+		this.reviewContext = reviewContext;
+	}
+	public String getClassImage() {
+		return classImage;
+	}
+	public void setClassImage(String classImage) {
+		this.classImage = classImage;
+	}
+	public Date getClassEnd() {
+		return classEnd;
+	}
+	public void setClassEnd(Date classEnd) {
+		this.classEnd = classEnd;
+	}
+	public String getClassTalk() {
+		return classTalk;
+	}
+	public void setClassTalk(String classTalk) {
+		this.classTalk = classTalk;
+	}
 	public String getClassName() {
 		return className;
 	}

@@ -44,15 +44,18 @@ $(document).ready(function(){
             </tr>
           </thead>
           <tbody>
-           <c:forEach items="${reviewList}" var="review">				
+           <c:forEach items="${reviewList}" var="review">	
+           <c:if test="${!empty review.reviewContext }">			
             <tr>
               <td>${review.reviewNo }
               <td>${review.className}</td>
               <td>${review.reviewDate }</td>
               <td>
+              
 				 <a href="#r${review.reviewNo}" data-toggle="collapse" aria-expanded="false">
 					<i class="mdi mdi-arrow-bottom-left">리뷰 보기</i>
 				  </a>
+			 
               </td>
               <td>
               <c:if test="${empty review.reviewOk }">
@@ -81,6 +84,7 @@ $(document).ready(function(){
 				</div>
 			</td>
             </tr>
+             </c:if>
             </c:forEach>
           </tbody>
         </table>
