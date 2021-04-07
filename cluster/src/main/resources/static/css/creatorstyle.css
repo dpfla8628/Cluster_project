@@ -249,9 +249,9 @@ textarea{
 main, header, section, article, aside{
     border: 1px solid black;
 }
-/*메인 영역 : 폭 1000px 고정*/
+/*메인 영역 : 폭 1300px 고정*/
 main{
-    width: 1000px;
+    width: 1300px;
     margin: auto;
 }
 

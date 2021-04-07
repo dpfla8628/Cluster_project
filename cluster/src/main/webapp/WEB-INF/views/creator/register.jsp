@@ -23,10 +23,10 @@
     	<table border="1">
 		<tr>
 			<th align="center" width="80">번호</th>
-			<th align="center" width="320">강의명</th>
+			<th align="center" width="400">강의명</th>
 			<th align="center" width="150">신청일</th>
 			<th align="center" width="150">진행상황</th>
-			<th align="center" width="150">상태</th>
+			<th align="center" width="300">상태</th>
 		</tr>
 		
 		<c:choose>
@@ -46,8 +46,12 @@
 								${offclass.className}
 							</a>
 						</td>
-						<td align="center">${offclass.classStart}</td>
-						<td align="center">${offclass.classEnd}</td>
+						<td align="center">${offclass.classRegdate}</td>
+						<td align="center">${offclass.classCheck}</td>
+						<td align="center">
+							<a href="/creator/modify?classNo=${offclass.classNo}">등록 수정</a>
+							<a href="/creator/remove?classNo=${offclass.classNo}">등록 취소</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</c:otherwise>

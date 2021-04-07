@@ -44,8 +44,9 @@
 						</td>
 						<td align="center">${offclass.classStart}</td>
 						<td align="center">${offclass.classEnd}</td>
-						<td align="center">${offclass.classMemberSet}</td>
-						<td align="center">${offclass.classPrice}</td>
+						<td align="center">리뷰링크</td>
+						<td align="center">결재완료링크</td>
+						<td align="center">찜링크</td>
 					</tr>
 				</c:forEach>
 			</c:otherwise>
