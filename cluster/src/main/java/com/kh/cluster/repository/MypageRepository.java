@@ -31,4 +31,6 @@ public interface MypageRepository {
 	public Integer getMemberNo() throws Exception;
 	public void delete(Integer memberNo) throws Exception;
 	public List<MyClassOrder> orderlisttest(Integer memberNo) throws Exception;
+	public void memberout(Integer memberNo) throws Exception;
+	public void reviewwww(MyReview myreview) throws Exception;
 }

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,23 +54,22 @@ public class MypageController {
 	
 	@Autowired
 	private MypageService service;
+	AuthRepository repo;
 	
 	@Value("${upload.path}")
 	private String uploadPath;
 	
 	//session으로 받아와야하는 멤버 번호이다 일단은 1으로 생각하고 쓰자
-
-	
 	int memberNo=1;
-	
-	//오늘 날짜
-	SimpleDateFormat f = new SimpleDateFormat ("yyyy-MM-dd");
-	Date time = new Date();
-	String sysdate = f.format(time);
+	HttpSession session;
 	
 	@GetMapping("/index")
-	public String index(Model model, MyClassLike like) throws Exception {
+	public String index(HttpServletRequest req, Model model, MyClassLike like) throws Exception {
 		log.info("index()");
+		
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		
 		MyMember mymember = service.read(memberNo);
 		model.addAttribute("mymember",mymember);
 		model.addAttribute("likeList",service.classlike(memberNo));
@@ -79,8 +79,10 @@ public class MypageController {
 	}
 	
 	@GetMapping("/myedit")
-	public String getEdit(Model model)throws Exception{
+	public String getEdit(HttpServletRequest req,Model model)throws Exception{
 		log.info("getEdit()");
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		MyMember mymember = new MyMember();
 		mymember=service.read(memberNo);
 		model.addAttribute("mymember",mymember);
@@ -88,8 +90,10 @@ public class MypageController {
 	}
 
 	@PostMapping("/mydelete")
-	public String deleteProfile() throws Exception {
+	public String deleteProfile(HttpServletRequest req) throws Exception {
 		log.info("postdelete()");
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		service.delete(memberNo);
 		return "redirect:/mypage/myedit";
 	}
@@ -110,22 +114,33 @@ public class MypageController {
 	}
 	
 	@GetMapping("/mycoupon")
-	public String coupon(Model model)throws Exception{
+	public String coupon(HttpServletRequest req,Model model)throws Exception{
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("couponlist",service.couponlist(memberNo));
 		return "mypage/mycoupon";
 	}
 	
 	@GetMapping("/myclass")
-	public String myclass(Model model)throws Exception{
+	public String myclass(HttpServletRequest req,Model model)throws Exception{
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("orderList", service.orderlist(memberNo));
-		model.addAttribute("sysdate",sysdate);
 		return "/mypage/myclass";
+	}
+	@GetMapping("/myclassend")
+	public String myclassend(HttpServletRequest req,Model model)throws Exception{
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		model.addAttribute("orderList", service.orderlist(memberNo));
+		return "/mypage/myclassend";
 	}
 	
 	@GetMapping("/myreview_list")
-	public String myreview_list(Model model)throws Exception{
+	public String myreview_list(HttpServletRequest req,Model model)throws Exception{
 		log.info("review_list()");
-		
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("reviewList",service.riviewlist(memberNo));
 		
 		return "mypage/myreview_list";
@@ -161,13 +176,20 @@ public class MypageController {
 	}
 	
 	@GetMapping("/myreview_write")
-	public void g_myreview_write(Model model, Integer classNo)throws Exception{
-		MyReview myreview = (service.reviewwrite(classNo));
-		model.addAttribute("myreview",myreview);
+	public String g_myreview_write(Model model, Integer classNo)throws Exception{
+		model.addAttribute("myreview",service.reviewwrite(classNo));
+		return "/mypage/myreview_write";
 	}
 	@PostMapping("/myreview_write")
-	public String p_myreview_write(MyReview myreview)throws Exception{
-		service.reviewedit(myreview);
+	public String p_myreview_write(HttpServletRequest req,MyReview myreview, Model model)throws Exception{
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		int classNo = Integer.parseInt(req.getParameter("classNo"));
+		String context = req.getParameter("reviewContext");
+		myreview.setReviewContext(context);
+		myreview.setMemberNo(memberNo);
+		myreview.setClassNo(classNo);
+		service.reviewwww(myreview);
 		return "redirect:/mypage/myreview_list";
 	}
 	
@@ -175,15 +197,21 @@ public class MypageController {
 	@GetMapping("/myorder")
 	public void myorder(Model model, HttpServletRequest req)throws Exception{
 		log.info("myorder()");
-		//String str = req.getParameter("orderCheck");
-		//System.out.println(str);
-		//model.addAttribute("sel",str);
+		session = req.getSession();
+		model.addAttribute("orderList", service.orderlist(memberNo));
+	}
+	@GetMapping("/myorderok")
+	public void myorderok(Model model, HttpServletRequest req)throws Exception{
+		log.info("myorderok()");
+		session = req.getSession();
 		model.addAttribute("orderList", service.orderlist(memberNo));
 	}
 	
 	@GetMapping("/myquestion")
-	public String myquestion(Model model)throws Exception{
+	public String myquestion(HttpServletRequest req,Model model)throws Exception{
 		log.info("myquestion()");
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("questionList",service.readq(memberNo));
 		
 		return "/mypage/myquestion";
@@ -248,6 +276,15 @@ public class MypageController {
 			throws Exception {
 		
 		return service.getAttach(memberNo);
+	}
+	
+	@PostMapping("/memberout")
+	public String memberout(HttpServletRequest req) throws Exception {
+		log.info("memberout()");
+		session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		service.memberout(memberNo);
+		return "redirect:/login/";
 	}
 
 }

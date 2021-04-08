@@ -23,14 +23,6 @@
 <script>
 	$(document).ready(function(){
 		
-	$(document).on("click","#order_cancel",function(){
-		if(confirm('정말로 해당 주문을 취소하시겠습니까?')){
-			$("#del").submit;
-		}
-		else{
-			return false;
-		}
-	})
 	$('#orderCheck').change(function(){
 		var sel = $(".custom-select").val()
 		console.log(sel);
@@ -48,12 +40,12 @@
        <div class="item-wrapper">
       <div class="table-responsive">
         <div class="btn-group mb-0">
-           <label class="btn btn-outline-info active">
-             <input type="radio" name="options" id="option1_1" checked>
+           <label class="btn btn-outline-info">
+             <input type="radio" name="options" id="option1_1" OnClick="window.location.href='/mypage/myorder';">
              	입금 대기중
            </label>
-           <label class="btn btn-outline-info">
-             <input type="radio" name="options" id="option1_2" OnClick="window.location.href='/mypage/myorderok';">
+           <label class="btn btn-outline-info active">
+             <input type="radio" name="options" id="option1_2" checked>
              	입금 완료
            </label>
          </div>
@@ -64,26 +56,19 @@
               <th>강의명</th>
               <th>주문일</th>
               <th>상태</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
           <c:forEach items="${orderList}" var="orderlist">
           <c:set var="ok" value="#{orderlist.orderOk }"/>
-          <c:if test="${ok eq '입금대기'}">
+          <c:if test="${ok eq '입금완료'}">
             <tr>
               <td >${orderlist.orderNo}</td>
               <td>${orderlist.className}</td>
               <td>${orderlist.orderDate}</td>
               <td>
-	   	          <label class="badge badge-warning">입금 대기중...</label>
+    	          <label class="badge badge-success">입금 완료 !</label>
               </td>
-              <td>
-				<form action="/mypage/order_remove" method="get" id="del">
-              		<input type="hidden" name="orderNo" value="${orderlist.orderNo }"> 
-		           <button type="submit" class="btn btn-secondary btn-xs" id="order_cancel">주문 취소</button>
-              	</form>
-			 </td>
             </tr>
             </c:if>
             </c:forEach>
