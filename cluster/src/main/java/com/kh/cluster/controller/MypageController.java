@@ -60,7 +60,7 @@ public class MypageController {
 	private String uploadPath;
 	
 	//test ) session으로 받아와야하는 멤버 번호이다 일단은 1으로 생각하고 쓰자
-	int memberNo=1;
+	//int memberNo=1;
 	HttpSession session;
 	
 	@GetMapping("/index")
@@ -128,13 +128,6 @@ public class MypageController {
 		model.addAttribute("orderList", service.orderlist(memberNo));
 		return "/mypage/myclass";
 	}
-	@GetMapping("/myclassend")
-	public String myclassend(HttpServletRequest req,Model model)throws Exception{
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
-		model.addAttribute("orderList", service.orderlist(memberNo));
-		return "/mypage/myclassend";
-	}
 	
 	@GetMapping("/myreview_list")
 	public String myreview_list(HttpServletRequest req,Model model)throws Exception{
@@ -198,12 +191,7 @@ public class MypageController {
 	public void myorder(Model model, HttpServletRequest req)throws Exception{
 		log.info("myorder()");
 		session = req.getSession();
-		model.addAttribute("orderList", service.orderlist(memberNo));
-	}
-	@GetMapping("/myorderok")
-	public void myorderok(Model model, HttpServletRequest req)throws Exception{
-		log.info("myorderok()");
-		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("orderList", service.orderlist(memberNo));
 	}
 	

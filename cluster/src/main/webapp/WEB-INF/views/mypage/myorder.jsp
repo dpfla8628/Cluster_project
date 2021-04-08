@@ -35,6 +35,19 @@
 		var sel = $(".custom-select").val()
 		console.log(sel);
 	});
+	$(document).ready(function(){
+		$(".mb-0").click(function(){
+			
+		if($("#option1_2").prop("checked")){
+			$("#show1").attr("hidden",false)
+			$("#show2").attr("hidden",true)
+		}	
+		else{
+			$("#show2").attr("hidden",false)
+			$("#show1").attr("hidden",true)
+		}
+		})
+	})
 
 })
 </script>
@@ -47,13 +60,13 @@
     <p class="grid-header">주문 내역</p>
        <div class="item-wrapper">
       <div class="table-responsive">
-        <div class="btn-group mb-0">
+        <div class="btn-group mb-0" data-toggle="buttons">
            <label class="btn btn-outline-info active">
              <input type="radio" name="options" id="option1_1" checked>
              	입금 대기중
            </label>
            <label class="btn btn-outline-info">
-             <input type="radio" name="options" id="option1_2" OnClick="window.location.href='/mypage/myorderok';">
+             <input type="radio" name="options" id="option1_2">
              	입금 완료
            </label>
          </div>
@@ -67,7 +80,8 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          
+          <tbody id="show1">
           <c:forEach items="${orderList}" var="orderlist">
           <c:set var="ok" value="#{orderlist.orderOk }"/>
           <c:if test="${ok eq '입금대기'}">
@@ -88,6 +102,24 @@
             </c:if>
             </c:forEach>
           </tbody>
+          
+          <tbody id="show2" hidden="true">
+          <c:forEach items="${orderList}" var="orderlist">
+          <c:set var="ok" value="#{orderlist.orderOk }"/>
+          <c:if test="${ok eq '입금완료'}">
+            <tr>
+              <td >${orderlist.orderNo}</td>
+              <td>${orderlist.className}</td>
+              <td>${orderlist.orderDate}</td>
+              <td>
+    	          <label class="badge badge-success">입금 완료 !</label>
+              </td>
+              <td></td>
+            </tr>
+            </c:if>
+            </c:forEach>
+          </tbody>
+          
         </table>
       </div>
     </div>
