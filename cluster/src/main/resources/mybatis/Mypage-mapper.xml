@@ -6,7 +6,10 @@
 <mapper namespace="com.kh.cluster.repository.MypageRepository">
 	
 	<select id="count" resultType="Integer">
-		select count(*) from member m left outer join classorder co on m.member_no=co.member_no where order_ok='입금완료' and m.member_no=#{memberNo}
+		select count(*) from member m 
+		left outer join classorder co on m.member_no=co.member_no 
+		left outer join offclass oc on co.class_no=oc.class_no
+		where order_ok='입금완료' and m.member_no=#{memberNo} and oc.class_end>=sysdate
 	</select>
 	
 	<select id="couponcount" resultType="Integer">
