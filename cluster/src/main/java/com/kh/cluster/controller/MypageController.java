@@ -59,7 +59,7 @@ public class MypageController {
 	@Value("${upload.path}")
 	private String uploadPath;
 	
-	//session으로 받아와야하는 멤버 번호이다 일단은 1으로 생각하고 쓰자
+	//test ) session으로 받아와야하는 멤버 번호이다 일단은 1으로 생각하고 쓰자
 	int memberNo=1;
 	HttpSession session;
 	
@@ -68,7 +68,7 @@ public class MypageController {
 		log.info("index()");
 		
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		
 		MyMember mymember = service.read(memberNo);
 		model.addAttribute("mymember",mymember);
@@ -82,7 +82,7 @@ public class MypageController {
 	public String getEdit(HttpServletRequest req,Model model)throws Exception{
 		log.info("getEdit()");
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		MyMember mymember = new MyMember();
 		mymember=service.read(memberNo);
 		model.addAttribute("mymember",mymember);
@@ -93,7 +93,7 @@ public class MypageController {
 	public String deleteProfile(HttpServletRequest req) throws Exception {
 		log.info("postdelete()");
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		service.delete(memberNo);
 		return "redirect:/mypage/myedit";
 	}
@@ -116,7 +116,7 @@ public class MypageController {
 	@GetMapping("/mycoupon")
 	public String coupon(HttpServletRequest req,Model model)throws Exception{
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("couponlist",service.couponlist(memberNo));
 		return "mypage/mycoupon";
 	}
@@ -124,14 +124,14 @@ public class MypageController {
 	@GetMapping("/myclass")
 	public String myclass(HttpServletRequest req,Model model)throws Exception{
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("orderList", service.orderlist(memberNo));
 		return "/mypage/myclass";
 	}
 	@GetMapping("/myclassend")
 	public String myclassend(HttpServletRequest req,Model model)throws Exception{
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("orderList", service.orderlist(memberNo));
 		return "/mypage/myclassend";
 	}
@@ -140,7 +140,7 @@ public class MypageController {
 	public String myreview_list(HttpServletRequest req,Model model)throws Exception{
 		log.info("review_list()");
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("reviewList",service.riviewlist(memberNo));
 		
 		return "mypage/myreview_list";
@@ -183,7 +183,7 @@ public class MypageController {
 	@PostMapping("/myreview_write")
 	public String p_myreview_write(HttpServletRequest req,MyReview myreview, Model model)throws Exception{
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		int classNo = Integer.parseInt(req.getParameter("classNo"));
 		String context = req.getParameter("reviewContext");
 		myreview.setReviewContext(context);
@@ -211,7 +211,7 @@ public class MypageController {
 	public String myquestion(HttpServletRequest req,Model model)throws Exception{
 		log.info("myquestion()");
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		model.addAttribute("questionList",service.readq(memberNo));
 		
 		return "/mypage/myquestion";
@@ -282,7 +282,7 @@ public class MypageController {
 	public String memberout(HttpServletRequest req) throws Exception {
 		log.info("memberout()");
 		session = req.getSession();
-		//int memberNo = (int) session.getAttribute("no");
+		int memberNo = (int) session.getAttribute("no");
 		service.memberout(memberNo);
 		return "redirect:/login/";
 	}
