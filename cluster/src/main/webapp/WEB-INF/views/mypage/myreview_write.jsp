@@ -20,7 +20,7 @@
           <div class="grid-body">
             <div class="item-wrapper">
               <form:form modelAttribute="myreview" action="/mypage/myreview_write" method="post">
-                <form:hidden path="reviewNo"/>
+                <form:hidden path="classNo"/>
                 <div class="form-group">
                 <!-- 강의명은 수정 불가능 -->
                   <label for="className">오프라인 강의명</label>

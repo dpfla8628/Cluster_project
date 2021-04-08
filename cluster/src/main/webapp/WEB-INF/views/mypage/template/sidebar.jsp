@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <script src="../resources/package/swiper-bundle.min.js"></script>
 <script src="../resources/vendors/js/core.js"></script>
 <script src="../resources/js/template.js"></script>
@@ -11,10 +12,13 @@
 </style>
 <script>
 $(document).ready(function(){
-	$("#memberout").on("click",function(){
-		
-	alert("회원탈퇴");
-	
+	$(document).on("click","#memberout",function(){
+		if(confirm('정말로 회원 탈퇴 하시겠습니까? \n (탈퇴시 구매내역, 이벤트 등의 정보 복구가 불가능합니다)')){
+			$("#del").submit;
+		}
+		else{
+			return false;
+		}
 	})
 })
 </script>
@@ -26,6 +30,19 @@ $(document).ready(function(){
 
   
 		<li>
+		<!-- 만약 크리에이터 권한이 있다면??? -->
+		<c:if test="${auth eq '강사'}">
+			<li>
+            <a href="#">
+              <span class="link-title">크리에이터 페이지 이동하기</span>
+              <i class="mdi mdi-arrow-right-bold"></i>
+            </a>
+            </li>
+            <hr><br>
+         </c:if>
+         <!--  --> 
+          
+          <li>
             <a href="#myinfo" data-toggle="collapse" aria-expanded="false">
               <span class="link-title">내 정보</span>
               <i class="mdi mdi-account-box"></i>
@@ -60,8 +77,7 @@ $(document).ready(function(){
           </li>
           
         </ul>
-        
-        <form action="#" method="get">
-        	<button type="button" class="btn btn-inverse-dark btn-xs" id="memberout">회원 탈퇴</button>
+        <form action="/mypage/memberout" method="post" id="del">
+        	<button type="submit" class="btn btn-inverse-dark btn-xs" id="memberout">회원 탈퇴</button>
         </form>
       </div>
