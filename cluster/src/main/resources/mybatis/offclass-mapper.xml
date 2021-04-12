@@ -5,11 +5,19 @@
 	
 <mapper namespace="com.kh.cluster.repository.OffclassRepository">
 
+	<insert id="join">
+		insert into creator values(creator_seq.nextval, #{creatorAccount}, #{creatorInfo}, #{memberNo})
+	</insert>
+
+	<update id="authUpdate">
+		update member set member_auth = '강사' where member_no = #{memberNo}
+	</update>
+
 	<insert id="create">
 		insert into offclass
-		(class_no, class_name, class_info, class_price, class_start, class_end, class_place, class_member_set, class_talk, category_no, creator_no) 
+		(class_no, class_name, class_info, class_price, class_place, class_member_set, class_talk, category_no, creator_no) 
 		values
-		(offclass_seq.nextval, #{className}, #{classInfo}, #{classPrice}, #{classStart}, #{classEnd}, #{classPlace}, #{classMemberSet}, #{classTalk}, #{categoryNo}, #{creatorNo})
+		(offclass_seq.nextval, #{className}, #{classInfo}, #{classPrice}, #{classPlace}, #{classMemberSet}, #{classTalk}, #{categoryNo}, #{creatorNo})
 	</insert>
 
 	<select id="categoryList" resultType="ClassCategory">
@@ -69,9 +77,27 @@
 	</select>
 	
 	<select id="countClass" resultType="int">
-		select count(*) from offclass
+		select count(*) from offclass where class_check = '검수완료'
 	</select>
 	
+	<select id="countCheck" resultType="int">
+		select count(*) from offclass where class_check = '검수대기' or class_check = '반려'
+	</select>
 	
+	<select id="readDate" resultType="Offclass">
+		select class_no, class_start, class_end, class_check, class_end_check, class_regdate from offclass where class_no = #{classNo}
+	</select>
+	
+	<update id="startDateUpdate">
+		update offclass set class_start = #{classStart} where class_no = #{classNo}
+	</update>
+	
+	<update id="endDateUpdate">
+		update offclass set class_end = #{classEnd} where class_no = #{classNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from offclass where class_no = #{classNo} 
+	</delete>
 	
 </mapper>	

@@ -42,11 +42,49 @@ public class CreatorController {
 	@Value("${upload.path}")
 	private String uploadPath;
 	
-	@GetMapping("/home")
+	// 크리에이터 홍보 페이지
+	@GetMapping("/join")
+	public void creatorJoin(/*Member member,*/Model model) throws Exception{
+		log.info("creator join()");
+		
+		List<ClassCategory> categoryList = service.categoryList();
+		
+		model.addAttribute("categoryList", categoryList);
+		
+	}
+	
+	// 크리에이터 신청 페이지
+	@GetMapping("/joinForm")
+	public void getJoinForm(/*Member member,*/Model model) throws Exception{
+		log.info("creator getJoinForm()");
+		
+		model.addAttribute(new Creator());
+	}
+	
+	// 크리에이터 신청 페이지
+	@PostMapping("/joinForm")
+	public String postJoinForm(Integer memberNo, Creator creator, Model model) throws Exception{
+		log.info("creator postJoinForm()");
+		
+		service.join(creator);
+		service.authUpdate(memberNo);
+		return "redirect:/";
+	}
+	
+	// 크리에이터 페이지 메인
+	@GetMapping("/")
+	public String home() {
+		log.info("creator home()");
+		
+		return "/creator/home";
+	}
+		
+	// 크리에이터 진행 중 강의 정보
+	@GetMapping("/classinfo")
 	public String home(Creator creator, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
-		log.info("creator home()");
+		log.info("creator classinfo()");
 		
 		int total = service.countClass();
 		if(nowPage == null && cntPerPage == null) {
@@ -62,16 +100,17 @@ public class CreatorController {
 		model.addAttribute("list", service.selectClass(vo));
 		//model.addAttribute("list", service.classList());
 				
-		return "/creator/home";
+		return "/creator/classinfo";
 	}
 	
-	@GetMapping("/register")
+	// 크리에이터 검수 중 강의 정보
+	@GetMapping("/classcheck")
 	public String register(Creator creator, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
-		log.info("creator register()");
+		log.info("creator classcheck()");
 		
-		int total = service.countClass();
+		int total = service.countCheck();
 		if(nowPage == null && cntPerPage == null) {
 			nowPage = "1";
 			cntPerPage = "5";
@@ -86,9 +125,43 @@ public class CreatorController {
 		
 		//model.addAttribute("list", service.checkList());
 		
-		return "/creator/register";
+		return "/creator/classcheck";
 	}
 
+	// 크리에이터 강의별 매출 정보
+	@GetMapping("salesbyclass")
+	public String salesbyclass(Creator creator, PagingVO vo, Model model
+					,@RequestParam(value="nowPage", required = false)String nowPage
+					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
+		log.info("creator salesbyclass()");
+		
+		int total = service.countClass();
+		if(nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		}else if(nowPage == null) {
+			nowPage = "1";
+		}else if(cntPerPage == null) {
+			cntPerPage = "5";
+		}
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		model.addAttribute("paging", vo);
+		model.addAttribute("list", service.selectClass(vo));
+		
+		//model.addAttribute("list", service.checkList());
+		
+		return "/creator/salesbyclass";
+	}
+	
+	// 크리에이터 기간 별 매출정보
+	@GetMapping("salesbyperiod")
+	public String salesbyperiod(Creator creator, Model model) throws Exception{
+		log.info("creator salesbypreiod()");
+		
+		return "/creator/salesbyperiod";
+	}
+	
+	// 강의 검수 데이터 등록
 	@GetMapping("/registerForm")
 	public String registerForm(Creator creator, Model model) throws Exception {
 		log.info("creator registerForm()");
@@ -98,18 +171,15 @@ public class CreatorController {
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(new Offclass());
 		
-		log.info("categoryList = "+ categoryList);
-		
 		return "/creator/registerForm";
 	}
 	
+	// 강의 검수 데이터 저장
 	@PostMapping("/registerForm")
 	public String registClass(Offclass offclass, Model model) throws Exception{
 		log.info("creator registClass()");
 		
 		String[] files = offclass.getFiles();
-		
-		log.info("files : " +files);
 		
 		for(int i = 0; i < files.length; i++) {
 			log.info("files[i] = "+files[i]);
@@ -117,17 +187,53 @@ public class CreatorController {
 		
 		service.registClass(offclass);
 				
-		return "redirect:register";
+		return "redirect:classcheck";
 	}
 	
-	@GetMapping("test")
-	public String test(Offclass offclass, Model model) throws Exception{
-		log.info("creator test()");
+	// 검수 후 시작날짜 설정
+	@GetMapping("/startdate")
+	public void getStartDateModify(int classNo, Model model) throws Exception{
+		log.info("creator getStartDateUpdate()");
 		
-		int classNo = 5;
-		model.addAttribute("image", service.getImage(classNo));
-				
-		return "/creator/mainImage";
+		model.addAttribute(service.readDate(classNo));
+	}
+	
+	// 검수 후 설정한 날짜로 수정
+	@PostMapping("/startdatemodify")
+	public String postStartDateModify(Offclass offclass, Model model) throws Exception{
+		log.info("creator postStartDateUpdate()");
+		
+		service.startDateModify(offclass);
+		
+		return "redirect:classinfo";
+	}
+	
+	// 검수 후 종료날짜 설정
+	@GetMapping("/enddate")
+	public void getEndDateModify(int classNo, Model model) throws Exception{
+		log.info("creator getEndDateUpdate()");
+		
+		model.addAttribute(service.readDate(classNo));
+	}
+	
+	// 검수 후 설정한 날짜로 수정
+	@PostMapping("/enddatemodify")
+	public String postEndDateModify(Offclass offclass, Model model) throws Exception{
+		log.info("creator postEndDateUpdate()");
+		
+		service.endDateModify(offclass);
+		
+		return "redirect:classinfo";
+	}
+		
+	// 검수 진행 중, 반려 시 데이터 삭제
+	@GetMapping("/delete")
+	public String removeClass(int classNo, Model model) throws Exception{
+		log.info("creator deleteClass()");
+		
+		service.classRemove(classNo);
+		
+		return "redirect:classcheck";
 	}
 	
 	@PostMapping(value = "/uploadAjax", produces = "text/plain; charset=UTF-8")
