@@ -5,9 +5,45 @@
 
 <mapper namespace="com.kh.cluster.repository.AuthRepository">
 	
+	
 	<select id="loginNormal" resultType="AuthMember" parameterType="AuthMember">
 		select * from member where member_id = #{memberId} and member_pw = #{memberPw}
 	</select>
 	
+	<select id="checkNick" resultType="string" parameterType="string">
+		select member_nick from member where member_nick = #{memberNick}
+	</select>
+	<select id="checkId" resultType="string" parameterType="string">
+		select member_id from member where member_id = #{memberId}
+	</select>
+	
+	<insert id="insertNormal" parameterType="AuthMember">
+		insert into member VALUES(
+			member_seq.nextval, 
+			#{memberId}, 
+			#{memberPw}, 
+			#{memberNick}, 
+			null, 
+			sysdate, 
+			'일반', 
+			null, 
+			null, 
+			member_auth_num.nextval, 
+			'n',
+			#{memberAgreement1},
+			#{memberAgreement2})
+	</insert>
+	
+	<select id="selectMember" resultType="AuthMember" parameterType="string">
+		select * from member where member_id = #{memberId}
+	</select>
+	
+	<select id="checkAuthNum" resultType="string" parameterType="int">
+		select member_id from member where member_auth_num = #{memberAuthNum}
+	</select>
+	
+	<update id="updateOne" parameterType="hashmap">
+		update member set ${column} = #{changeVal} where member_id = #{memberId}
+	</update>
 	
 </mapper>

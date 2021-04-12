@@ -9,6 +9,7 @@
 <body>
 	<h3>id : ${id}</h3>
 	<h3>권한 : ${auth}</h3>
+	<h3>token: ${token }</h3>
 	<a href="/login/logout">로그아웃</a>
 </body>
 </html>
