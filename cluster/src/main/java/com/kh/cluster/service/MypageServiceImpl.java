@@ -126,6 +126,22 @@ public class MypageServiceImpl implements MypageService{
 		repository.delete(memberNo);
 	}
 
+	@Override
+	public List<MyClassOrder> orderlisttest(Integer memberNo) throws Exception {
+		return repository.orderlisttest(memberNo);
+	}
+
+	@Override
+	public void memberout(Integer memberNo) throws Exception {
+		repository.memberout(memberNo);
+	}
+
+	@Override
+	public void reviewwww(MyReview myreview) throws Exception {
+		repository.reviewwww(myreview);
+		
+	}
+
 
 
 }

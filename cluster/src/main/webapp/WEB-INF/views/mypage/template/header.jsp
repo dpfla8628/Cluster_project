@@ -52,7 +52,7 @@
        			<a href="#">장바구니</a>
        		</div>
        		<div class="top_btn gomypage"><i class="mdi mdi-account-circle"></i>
-       			<a href="#">마이페이지</a>
+       			<a href="/mypage/index">마이페이지</a>
        		</div>
         </div>
       </div>

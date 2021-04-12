@@ -27,6 +27,7 @@ public class LoginController {
 		return "/auth/login";
 	}
 	
+	//필요정보 auth, id, no
 	@PostMapping("/")
 	public String postLogin(@RequestParam("memberId") String id, @RequestParam("memberPassword") String pw, Model model) {
 		log.info("postLogin()");
