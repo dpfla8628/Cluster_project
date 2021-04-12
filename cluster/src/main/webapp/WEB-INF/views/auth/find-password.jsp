@@ -38,22 +38,6 @@
 				color: white;
 			}
 			
-			.col{
-				padding-right: 0.3rem;
-				padding-left: 0.3rem;
-				font-size: 0.8rem;
-			}
-			.col-container{
-				margin-top: 1rem;
-			}
-			.a-col:hover{
-				text-decoration: none;
-			}
-			
-			.btn-gap{
-				margin-top: 1.5rem;
-			}
-			
 			.title-text{
 				cursor: pointer;
 			}
@@ -74,7 +58,7 @@
 			
 			<div class="row justify-content-md-center">
 				
-				<form class="form-width" action="/login/" method="post">
+				<form class="form-width">
 				
 					<div class="title font-weight-bold text-center">
 						<span class="text-warning title-text">CLUSTER</span>
@@ -84,22 +68,10 @@
 					  <input type="email" class="form-control" name="memberId" placeholder="이메일" aria-describedby="emailHelp" >
 					</div>
 					
-					<div class="form-group">
-					  <input type="password" class="form-control" name="memberPassword" placeholder="비밀번호">
-					</div>
-					
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block btn-gap">로그인</button>
-					<hr>
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block">구글로 시작하기</button>
-			
-					<div class="container col-container">
-						<div class="row justify-content-md-center">
-						    <div class="col text-right"><a class="a-col text-muted" href="/login/find">비밀번호 찾기</a></div>
-						    <div class="col text-left"><a class="a-col text-muted" href="/signup/">회원가입</a></div>
-					    </div>
-					</div>
+					<button type="button" class="btn btn-outline-warning btn-lg btn-block btn-gap">이메일로 비밀번호 찾기</button>
 					
 				</form>
+
 			</div>
 		    
 		</div>

@@ -1,5 +1,6 @@
 package com.kh.cluster.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class AuthMember {
@@ -14,8 +15,54 @@ public class AuthMember {
 	private String memberRefreshToken;
 	private String fullName;
 	private String[] files;
+	private String memberAgreement1;
+	private String memberAgreement2;
+	private Integer memberAuthNum;
+	private String memberStatus;
+	
 	
 
+
+	public Integer getMemberAuthNum() {
+		return memberAuthNum;
+	}
+
+	public void setMemberAuthNum(Integer memberAuthNum) {
+		this.memberAuthNum = memberAuthNum;
+	}
+
+	public String getMemberStatus() {
+		return memberStatus;
+	}
+
+	public void setMemberStatus(String memberStatus) {
+		this.memberStatus = memberStatus;
+	}
+
+	public String getMemberAgreement1() {
+		return memberAgreement1;
+	}
+
+	@Override
+	public String toString() {
+		return "AuthMember [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw
+				+ ", memberNick=" + memberNick + ", memberPhone=" + memberPhone + ", memberDate=" + memberDate
+				+ ", memberAuth=" + memberAuth + ", memberAccessToken=" + memberAccessToken + ", memberRefreshToken="
+				+ memberRefreshToken + ", fullName=" + fullName + ", files=" + Arrays.toString(files)
+				+ ", memberAgreement1=" + memberAgreement1 + ", memberAgreement2=" + memberAgreement2 + "]";
+	}
+
+	public void setMemberAgreement1(String memberAgreement1) {
+		this.memberAgreement1 = memberAgreement1;
+	}
+
+	public String getMemberAgreement2() {
+		return memberAgreement2;
+	}
+
+	public void setMemberAgreement2(String memberAgreement2) {
+		this.memberAgreement2 = memberAgreement2;
+	}
 
 	public String getFullName() {
 		return fullName;

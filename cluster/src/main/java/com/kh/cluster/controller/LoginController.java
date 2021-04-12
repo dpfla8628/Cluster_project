@@ -1,53 +1,43 @@
 package com.kh.cluster.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kh.cluster.entity.AuthMember;
-import com.kh.cluster.repository.AuthRepository;
+import com.kh.cluster.service.AuthService;
+import com.kh.cluster.util.TokenUtil;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
+	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
-	AuthRepository repo;
+	AuthService service;
 	
 	@GetMapping("/")
 	public String getLogin() {
+		log.info("getLogin()");
 		return "/auth/login";
 	}
 	
 	@PostMapping("/")
-	public String postLogin(HttpServletRequest req ,@RequestParam("memberId") String id, @RequestParam("memberPw") String pw) throws Exception {
-		AuthMember login = new AuthMember();
-		login.setMemberId(id);
-		login.setMemberPw(pw);
-		AuthMember resultMember = repo.loginNormal(login);
-		if(resultMember != null) {
-			HttpSession session = req.getSession();
-			session.setAttribute("id", resultMember.getMemberId());
-			session.setAttribute("auth", resultMember.getMemberAuth());
-			return "/auth/login-result";
-		}
+	public String postLogin(@RequestParam("memberId") String id, @RequestParam("memberPassword") String pw, Model model) {
+		log.info("postLogin()");
 		
+		//로그인확인
 		
-		return "/auth/login";
-	}
-	
-	@GetMapping("/logout")
-	public String getLogout(HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		session.invalidate();
+		//토큰
+		String token = TokenUtil.createToken(id);
+		model.addAttribute("token", token);
 		
-		return "/auth/login";
+		return "/auth/login-result";
 	}
 	
 	@GetMapping("/find")

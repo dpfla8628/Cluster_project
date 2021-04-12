@@ -9,7 +9,7 @@
 		<title>CLUSTER</title>
 		<style>
 			.form-width{
-				width: 35%;
+				width: 40%;
 			}
 			
 			.form-group > label{
@@ -54,9 +54,14 @@
 				margin-top: 1.5rem;
 			}
 			
+			.text{
+				font-size: 1.2rem;
+			}
+			
 			.title-text{
 				cursor: pointer;
 			}
+			
 		</style>
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 		<script type="text/javascript">
@@ -74,32 +79,25 @@
 			
 			<div class="row justify-content-md-center">
 				
-				<form class="form-width" action="/login/" method="post">
+				<div class="form-width" >
 				
 					<div class="title font-weight-bold text-center">
 						<span class="text-warning title-text">CLUSTER</span>
 					</div>
 					
-					<div class="form-group">
-					  <input type="email" class="form-control" name="memberId" placeholder="이메일" aria-describedby="emailHelp" >
+					<div class="text-center text">
+						<p>000<span class="text-muted">님</span></p>
+						<p class="text-muted">환영합니다!</p>
+						<p class="text-muted">CLUSTER에서 다양한 경험을 해보세요!</p>
 					</div>
-					
-					<div class="form-group">
-					  <input type="password" class="form-control" name="memberPassword" placeholder="비밀번호">
-					</div>
-					
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block btn-gap">로그인</button>
-					<hr>
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block">구글로 시작하기</button>
 			
 					<div class="container col-container">
 						<div class="row justify-content-md-center">
-						    <div class="col text-right"><a class="a-col text-muted" href="/login/find">비밀번호 찾기</a></div>
-						    <div class="col text-left"><a class="a-col text-muted" href="/signup/">회원가입</a></div>
+						    <a class="a-col text-muted" href="/login/">로그인하러 가기</a>
 					    </div>
 					</div>
 					
-				</form>
+				</div>
 			</div>
 		    
 		</div>
