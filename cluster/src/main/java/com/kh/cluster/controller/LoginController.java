@@ -33,6 +33,7 @@ public class LoginController {
 		AuthMember resultMember = repo.loginNormal(login);
 		if(resultMember != null) {
 			HttpSession session = req.getSession();
+			session.setAttribute("no", resultMember.getMemberNo());
 			session.setAttribute("id", resultMember.getMemberId());
 			session.setAttribute("auth", resultMember.getMemberAuth());
 			return "/auth/login-result";

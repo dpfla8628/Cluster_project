@@ -16,7 +16,7 @@
             <aside>메뉴 리스트
                 <div class="menu">
                     <ul>
-                        <li class="menu menu-title"><a href="/creator/">진행 중 강의</a></li>
+                        <li class="menu menu-title"><a href="/creator/home">진행 중 강의</a></li>
                     </ul>
                     <ul>
                         <li class="menu menu-title"><a href="/creator/register">강의 추가</a></li>

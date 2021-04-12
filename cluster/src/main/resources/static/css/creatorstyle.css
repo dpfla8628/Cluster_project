@@ -269,12 +269,12 @@ section::after{
 aside{
     float: left;
     width: 20%;
-    min-height: 400px;
+    min-height: 1000px;
 }
 article{
     float: right;
     width: 80%;
-    min-height: 400px;
+    min-height: 1000px;
 }
 /*메뉴 설정*/
 aside .menu ul{

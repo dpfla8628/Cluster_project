@@ -93,7 +93,11 @@ $(document).ready(function(){
       
       <div class="page-content-wrapper">
         <div class="page-content-wrapper-inner">
-             
+             <!-- 세션 테스트입니다 !! -->
+              <%-- <h3>번호 : ${no}</h3>
+             <h3>id : ${id}</h3>
+			 <h3>권한 : ${auth}</h3> --%>
+			 
              <div class="user-profile">
 			    <div class="display-avatar">
 			    <c:set var="fullname" value="${mymember.fullName }"></c:set>
