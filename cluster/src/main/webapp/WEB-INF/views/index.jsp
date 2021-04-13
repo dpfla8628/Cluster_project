@@ -17,7 +17,7 @@
 		padding: 1rem;
 		width: 210px;
 	}
-	img{
+	.img{
 		width: 200px;
 		height: 200px;
 	}
@@ -27,19 +27,19 @@
     	font-weight:600;
     	color: gray;
     	display: inline-block;
-    	width:100px;
-    	margin-left: 0.5em;
+    	/* width:100px; */
+    	/* margin-left: 0.5em; */
     	white-space: nowrap;
     	overflow: hidden;
     	text-overflow: ellipsis;
     }
-    /* .title-line:hover{
+    .title-line:hover{
     	text-decoration: underline;
-    } */
-    .content-line{
-    	font-size: 0.9em;
+    }
+    .title-line{
+    	font-size: 1em;
     	display: inline-block;
-    	width:280px;
+    	width:200px;
     	white-space: nowrap;
     	overflow: hidden;
     	text-overflow: ellipsis;
@@ -51,30 +51,11 @@
     	-webkit-line-clamp: 2;
     	-webkit-box-orient: vertical;
     }
-	.heart {
-    	width: 15px;
-	    height: 15px;
-	    background: white/* #ea2027 */;
-	    position: relative;
-	    transform: rotate(45deg);
-	    border: 1px solid gray;
-	  }
-	.heart::before,
-	.heart::after {
-	    content: "";
-	    width: 15px;
-	    height: 15px;
-	    position: absolute;
-	    border-radius: 50%;
-	    background: white/* #ea2027 */;
-	    border: 1px solid gray;
-	  }
-	.heart::before {
-	    left: -50%;
-	  }
-	.heart::after {
-	    top: -50%;
-	  }
+	.heart{
+		width: 30px;
+		height: 30px;
+		float: right;
+	}
 </style>
 <jsp:include page="/WEB-INF/views/maintemplate/header.jsp"></jsp:include>
 		<section>
@@ -129,33 +110,147 @@
 			</div>
 			
 			<div class="bestlist" style="padding-left: 5rem">
-				
-				<!-- for문 써야함 -->
 				<div class="item">
-			  		<a href="#">
-						<img src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg">
-						<span class="heart" style="float: right"></span>
-						<span class="name-line">크리에이터 이름</span>
-						<br><br>
-						<span class="title-line">클래스 제목</span>
-						<br>
-						<span class="price-line">클래스 가격</span>
-					</a>
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img" src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line" style="margin-top: 0.5rem">가죽공예장인</span>
+							</td>
+							<td>
+								<img class="heart" src="resources/image/empty-heart.jpeg">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line">가죽으로 지갑 만들기</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line">300000원</span>
+							</td>					
+						</tr>
+					</table>
 				</div>
-				
-				<div class="item">
-			  		<a href="#">
-						<img src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg">
-						<span class="name-line">크리에이터 이름</span>
-						<span class="heart" style="float:right margin-top:1em"></span>
-						<br><br>
-						<span class="title-line">클래스 제목</span>
-						<br>
-						<span class="price-line">클래스 가격</span>
-					</a>
-				</div>
-				
 			</div>
-		
-
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="#" style="font-weight: bold; font-size: large;">운동 BEST &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img  class="img" src="https://image.freepik.com/free-vector/soccer-stadium_1284-22432.jpg">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line" style="margin-top: 0.5rem">국대출신공격수</span>
+							</td>
+							<td>
+								<img class="heart" src="resources/image/empty-heart.jpeg">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line">축구, 기초부터간다!</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line">200000원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+			</div>		
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="#" style="font-weight: bold; font-size: large;">드로잉 BEST &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img" src="https://as2.ftcdn.net/jpg/03/92/37/13/500_F_392371350_p2fyOpv18fvjLlsFpnaJnCPGZe2Bb0HH.jpg">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line" style="margin-top: 0.5rem">한국의 멋</span>
+							</td>
+							<td>
+								<img class="heart" src="resources/image/empty-heart.jpeg">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line">한국화의 아름다움</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line">250000원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+			</div>	
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="#" style="font-weight: bold; font-size: large;">음악 BEST &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img" src="https://image.freepik.com/free-psd/music-festival-banner-template_23-2148911140.jpg">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line" style="margin-top: 0.5rem">용감한자매들</span>
+							</td>
+							<td>
+								<img class="heart" src="resources/image/empty-heart.jpeg">
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line">brave sound?</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line">400000원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+			</div>	
+				
 <jsp:include page="/WEB-INF/views/maintemplate/footer.jsp"></jsp:include>		

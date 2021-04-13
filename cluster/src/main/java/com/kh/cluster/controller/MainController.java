@@ -17,4 +17,11 @@ public class MainController {
 		
 		return "/index";
 	}
+	
+	@GetMapping("/crafts")
+	public String craftsCate(Model model) throws Exception {
+		log.info("craftCate()");
+		
+		return "/maincate/crafts";
+	}
 }
