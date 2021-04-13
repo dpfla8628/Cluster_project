@@ -14,7 +14,7 @@
             
         </div>
         <div class="content-viewport">
-        	
+        	<p>크리에이트번호 : ${Creator.creatorNo}</p>
             <div class="row">
                 <div class="col-md-7 equel-grid order-md-2">
                     <div class="grid d-flex flex-column justify-content-between overflow-hidden">

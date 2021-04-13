@@ -28,16 +28,16 @@ public interface OffclassService {
 	public Offclass classDetail(Integer classNo) throws Exception;
 	
 	// 진행 중 강의 총 개수
-	public int countClass();
+	public int countClass(Integer creatorNo) throws Exception;
 	
 	// 검수 중 강의 총 개수
-	public int countCheck();
+	public int countCheck(Integer creatorNo) throws Exception;
 	
 	// 페이징 처리 후 강의목록 확인
-	public List<Offclass> selectClass(PagingVO vo);
+	public List<Offclass> selectClass(PagingVO vo) throws Exception;
 	
 	// 페이징 처리 후 검수 진행 목록 확인
-	public List<Offclass> selectCheck(PagingVO vo);
+	public List<Offclass> selectCheck(PagingVO vo) throws Exception;
 	
 	// 검수 진행 중 강의 삭제
 	public void classRemove(Integer classNo) throws Exception;
@@ -62,6 +62,12 @@ public interface OffclassService {
 	
 	// 종료날짜 수정
 	public void endDateModify(Offclass offclass) throws Exception;
+
+	// 크리에이터 정보 확인
+	public Creator setcreator(int memberNo) throws Exception;
+
+	// 크리에이터 정보 수정
+	public void creatorEdit(Creator creator) throws Exception;
 
 	
 	

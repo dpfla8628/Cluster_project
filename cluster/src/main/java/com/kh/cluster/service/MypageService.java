@@ -2,6 +2,7 @@ package com.kh.cluster.service;
 
 import java.util.List;
 
+import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.MyClassOrder;
 import com.kh.cluster.entity.MyClassQuestion;
@@ -31,4 +32,5 @@ public interface MypageService {
 	public List<MyClassOrder> orderlisttest(Integer memberNo) throws Exception;
 	public void memberout(Integer memberNo) throws Exception;
 	public void reviewwww(MyReview myreview) throws Exception;
+	public Creator setcreator(int memberNo)throws Exception;
 }
