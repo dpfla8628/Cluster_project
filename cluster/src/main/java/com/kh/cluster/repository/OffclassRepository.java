@@ -3,11 +3,16 @@ package com.kh.cluster.repository;
 import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.util.PagingVO;
 
 public interface OffclassRepository {
 
+	public void join(Creator creator) throws Exception;
+	
+	public void authUpdate(Integer memberNo) throws Exception;
+		
 	public List<Offclass> classList() throws Exception;
 	
 	public List<Offclass> checkList() throws Exception;
@@ -30,9 +35,16 @@ public interface OffclassRepository {
 
 	public int countClass();
 
+	public int countCheck();
+
 	public List<Offclass> selectClass(PagingVO vo);
 
 	public List<Offclass> selectCheck(PagingVO vo);
 
-	
+	public Offclass readDate(Integer classNo);
+
+	public void startDateUpdate(Offclass offclass) throws Exception;
+
+	public void endDateUpdate(Offclass offclass) throws Exception;
+
 }

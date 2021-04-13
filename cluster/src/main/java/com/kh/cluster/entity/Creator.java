@@ -2,7 +2,7 @@ package com.kh.cluster.entity;
 
 public class Creator {
 
-	private int creatorNo = 1;
+	private int creatorNo;
 	private String creatorAccount;
 	private String creatorInfo;
 	private int memberNo;

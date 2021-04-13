@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.repository.OffclassRepository;
 import com.kh.cluster.util.PagingVO;
@@ -15,6 +16,17 @@ public class OffclassServiceImpl implements OffclassService{
 
 	@Autowired
 	private OffclassRepository repository;
+	
+
+	@Override
+	public void join(Creator creator) throws Exception {
+		repository.join(creator);
+	}
+	
+	@Override
+	public void authUpdate(Integer memberNo) throws Exception {
+		repository.authUpdate(memberNo);
+	}
 	
 	@Override
 	public List<Offclass> classList() throws Exception {
@@ -79,6 +91,10 @@ public class OffclassServiceImpl implements OffclassService{
 		return repository.countClass();
 	}
 
+	@Override
+	public int countCheck() {
+		return repository.countCheck();
+	}
 
 	@Override
 	public List<Offclass> selectClass(PagingVO vo) {
@@ -90,5 +106,24 @@ public class OffclassServiceImpl implements OffclassService{
 	public List<Offclass> selectCheck(PagingVO vo) {
 		return repository.selectCheck(vo);
 	}
+
+
+	@Override
+	public Offclass readDate(Integer classNo) throws Exception {
+		return repository.readDate(classNo);
+	}
+
+
+	@Override
+	public void startDateModify(Offclass offclass) throws Exception {
+		repository.startDateUpdate(offclass);
+	}
+
+
+	@Override
+	public void endDateModify(Offclass offclass) throws Exception {
+		repository.endDateUpdate(offclass);
+	}
+
 
 }
