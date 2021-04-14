@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.kh.cluster.repository.AdminRepository">
+
+	<select id="memberList" resultType="AdminMemberVO" parameterType="map">
+		select * from (
+   			select rownum rn, TMP.* from(
+     			select 
+       				M.member_no, M.member_id, M.member_Nick, M.member_phone, 
+         			M.member_date, M.member_auth, count(O.member_no) order_count
+    			from member M left outer join classorder O on M.member_no = O.member_no
+     			group by M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
+     			order by M.member_no desc
+    		)TMP
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="searchMemberList" parameterType="map" resultType="AdminMemberVO">
+		<![CDATA[
+		select * from (
+    		select rownum rn, TMP.* from(
+      			select 
+			         M.member_no, M.member_id, M.member_Nick, M.member_phone, 
+			         M.member_date, M.member_auth, count(O.member_no) order_count
+     			from member M left outer join classorder O on M.member_no = O.member_no
+	    		where instr(${type}, #{key}) > 0
+	    		group by M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
+     			order by M.member_no desc
+    		)TMP
+		) where rn between #{startRow} and #{endRow}
+		]]> 
+	</select>
+	
+	<select id="countMemberList" resultType="int">
+		select count(*) from member
+	</select>
+	
+	<select id="countSearchMemberList" resultType="int" parameterType="string">
+		<![CDATA[
+		select count(*) from member where instr(${type}, #{key}) > 0
+		]]>
+	</select>
+	
+	<select id="get6MonthAgoNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) count6ago from member where member_date < trunc(add_months(sysdate, -5), 'mm')
+		]]>
+	</select>
+	<select id="get5MonthAgoNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) count5ago from member where member_date < trunc(add_months(sysdate, -4), 'mm')
+		]]>
+	</select>
+	<select id="get4MonthAgoNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) count4ago from member where member_date < trunc(add_months(sysdate, -3), 'mm')
+		]]>
+	</select>
+	<select id="get3MonthAgoNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) count3ago from member where member_date < trunc(add_months(sysdate, -2), 'mm')
+		]]>
+	</select>
+	<select id="get2MonthAgoNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) count2ago from member where member_date < trunc(add_months(sysdate, -1), 'mm')
+		]]>
+	</select>
+	<select id="get1MonthAgoNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) count1ago from member where member_date < trunc(add_months(sysdate, 0), 'mm')
+		]]>
+	</select>
+	<select id="getThisMonthNumberOfMember" resultType="int">
+		<![CDATA[
+		select count(*) countnow from member
+		]]>
+	</select>
+	
+	<select id="countJoinToday" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD')
+	</select>
+	<select id="countJoinTodayMinus1" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate-1, 'YYYYMMDD')
+	</select>
+	<select id="countJoinTodayMinus2" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate-2, 'YYYYMMDD')
+	</select>
+	<select id="countJoinTodayMinus3" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate-3, 'YYYYMMDD')
+	</select>
+	<select id="countJoinTodayMinus4" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate-4, 'YYYYMMDD')
+	</select>
+	<select id="countJoinTodayMinus5" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate-5, 'YYYYMMDD')
+	</select>
+	<select id="countJoinTodayMinus6" resultType="int">
+		select count(*) from member where to_char(member_date, 'YYYYMMDD') = to_char(sysdate-6, 'YYYYMMDD')
+	</select>
+	
+	<select id="get6MonthAgoSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, -6), 'mm') and order_date < trunc(add_months(sysdate, -5), 'mm') and order_ok='입금완료'
+		]]>
+	</select>
+	<select id="get5MonthAgoSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, -5), 'mm') and order_date < trunc(add_months(sysdate, -4), 'mm') and order_ok='입금완료'
+		]]>
+	</select>
+	<select id="get4MonthAgoSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, -4), 'mm') and order_date < trunc(add_months(sysdate, -3), 'mm') and order_ok='입금완료'
+		]]>
+	</select>
+	<select id="get3MonthAgoSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, -3), 'mm') and order_date < trunc(add_months(sysdate, -2), 'mm') and order_ok='입금완료'
+		]]>
+	</select>
+	<select id="get2MonthAgoSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, -2), 'mm') and order_date < trunc(add_months(sysdate, -1), 'mm') and order_ok='입금완료'
+		]]>
+	</select>
+	<select id="get1MonthAgoSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, -1), 'mm') and order_date < trunc(add_months(sysdate, 0), 'mm')  and order_ok='입금완료'
+		]]>
+	</select>
+	<select id="getThisMonthSales" resultType="long">
+		<![CDATA[
+		select nvl(sum(order_price), 0) sales from classorder where order_date >= trunc(add_months(sysdate, 0), 'mm') and order_date < trunc(add_months(sysdate, 1), 'mm') and order_ok='입금완료'
+		]]>
+	</select>
+	
+	<select id="getTodayMinus6Sales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate-6, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	<select id="getTodayMinus5Sales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate-5, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	<select id="getTodayMinus4Sales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate-4, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	<select id="getTodayMinus3Sales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate-3, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	<select id="getTodayMinus2Sales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate-2, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	<select id="getTodayMinus1Sales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate-1, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	<select id="getTodaySales" resultType="long">
+		select nvl(sum(order_price), 0) sales from classorder where to_char(order_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD') and order_ok='입금완료'
+	</select>
+	
+	<select id="getTop10Sales" resultType="AdminTopSalesVO">
+		select * from (
+   			select rownum rn, TMP.* from (
+        		select 
+                    M.member_nick,
+            		OC.class_name,
+            		sum(CO.order_price) sales,
+            		dense_rank() over(order by sum(CO.order_price) desc) rank
+        		from classorder CO 
+                		inner join offclass OC on CO.class_no = OC.class_no and CO.order_ok = '입금완료'
+                        inner join creator C on OC.creator_no = C.creator_no
+                        inner join member M on C.member_no = M.member_no
+        		group by M.member_nick, OC.class_name
+    		)TMP
+		) where rank between 1 and 10	
+	</select>
+	
+	<select id="getTop10Class" resultType="AdminTopClassVO">
+		select * from (
+   			select rownum rn, TMP.* from(
+        		select 
+		            M.member_nick creator,
+		            OC.class_name, 
+		            count(OC.class_name) count,
+		            dense_rank() over(order by count(OC.class_name) desc) rank
+        		from    
+	            	 classorder CO
+		                inner join offclass OC on CO.class_no = OC.class_no and CO.order_ok = '입금완료'
+		                inner join creator C on OC.creator_no = C.creator_no
+                        inner join member M on C.member_no = M.member_no
+        		group by M.member_nick, OC.class_name
+    		)TMP
+		) where rank between 1 and 10
+	</select>
+	
+	<select id="getCreatorList" resultType="AdminCreatorVO">
+		<![CDATA[
+		select OG.creator_no, OG.member_nick creator_nick, nvl(count_ing, 0) count_ing, nvl(count_coming_soon, 0) count_coming_soon, nvl(count_end, 0) count_end 
+		from (
+		    select 
+		        distinct(C.creator_no), M.member_nick
+		    from 
+		        creator C
+		            inner join member M on C.member_no = M.member_no 
+		            left outer join offclass O on C.creator_no = O.creator_no
+		) OG
+		    left outer join(
+		        select 
+		            C.creator_no, M.member_nick, count(*) count_ing
+		        from 
+		            creator C
+		                inner join member M on C.member_no = M.member_no 
+		                inner join offclass O on C.creator_no = O.creator_no
+		        where
+		            class_check = '검수완료' and class_end_check = '진행' 
+		            and class_start is not null and class_start <= sysdate
+		            and class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD')
+		        group by
+		            C.creator_no, M.member_nick
+		    ) ING on OG.creator_no = ING.creator_no
+		    left outer join (
+		        select 
+		            C.creator_no, M.member_nick, count(*) count_coming_soon
+		        from 
+		            creator C
+		                inner join member M on C.member_no = M.member_no 
+		                inner join offclass O on C.creator_no = O.creator_no
+		        where
+		            class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		        group by
+		            C.creator_no, M.member_nick
+		    ) COMING on OG.creator_no = COMING.creator_no 
+		    left outer join (
+		        select 
+		            C.creator_no, M.member_nick, count(*) count_end
+		        from 
+			        creator C
+			            inner join member M on C.member_no = M.member_no 
+			            inner join offclass O on C.creator_no = O.creator_no
+		        where
+		            class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		        group by
+		            C.creator_no, M.member_nick
+		    ) END on OG.creator_no = END.creator_no
+		order by count_ing desc, count_coming_soon desc, count_end desc
+		]]>
+	</select>
+	
+	<select id="getClassList" resultType="AdminOffclassVO" parameterType="map">
+		select * from (
+		    select rownum rn, TMP.* from (
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, O.class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_id, M.member_nick
+		        from 
+		            offclass O
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        order by class_regdate desc
+		    )TMP
+		)where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="countClassList" resultType="int">
+		select count(*) count from offclass
+	</select>
+	
+	<select id="getSearchClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		select * from(
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, O.class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_id, M.member_nick
+		        from 
+		            offclass O
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where instr(${type}, #{key}) > 0
+		        order by class_regdate desc
+		    )TMP
+		)where rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countSearchClassList" resultType="int" parameterType="string">
+		<![CDATA[
+		select 
+    		count(*) count 
+		from 
+    		offclass O
+        		inner join creator C on O.creator_no = C.creator_no
+        		inner join member M on C.member_no = M.member_no
+		where instr(${type}, #{key}) > 0
+		]]>
+	</select>
+	
+	
+	<select id="getOpenClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		select * from (
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31') class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick, count(CO.class_no) count
+		        from offclass O
+		                left outer join classorder CO on O.class_no = CO.class_no
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where 
+		            class_check = '검수완료' and class_end_check = '진행' 
+		            and class_start is not null and class_start <= sysdate
+		            and (class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD'))
+		        group by 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31'),
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick
+		        order by 
+		            class_start desc
+		    )TMP
+		) where rn between #{startRow} and #{endRow}    
+		]]> 
+	</select>
+	
+	<select id="countOpenClassList" resultType="int">
+		<![CDATA[
+		select 
+		    count(*) count 
+		from 
+		    offclass 
+		where 
+		    class_check = '검수완료' and class_end_check = '진행' 
+		    and class_start is not null and class_start <= sysdate
+		    and (class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD'))
+		]]>	    
+	</select>
+	
+	<select id="getSearchOpenClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		 select * from (
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31') class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick, count(CO.class_no) count
+		        from offclass O
+		                left outer join classorder CO on O.class_no = CO.class_no 
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where 
+		            class_check = '검수완료' and class_end_check = '진행' 
+		            and class_start is not null and class_start <= sysdate
+		            and (class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD'))
+		        group by 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31'),
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick
+		        order by 
+		            class_start desc
+		    )TMP
+		) where instr(${type}, #{key}) > 0 and rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countSearchOpenClassList" resultType="int" parameterType="string">
+		<![CDATA[
+		select 
+		    count(*) 
+		from 
+		    offclass O
+		        inner join creator C on O.creator_no = C.creator_no
+		        inner join member M on C.member_no = M.member_no
+		where
+		    instr(${type}, #{key}) > 0 and
+		    class_check = '검수완료' and class_end_check = '진행' 
+		    and class_start is not null and class_start <= sysdate
+		    and (class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD'))
+		]]>
+	</select>
+	
+	
+	<select id="getComingSoonClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		select * from (
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31') class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick
+		        from offclass O
+		                left outer join classorder CO on O.class_no = CO.class_no
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		        order by class_start asc
+		    )TMP
+		) where rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countComingSoonClassList" resultType="int">
+		<![CDATA[
+		select 
+		    count(*) 
+		from 
+		    offclass 
+		where 
+		    class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		]]>	    
+	</select>
+	
+	<select id="getSearchComingSoonClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		select * from (
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31') class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick
+		        from offclass O
+		                left outer join classorder CO on O.class_no = CO.class_no
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		        order by class_start asc
+		    )TMP
+		) where instr(${type}, #{key}) > 0 and rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countSearchComingSoonClassList" resultType="int" parameterType="string">
+		<![CDATA[
+		select 
+		    count(*) count 
+		from 
+		    offclass O
+		        inner join creator C on O.creator_no = C.creator_no
+		        inner join member M on C.member_no = M.member_no
+		where
+		    instr(${type}, #{key}) > 0 and
+		    class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		]]>
+	</select>
+	
+	
+	<select id="getClosedClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		select * from (
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31') class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick, count(CO.class_no) count
+		        from offclass O
+		                left outer join classorder CO on O.class_no = CO.class_no
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where 
+		            class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		        group by
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31'),
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick
+		        order by 
+		            class_end desc
+		    )TMP
+		) where rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countClosedClassList" resultType="int">
+		<![CDATA[
+		select 
+		    count(*) 
+		from 
+		    offclass 
+		where 
+		    class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		]]>	    
+	</select>
+	
+	<select id="getSearchClosedClassList" resultType="AdminOffclassVO" parameterType="map">
+		<![CDATA[
+		select * from (
+		    select rownum rn, TMP.* from(
+		        select 
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31') class_end,
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick, count(CO.class_no) count
+		        from offclass O
+		                left outer join classorder CO on O.class_no = CO.class_no
+		                inner join creator C on O.creator_no = C.creator_no
+		                inner join member M on C.member_no = M.member_no
+		        where 
+		            class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		        group by
+		            O.class_no, O.class_name, O.class_info, O.class_price,
+		            O.class_check, O.class_end_check, O.class_start, nvl(O.class_end, '2099-12-31'),
+		            O.class_regdate, O.class_place, O.class_member_set, O.class_talk,
+		            O.category_no, O.creator_no,
+		            M.member_nick
+		        order by 
+		            class_end desc
+		    )TMP
+		) where instr(${type}, #{key}) > 0 and rn between #{startRow} and #{endRow} 
+		]]>
+	</select>
+	
+	<select id="countSearchClosedClassList" resultType="int" parameterType="string">
+		<![CDATA[
+		select 
+		    count(*) count 
+		from 
+		    offclass O
+		        inner join creator C on O.creator_no = C.creator_no
+		        inner join member M on C.member_no = M.member_no
+		where
+		    instr(${type}, #{key}) > 0 and
+		    class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		]]>
+	</select>
+	
+	
+	<select id="getTotalSales" resultType="AdminClassorderVO">
+		select * from(
+		    select to_char(order_date, 'YYYY-MM-DD') orderdate, sum(order_price) sales from  classorder where order_ok = '입금완료' group by to_char(order_date, 'YYYY-MM-DD')
+		    union all
+		    select to_char(order_date, 'YYYY-MM"월"'), sum(order_price) from classorder where order_ok = '입금완료' group by to_char(order_date, 'YYYY-MM"월"') 
+		    union all
+		    select to_char(order_date, 'YYYY"년"'), sum(order_price) from classorder where order_ok = '입금완료' group by to_char(order_date, 'YYYY"년"')
+		) order by orderdate desc
+	</select>
+	
+	<select id="getSearchTotalSales" resultType="AdminClassorderVO" parameterType="map">
+		select * from(
+		    select to_char(order_date, 'YYYY-MM-DD') orderdate, sum(order_price) sales from  classorder where order_ok = '입금완료' and (order_date between to_date(#{startDate} || ' ' || '00:00:00' , 'YYYY-MM-DD HH24:MI:SS') and to_date(#{endDate} || ' ' || '23:59:59' , 'YYYY-MM-DD HH24:MI:SS')) group by to_char(order_date, 'YYYY-MM-DD')
+		    union all
+		    select to_char(order_date, 'YYYY-MM"월"'), sum(order_price) from classorder where order_ok = '입금완료' and (order_date between to_date(#{startDate} || ' ' || '00:00:00' , 'YYYY-MM-DD HH24:MI:SS') and to_date(#{endDate} || ' ' || '23:59:59' , 'YYYY-MM-DD HH24:MI:SS')) group by to_char(order_date, 'YYYY-MM"월"') 
+		    union all
+		    select to_char(order_date, 'YYYY"년"'), sum(order_price) from classorder where order_ok = '입금완료' and (order_date between to_date(#{startDate} || ' ' || '00:00:00' , 'YYYY-MM-DD HH24:MI:SS') and to_date(#{endDate} || ' ' || '23:59:59' , 'YYYY-MM-DD HH24:MI:SS')) group by to_char(order_date, 'YYYY"년"')
+		) order by orderdate desc
+	</select>
+	
+	
+	
+	<insert id="addCategory" parameterType="ClassCategory">
+		insert into classcategory values(classcategory_seq.nextval, #{categoryBig}, #{categorySmall})
+	</insert>
+	
+	<select id="getCategoryList" resultType="ClassCategory" parameterType="map">
+		select * from (
+			select rownum rn, TMP.* from (
+			    select * from classcategory order by category_big asc
+			)TMP
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="countCategoryList" resultType="int">
+		select count(*) from classcategory
+	</select>
+	
+	<select id="getSearchCategoryList" resultType="ClassCategory" parameterType="map">
+		<![CDATA[
+		select * from (
+			select rownum rn, TMP.* from (
+			    select * from classcategory
+			    where instr(${type}, #{key}) > 0
+			    order by category_big asc 
+			)TMP
+		) where rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countSearchCategoryList" resultType="int" parameterType="string">
+		<![CDATA[
+		select count(*) from classcategory where instr(${type}, #{key}) > 0
+		]]>
+	</select>
+	
+	
+	<select id="getCategoryDetail" resultType="ClassCategory" parameterType="int">
+		select * from classcategory where category_no = #{categoryNo}
+	</select>
+	
+	<update id="editCategory" parameterType="ClassCategory">
+		update classcategory set category_big = #{categoryBig}, category_small = #{categorySmall} where category_no = #{categoryNo}
+	</update>
+	
+	<delete id="deleteCategory" parameterType="_int">
+		delete from classcategory where category_no = #{categoryNo}
+	</delete>
+	
+	<select id="checkCategory" resultType="ClassCategory" parameterType="string">
+		select * from classcategory where category_big = #{categoryBig} and category_small = #{categorySmall}
+	</select>
+	
+	<select id="getcategoryBigList" resultType="string">
+		select distinct(category_big) from classcategory
+	</select>
+	
+	<select id="getcategorySmallList" resultType="string">
+		select distinct(category_small) from classcategory
+	</select>
+	
+	<select id="getEventList" resultType="Event">
+		select * from event order by event_start desc
+	</select>
+	
+	<select id="getIngEventList" resultType="Event">
+		<![CDATA[
+		select * from event 
+		where 
+			to_char(event_start, 'YYYY-MM-DD') <= to_char(sysdate, 'YYYY-MM-DD') 
+			and to_char(event_end, 'YYYY-MM-DD') >= to_char(sysdate, 'YYYY-MM-DD') 
+		order by 
+			event_start desc
+		]]>
+	</select>
+	
+	<select id="getComingSoonEventList" resultType="Event">
+		<![CDATA[
+		select * from event 
+		where 
+			to_char(event_start, 'YYYY-MM-DD') > to_char(sysdate, 'YYYY-MM-DD') 
+		order by 
+			event_start desc
+		]]>
+	</select>
+	
+	<select id="getEndEventList" resultType="Event">
+		<![CDATA[
+		select * from event 
+		where 
+			to_char(event_end, 'YYYY-MM-DD') < to_char(sysdate, 'YYYY-MM-DD') 
+		order by 
+			event_start desc
+		]]>
+	</select>
+	
+	<select id="getSearchEventList" resultType="Event" parameterType="string">
+		<![CDATA[
+		select * from event where instr(event_title, #{key}) > 0 order by event_start desc
+		]]>
+	</select>
+	
+	<select id="getSearchIngEventList" resultType="Event" parameterType="string">
+		<![CDATA[
+		select * from event 
+		where 
+			instr(event_title, #{key}) > 0 
+			and to_char(event_start, 'YYYY-MM-DD') <= to_char(sysdate, 'YYYY-MM-DD') 
+			and to_char(event_end, 'YYYY-MM-DD') >= to_char(sysdate, 'YYYY-MM-DD')
+		order by event_start desc
+		]]>
+	</select>
+	
+	<select id="getSearchComingSoonEventList" resultType="Event" parameterType="string">
+		<![CDATA[
+		select * from event 
+		where 
+			instr(event_title, #{key}) > 0 
+			and to_char(event_start, 'YYYY-MM-DD') > to_char(sysdate, 'YYYY-MM-DD') 
+		order by event_start desc
+		]]>
+	</select>
+	
+	<select id="getSearchEndEventList" resultType="Event" parameterType="string">
+		<![CDATA[
+		select * from event 
+		where 
+			instr(event_title, #{key}) > 0 
+			and to_char(event_end, 'YYYY-MM-DD') < to_char(sysdate, 'YYYY-MM-DD') 
+		order by event_start desc
+		]]>
+	</select>
+	
+	
+</mapper>
