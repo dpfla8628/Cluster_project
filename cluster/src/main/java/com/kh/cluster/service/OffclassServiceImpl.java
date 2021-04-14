@@ -87,23 +87,23 @@ public class OffclassServiceImpl implements OffclassService{
 
 
 	@Override
-	public int countClass() {
-		return repository.countClass();
+	public int countClass(Integer creatorNo) throws Exception{
+		return repository.countClass(creatorNo);
 	}
 
 	@Override
-	public int countCheck() {
-		return repository.countCheck();
+	public int countCheck(Integer creatorNo) throws Exception{
+		return repository.countCheck(creatorNo);
 	}
 
 	@Override
-	public List<Offclass> selectClass(PagingVO vo) {
+	public List<Offclass> selectClass(PagingVO vo) throws Exception{
 		return repository.selectClass(vo);
 	}
 
 
 	@Override
-	public List<Offclass> selectCheck(PagingVO vo) {
+	public List<Offclass> selectCheck(PagingVO vo) throws Exception{
 		return repository.selectCheck(vo);
 	}
 
@@ -125,5 +125,15 @@ public class OffclassServiceImpl implements OffclassService{
 		repository.endDateUpdate(offclass);
 	}
 
+	@Override
+	public Creator setcreator(int memberNo) throws Exception{
+		return repository.setCreator(memberNo);
+	}
 
+	@Override
+	public void creatorEdit(Creator creator) throws Exception {
+		repository.creatorEdit(creator);
+	}
+
+	
 }
