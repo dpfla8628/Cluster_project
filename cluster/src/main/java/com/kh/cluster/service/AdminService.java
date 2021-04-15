@@ -44,8 +44,16 @@ public interface AdminService {
 	//최근 6일 + 오늘 매출액
 	public List<Long> getDaySales() throws Exception;
 	
-	//크리에이터 리스트 가져오기
-	public List<AdminCreatorVO> getCreatorList() throws Exception;
+	//검색이 아닐때 크리에이터 리스트 가져오기
+	public List<AdminCreatorVO> getCreatorList(Map<String, Object> map) throws Exception;
+	//검색시 크리에이터 리스트 가져오기
+	public List<AdminCreatorVO> getSearchCreatorList(Map<String, Object> map) throws Exception;
+	//검색이 아닐때 크리에이터 리스트 개수
+	public Integer countCreatorList() throws Exception;
+	//검색시 크리에이터 리스트 개수
+	public Integer countSearchCreatorList(String key) throws Exception;
+	
+	
 	
 	//클래스 검수 페이지에 출력할 클래스 리스트
 	public List<AdminOffclassVO> getClassList(Map<String, Object> map) throws Exception;
@@ -87,10 +95,18 @@ public interface AdminService {
 	public Integer countSearchClosedClassList(String type, String key) throws Exception;
 	
 	
-	//일자별 전체 매출 목록 가져오기
-	public List<AdminClassorderVO> getTotalSales() throws Exception;
-	//검색 시 일자별 전체 매출 목록 가져오기
-	public List<AdminClassorderVO> getSearchTotalSales(Map<String, Object> map) throws Exception;
+	//현재달의 일매출+월매출 가져오기
+	public List<AdminClassorderVO> getSalesList() throws Exception;
+	//현재달의 월매출
+	public AdminClassorderVO getThisMonthSales() throws Exception;
+	//올해 연매출
+	public AdminClassorderVO getYearSales() throws Exception;
+	//검색한 해당 년월에 해당하는 일매출+월매출 가져오기
+	public List<AdminClassorderVO> getSearchSalesList(String yearMonth) throws Exception;
+	//검색한 해당 년월의 월매출
+	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception;
+	//검색시 해당년에 해당하는 연매출
+	public AdminClassorderVO getSearchYearSales(String yearMonth) throws Exception;
 	
 	
 	//카테고리 추가

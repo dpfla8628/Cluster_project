@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kh.cluster.entity.AdminCreatorVO;
 import com.kh.cluster.entity.AdminMemberVO;
 import com.kh.cluster.entity.AdminOffclassVO;
 import com.kh.cluster.entity.ClassCategory;
@@ -51,17 +52,18 @@ public class PagingUtil {
 		
 		
 		
-		//검색인지 판정할 기준
-		boolean isSearch = type != null && key != null;
+		//검색인지 판정할 기준... type과 key 둘다 있는 검색과 key만 있는 검색의 경우
+		boolean isSearch = (type != null && key != null) || key != null;
 		
 		
 		//목록의 개수
 		int count = 0;
 		
-		
+		//목록 조회한거 담을 list
 		List<AdminOffclassVO> adminOffclassVOList = new ArrayList<>();
 		List<AdminMemberVO> adminMemberVOList = new ArrayList<>();
 		List<ClassCategory> classCategoryList = new ArrayList<>();
+		List<AdminCreatorVO> adminCreatorVOList = new ArrayList<>();
 		
 		//검색일 경우
 		if(isSearch) {
@@ -107,6 +109,13 @@ public class PagingUtil {
 				count = service.countSearchCategoryList(type, key);
 				//검색조건에 맞는 카테고리 리스트
 				classCategoryList = service.getSearchCategoryList(map);
+			}
+			
+			else if(jspName.equals("creatorList")) {
+				//검색조건에 맞는 카테고리가 몇개인지	
+				count = service.countSearchCreatorList(key);
+				//검색조건에 맞는 카테고리 리스트
+				adminCreatorVOList = service.getSearchCreatorList(map);
 			}
 			
 					
@@ -155,6 +164,13 @@ public class PagingUtil {
 				classCategoryList = service.getCategoryList(map);
 			}
 			
+			else if(jspName.equals("creatorList")) {
+				//검색이 아닐때 카테고리가 몇개인지
+				count = service.countCreatorList();
+				//검색이 아닐때 카테고리 목록
+				adminCreatorVOList = service.getCreatorList(map);
+			}
+			
 					
 		}
 		
@@ -182,6 +198,7 @@ public class PagingUtil {
 		map.put("adminOffclassVOList", adminOffclassVOList);
 		map.put("adminMemberVOList", adminMemberVOList);
 		map.put("classCategoryList", classCategoryList);
+		map.put("adminCreatorVOList", adminCreatorVOList);
 		
 		
 		

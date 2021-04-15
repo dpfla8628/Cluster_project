@@ -117,8 +117,23 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public List<AdminCreatorVO> getCreatorList() throws Exception {
-		return repository.getCreatorList();
+	public List<AdminCreatorVO> getCreatorList(Map<String, Object> map) throws Exception {
+		return repository.getCreatorList(map);
+	}
+
+	@Override
+	public List<AdminCreatorVO> getSearchCreatorList(Map<String, Object> map) throws Exception {
+		return repository.getSearchCreatorList(map);
+	}
+
+	@Override
+	public Integer countCreatorList() throws Exception {
+		return repository.countCreatorList();
+	}
+
+	@Override
+	public Integer countSearchCreatorList(String key) throws Exception {
+		return repository.countSearchCreatorList(key);
 	}
 
 	@Override
@@ -202,13 +217,33 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<AdminClassorderVO> getTotalSales() throws Exception {
-		return repository.getTotalSales();
+	public List<AdminClassorderVO> getSalesList() throws Exception {
+		return repository.getSalesList();
 	}
 
 	@Override
-	public List<AdminClassorderVO> getSearchTotalSales(Map<String, Object> map) throws Exception {
-		return repository.getSearchTotalSales(map);
+	public List<AdminClassorderVO> getSearchSalesList(String yearMonth) throws Exception {
+		return repository.getSearchSalesList(yearMonth);
+	}
+	
+	@Override
+	public AdminClassorderVO getYearSales() throws Exception {
+		return repository.getYearSales();
+	}
+
+	@Override
+	public AdminClassorderVO getSearchYearSales(String yearMonth) throws Exception {
+		return repository.getSearchYearSales(yearMonth);
+	}
+	
+	@Override
+	public AdminClassorderVO getThisMonthSales() throws Exception {
+		return repository.getThisMonthSales2();
+	}
+
+	@Override
+	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception {
+		return repository.getSearchMonthSales(yearMonth);
 	}
 
 	@Override
@@ -313,6 +348,12 @@ public class AdminServiceImpl implements AdminService {
 	public List<Event> getSearchEndEventList(String key) throws Exception {
 		return repository.getSearchEndEventList(key);
 	}
+
+
+
+	
+
+	
 
 	
 

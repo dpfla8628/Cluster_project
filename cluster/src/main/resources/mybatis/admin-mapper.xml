@@ -195,58 +195,221 @@
 		) where rank between 1 and 10
 	</select>
 	
-	<select id="getCreatorList" resultType="AdminCreatorVO">
+	<select id="getCreatorList" resultType="AdminCreatorVO" parameterType="map">
 		<![CDATA[
-		select OG.creator_no, OG.member_nick creator_nick, nvl(count_ing, 0) count_ing, nvl(count_coming_soon, 0) count_coming_soon, nvl(count_end, 0) count_end 
-		from (
-		    select 
-		        distinct(C.creator_no), M.member_nick
-		    from 
-		        creator C
-		            inner join member M on C.member_no = M.member_no 
-		            left outer join offclass O on C.creator_no = O.creator_no
-		) OG
-		    left outer join(
-		        select 
-		            C.creator_no, M.member_nick, count(*) count_ing
-		        from 
-		            creator C
-		                inner join member M on C.member_no = M.member_no 
-		                inner join offclass O on C.creator_no = O.creator_no
-		        where
-		            class_check = '검수완료' and class_end_check = '진행' 
-		            and class_start is not null and class_start <= sysdate
-		            and class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD')
-		        group by
-		            C.creator_no, M.member_nick
-		    ) ING on OG.creator_no = ING.creator_no
-		    left outer join (
-		        select 
-		            C.creator_no, M.member_nick, count(*) count_coming_soon
-		        from 
-		            creator C
-		                inner join member M on C.member_no = M.member_no 
-		                inner join offclass O on C.creator_no = O.creator_no
-		        where
-		            class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
-		        group by
-		            C.creator_no, M.member_nick
-		    ) COMING on OG.creator_no = COMING.creator_no 
-		    left outer join (
-		        select 
-		            C.creator_no, M.member_nick, count(*) count_end
-		        from 
-			        creator C
-			            inner join member M on C.member_no = M.member_no 
-			            inner join offclass O on C.creator_no = O.creator_no
-		        where
-		            class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
-		        group by
-		            C.creator_no, M.member_nick
-		    ) END on OG.creator_no = END.creator_no
-		order by count_ing desc, count_coming_soon desc, count_end desc
+		select * from (
+		    select rownum rn, TMP.* from (
+		        select OG.creator_no, OG.member_nick creator_nick, nvl(count_ing, 0) count_ing, nvl(count_coming_soon, 0) count_coming_soon, nvl(count_end, 0) count_end from (
+		            select 
+		                distinct(C.creator_no), M.member_nick
+		            from 
+		                creator C
+		                    inner join member M on C.member_no = M.member_no 
+		                    left outer join offclass O on C.creator_no = O.creator_no
+		        ) OG
+		            left outer join(
+		                select 
+		                    C.creator_no, M.member_nick, count(*) count_ing
+		                from 
+		                    creator C
+		                        inner join member M on C.member_no = M.member_no 
+		                        inner join offclass O on C.creator_no = O.creator_no
+		                where
+		                    class_check = '검수완료' and class_end_check = '진행' 
+		                    and class_start is not null and class_start <= sysdate
+		                    and class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD')
+		                group by
+		                    C.creator_no, M.member_nick
+		            )ING on OG.creator_no = ING.creator_no
+		            left outer join (
+		                select 
+		                    C.creator_no, M.member_nick, count(*) count_coming_soon
+		                from 
+		                    creator C
+		                        inner join member M on C.member_no = M.member_no 
+		                        inner join offclass O on C.creator_no = O.creator_no
+		                where
+		                    class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		                group by
+		                    C.creator_no, M.member_nick
+		            ) COMING on OG.creator_no = COMING.creator_no 
+		            left outer join (
+		                select 
+		                    C.creator_no, M.member_nick, count(*) count_end
+		                from 
+		                creator C
+		                    inner join member M on C.member_no = M.member_no 
+		                    inner join offclass O on C.creator_no = O.creator_no
+		                where
+		                    class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		                group by
+		                    C.creator_no, M.member_nick) END on OG.creator_no = END.creator_no
+		        order by count_ing desc, count_coming_soon desc, count_end desc
+		    ) TMP
+		) where rn between #{startRow} and #{endRow}
 		]]>
 	</select>
+	
+	<select id="countCreatorList" resultType="int">
+		<![CDATA[
+		select count(*) count from (
+            select 
+                distinct(C.creator_no), M.member_nick
+            from 
+                creator C
+                    inner join member M on C.member_no = M.member_no 
+                    left outer join offclass O on C.creator_no = O.creator_no
+        ) OG
+            left outer join(
+                select 
+                    C.creator_no, M.member_nick, count(*) count_ing
+                from 
+                    creator C
+                        inner join member M on C.member_no = M.member_no 
+                        inner join offclass O on C.creator_no = O.creator_no
+                where
+                    class_check = '검수완료' and class_end_check = '진행' 
+                    and class_start is not null and class_start <= sysdate
+                    and class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD')
+                group by
+                    C.creator_no, M.member_nick
+            )ING on OG.creator_no = ING.creator_no
+            left outer join (
+                select 
+                    C.creator_no, M.member_nick, count(*) count_coming_soon
+                from 
+                    creator C
+                        inner join member M on C.member_no = M.member_no 
+                        inner join offclass O on C.creator_no = O.creator_no
+                where
+                    class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+                group by
+                    C.creator_no, M.member_nick
+            ) COMING on OG.creator_no = COMING.creator_no 
+            left outer join (
+                select 
+                    C.creator_no, M.member_nick, count(*) count_end
+                from 
+                creator C
+                    inner join member M on C.member_no = M.member_no 
+                    inner join offclass O on C.creator_no = O.creator_no
+                where
+                    class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+                group by
+                    C.creator_no, M.member_nick) END on OG.creator_no = END.creator_no
+        order by count_ing desc, count_coming_soon desc, count_end desc
+		]]>
+	</select>
+	
+	<select id="getSearchCreatorList" resultType="AdminCreatorVO" parameterType="map">
+		<![CDATA[
+		select * from (
+		    select rownum rn, TMP.* from (
+		        select OG.creator_no, OG.member_nick creator_nick, nvl(count_ing, 0) count_ing, nvl(count_coming_soon, 0) count_coming_soon, nvl(count_end, 0) count_end from (
+		            select 
+		                distinct(C.creator_no), M.member_nick
+		            from 
+		                creator C
+		                    inner join member M on C.member_no = M.member_no 
+		                    left outer join offclass O on C.creator_no = O.creator_no
+		        ) OG
+		            left outer join(
+		                select 
+		                    C.creator_no, M.member_nick, count(*) count_ing
+		                from 
+		                    creator C
+		                        inner join member M on C.member_no = M.member_no 
+		                        inner join offclass O on C.creator_no = O.creator_no
+		                where
+		                    class_check = '검수완료' and class_end_check = '진행' 
+		                    and class_start is not null and class_start <= sysdate
+		                    and class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD')
+		                group by
+		                    C.creator_no, M.member_nick
+		            )ING on OG.creator_no = ING.creator_no
+		            left outer join (
+		                select 
+		                    C.creator_no, M.member_nick, count(*) count_coming_soon
+		                from 
+		                    creator C
+		                        inner join member M on C.member_no = M.member_no 
+		                        inner join offclass O on C.creator_no = O.creator_no
+		                where
+		                    class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+		                group by
+		                    C.creator_no, M.member_nick
+		            ) COMING on OG.creator_no = COMING.creator_no 
+		            left outer join (
+		                select 
+		                    C.creator_no, M.member_nick, count(*) count_end
+		                from 
+		                creator C
+		                    inner join member M on C.member_no = M.member_no 
+		                    inner join offclass O on C.creator_no = O.creator_no
+		                where
+		                    class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+		                group by
+		                    C.creator_no, M.member_nick) END on OG.creator_no = END.creator_no
+		        where instr(OG.member_nick, #{key}) > 0            
+		        order by count_ing desc, count_coming_soon desc, count_end desc
+		    ) TMP
+		) where rn between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="countSearchCreatorList" resultType="int" parameterType="string">
+		<![CDATA[
+		select count(*) count from (
+            select 
+                distinct(C.creator_no), M.member_nick
+            from 
+                creator C
+                    inner join member M on C.member_no = M.member_no 
+                    left outer join offclass O on C.creator_no = O.creator_no
+        ) OG
+            left outer join(
+                select 
+                    C.creator_no, M.member_nick, count(*) count_ing
+                from 
+                    creator C
+                        inner join member M on C.member_no = M.member_no 
+                        inner join offclass O on C.creator_no = O.creator_no
+                where
+                    class_check = '검수완료' and class_end_check = '진행' 
+                    and class_start is not null and class_start <= sysdate
+                    and class_end is null or to_char(class_end, 'YYYYMMDD') >= to_char(sysdate, 'YYYYMMDD')
+                group by
+                    C.creator_no, M.member_nick
+            )ING on OG.creator_no = ING.creator_no
+            left outer join (
+                select 
+                    C.creator_no, M.member_nick, count(*) count_coming_soon
+                from 
+                    creator C
+                        inner join member M on C.member_no = M.member_no 
+                        inner join offclass O on C.creator_no = O.creator_no
+                where
+                    class_check = '검수완료' and class_end_check = '진행' and class_start is not null and class_start > sysdate
+                group by
+                    C.creator_no, M.member_nick
+            ) COMING on OG.creator_no = COMING.creator_no 
+            left outer join (
+                select 
+                    C.creator_no, M.member_nick, count(*) count_end
+                from 
+                creator C
+                    inner join member M on C.member_no = M.member_no 
+                    inner join offclass O on C.creator_no = O.creator_no
+                where
+                    class_check = '검수완료' and class_start is not null and to_char(class_end, 'YYYYMMDD') < to_char(sysdate, 'YYYYMMDD')
+                group by
+                    C.creator_no, M.member_nick) END on OG.creator_no = END.creator_no
+        where instr(OG.member_nick, #{key}) > 0            
+        order by count_ing desc, count_coming_soon desc, count_end desc
+		]]>
+	</select>
+	
+	
 	
 	<select id="getClassList" resultType="AdminOffclassVO" parameterType="map">
 		select * from (
@@ -548,24 +711,92 @@
 	</select>
 	
 	
-	<select id="getTotalSales" resultType="AdminClassorderVO">
-		select * from(
-		    select to_char(order_date, 'YYYY-MM-DD') orderdate, sum(order_price) sales from  classorder where order_ok = '입금완료' group by to_char(order_date, 'YYYY-MM-DD')
-		    union all
-		    select to_char(order_date, 'YYYY-MM"월"'), sum(order_price) from classorder where order_ok = '입금완료' group by to_char(order_date, 'YYYY-MM"월"') 
-		    union all
-		    select to_char(order_date, 'YYYY"년"'), sum(order_price) from classorder where order_ok = '입금완료' group by to_char(order_date, 'YYYY"년"')
-		) order by orderdate desc
+	<select id="getSalesList" resultType="AdminClassorderVO">
+		<![CDATA[
+		select 
+			to_char(order_date, 'YYYY-MM-DD') orderdate, 
+			sum(order_price) daysales, 
+			sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
+		from 
+		    classorder 
+		where 
+		    order_ok = '입금완료'
+		    and order_date >= trunc(sysdate, 'mm')
+		    and order_date < trunc(add_months(sysdate, 1), 'mm')
+		    
+		group by 
+		    to_char(order_date, 'YYYY-MM-DD'), to_char(order_date, 'YYYY-MM')
+		order by 
+		    to_char(order_date, 'YYYY-MM-DD') desc
+		]]>
 	</select>
 	
-	<select id="getSearchTotalSales" resultType="AdminClassorderVO" parameterType="map">
-		select * from(
-		    select to_char(order_date, 'YYYY-MM-DD') orderdate, sum(order_price) sales from  classorder where order_ok = '입금완료' and (order_date between to_date(#{startDate} || ' ' || '00:00:00' , 'YYYY-MM-DD HH24:MI:SS') and to_date(#{endDate} || ' ' || '23:59:59' , 'YYYY-MM-DD HH24:MI:SS')) group by to_char(order_date, 'YYYY-MM-DD')
-		    union all
-		    select to_char(order_date, 'YYYY-MM"월"'), sum(order_price) from classorder where order_ok = '입금완료' and (order_date between to_date(#{startDate} || ' ' || '00:00:00' , 'YYYY-MM-DD HH24:MI:SS') and to_date(#{endDate} || ' ' || '23:59:59' , 'YYYY-MM-DD HH24:MI:SS')) group by to_char(order_date, 'YYYY-MM"월"') 
-		    union all
-		    select to_char(order_date, 'YYYY"년"'), sum(order_price) from classorder where order_ok = '입금완료' and (order_date between to_date(#{startDate} || ' ' || '00:00:00' , 'YYYY-MM-DD HH24:MI:SS') and to_date(#{endDate} || ' ' || '23:59:59' , 'YYYY-MM-DD HH24:MI:SS')) group by to_char(order_date, 'YYYY"년"')
-		) order by orderdate desc
+	<select id="getSearchSalesList" resultType="AdminClassorderVO" parameterType="string">
+		<![CDATA[
+		select to_char(order_date, 'YYYY-MM-DD') orderdate, sum(order_price) daysales, sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
+		from 
+		    classorder 
+		where 
+		    order_ok = '입금완료'
+		    and order_date >= to_date(#{yearMonth} || '-01', 'YYYY-MM-DD')
+		    and order_date < last_day(to_date(#{yearMonth} || '-01', 'YYYY-MM-DD'))+1
+		    
+		group by 
+		    to_char(order_date, 'YYYY-MM-DD'), to_char(order_date, 'YYYY-MM')
+		order by 
+		    to_char(order_date, 'YYYY-MM-DD') desc
+		]]>   
+	</select>
+	
+	<select id="getYearSales" resultType="AdminClassorderVO">
+		select 
+			to_char(order_date, 'YYYY') "year", sum(order_price) "yearsales" 
+		from 
+			classorder 
+		where
+			order_ok = '입금완료'
+			and 
+			extract(year from order_date) = to_char(sysdate, 'YYYY')  
+		group by 
+			to_char(order_date, 'YYYY') 
+	</select>
+	
+	<select id="getSearchYearSales" resultType="AdminClassorderVO" parameterType="string">
+		select 
+			to_char(order_date, 'YYYY') "year", sum(order_price) "yearsales" 
+		from 
+			classorder 
+		where
+			order_ok = '입금완료'
+			and 
+			extract(year from order_date) = substr(#{yearMonth}, 1, 4)  
+		group by 
+			to_char(order_date, 'YYYY') 
+	</select>
+	
+	<select id="getThisMonthSales2" resultType="AdminClassorderVO">
+		select 
+			to_char(order_date, 'YYYY-MM') "year_month", sum(order_price) "sales_for_month" 
+		from 
+			classorder 
+		where 
+			order_ok = '입금완료' 
+			and 
+			to_char(order_date, 'YYYY-MM') = to_char(sysdate, 'YYYY-MM') 
+		group by to_char(order_date, 'YYYY-MM')
+	</select>
+	
+	<select id="getSearchMonthSales" resultType="AdminClassorderVO" parameterType="string">
+		select 
+			to_char(order_date, 'YYYY-MM') "year_month", sum(order_price) "sales_for_month" 
+		from 
+			classorder 
+		where 
+			order_ok = '입금완료' 
+			and 
+			to_char(order_date, 'YYYY-MM') = #{yearMonth} 
+		group by 
+			to_char(order_date, 'YYYY-MM')
 	</select>
 	
 	

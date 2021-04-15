@@ -109,11 +109,20 @@ public class AdminController {
 	
 	
 	@GetMapping("/creator/creatorList")
-	public String creatorList(Model model) throws Exception {
+	public String creatorList(@RequestParam(value="p", required=false) Integer p, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
 		
 		log.info("creatorList()");
 		
-		model.addAttribute("list", service.getCreatorList());
+		Map<String, Object> map = PagingUtil.getPaging(p, type, key, 15, 5, "creatorList");
+		
+		model.addAttribute("list", map.get("adminCreatorVOList"));
+		model.addAttribute("startNum", map.get("startNum"));
+		model.addAttribute("endNum", map.get("endNum"));
+		model.addAttribute("pageSize", map.get("pageSize"));
+		model.addAttribute("p", map.get("p"));
+		model.addAttribute("type", map.get("type"));
+		model.addAttribute("key", map.get("key"));
+		model.addAttribute("isSearch", map.get("isSearch"));
 		
 		return "admin/creator/creatorList";
 		
@@ -241,25 +250,33 @@ public class AdminController {
 	}
 	
 	@GetMapping("/sales/total")
-	public String total(@RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate, Model model) throws Exception {
+	public String total(@RequestParam(value="yearMonth", required=false) String yearMonth, Model model) throws Exception {
 	
 		log.info("total()");
 		
-		boolean isSearch = startDate != null && endDate != null;
+		boolean isSearch = yearMonth != null; 
 		
-		Map<String, Object> map = new HashMap<>();
 		
 		if(isSearch) {
-			map.put("startDate", startDate);
-			map.put("endDate", endDate);
+			//검색한 년월 값
+			model.addAttribute("yearMonth", yearMonth);
+			//검색시 월매출
+			model.addAttribute("monthSales", service.getSearchMonthSales(yearMonth));
+			//검색시 연매출
+			model.addAttribute("yearSales", service.getSearchYearSales(yearMonth));
+			//검색시 해당년월의 일매출+월매출
+			model.addAttribute("list", service.getSearchSalesList(yearMonth));
 			
-			model.addAttribute("startDate", startDate);
-			model.addAttribute("endDate", endDate);
-			model.addAttribute("list", service.getSearchTotalSales(map));
 		}
 		
 		else {
-			model.addAttribute("list", service.getTotalSales());
+			//검색이 아닐때 이번달 월매출
+			model.addAttribute("monthSales", service.getThisMonthSales());
+			//검색이 아닐때 오늘날짜 이번년 연매출
+			model.addAttribute("yearSales", service.getYearSales());
+			//검색이 아닐때 올해 이번달 일매출+월매출
+			model.addAttribute("list", service.getSalesList());
+			
 		}
 		
 		

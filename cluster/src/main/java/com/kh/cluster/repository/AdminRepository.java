@@ -60,7 +60,10 @@ public interface AdminRepository {
 	public Long getTodayMinus1Sales() throws Exception;
 	public Long getTodaySales() throws Exception;
 	
-	public List<AdminCreatorVO> getCreatorList() throws Exception;
+	public List<AdminCreatorVO> getCreatorList(Map<String, Object> map) throws Exception;
+	public List<AdminCreatorVO> getSearchCreatorList(Map<String, Object> map) throws Exception;
+	public Integer countCreatorList() throws Exception;
+	public Integer countSearchCreatorList(String key) throws Exception;
 	
 	
 	public List<AdminOffclassVO> getClassList(Map<String, Object> map) throws Exception;
@@ -85,8 +88,12 @@ public interface AdminRepository {
 	public Integer countSearchClosedClassList(String type, String key) throws Exception;
 	
 	
-	public List<AdminClassorderVO> getTotalSales() throws Exception;
-	public List<AdminClassorderVO> getSearchTotalSales(Map<String, Object> map) throws Exception;
+	public List<AdminClassorderVO> getSalesList() throws Exception;
+	public List<AdminClassorderVO> getSearchSalesList(String yearMonth) throws Exception;
+	public AdminClassorderVO getYearSales() throws Exception;
+	public AdminClassorderVO getSearchYearSales(String yearMonth) throws Exception;
+	public AdminClassorderVO getThisMonthSales2() throws Exception;
+	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception;
 	
 	
 	public void addCategory(ClassCategory classCategory) throws Exception;
