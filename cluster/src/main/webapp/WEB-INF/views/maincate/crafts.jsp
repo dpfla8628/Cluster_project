@@ -7,16 +7,58 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="css/simple-sidebar.css" rel="stylesheet">
+<link href="css/simple-sidebar.css" rel="stylesheet"> -->
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>-->
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		/* changeIMG();
+		$(".heart")	
+		
+		function changeIMG(){
+	        $(".heart").attr("src", "resources/image/full-heart.png");
+	    } */
+		
+	    $("#sort").on("change", function(){
+			let queryParams = getUrlParams();
+			
+			if (queryParams.subcategory) {
+                self.location = "/crafts?subcategory=" + queryParams.subcategory + "&sort=" + this.value;
+                return;
+            }
+            self.location = "/crafts?sort=" + this.value;
+		})
+
+      function getUrlParams() {
+        var params = {};
+        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+        return params;
+      }
+	    
+	    $(".detail").css("cursor","pointer").on("click", function(){
+	    	alert($(this).attr("classNo") + "값으로 페이지 이동 예정");
+	    	
+	    	/* to-do
+	    	self.location = "#"; */
+	    	
+	    })  
+		
+	})
+</script>	
 <style>
 	main, header, nav, section, 
 	aside, article, footer, div,
@@ -87,53 +129,62 @@
 		<div class="sidebar-heading">공예 </div>
 		
 		<div class="list-group list-group-flush">
-			<a href="#" class="list-group-item list-group-item-action bg-light">도자기</a>
-			<a href="#" class="list-group-item list-group-item-action bg-light">가죽</a>
-			<a href="#" class="list-group-item list-group-item-action bg-light border-bottom">액세서리</a>
+			<a href="/crafts?subcategory=ceramic" class="list-group-item list-group-item-action bg-light">도자기</a>
+			<a href="/crafts?subcategory=leather" class="list-group-item list-group-item-action bg-light">가죽</a>
+			<a href="/crafts?subcategory=accessories" class="list-group-item list-group-item-action bg-light border-bottom">액세서리</a>
 		</div>
 	</div>
 
 	<div id="page-content-wrapper">
 
 		<nav class="navbar navbar-expand-lg navbar-light" style="margin: 2rem 2rem 2rem 2rem;">
-			<select class="selectpicker" name="selected"> 
-				<option selected="selected" value="new">최신순</option>
-				<option value="hprice">높은 가격순</option>
-				<option value="rprice">낮은 가격순</option>
-				<option value="manyLike">찜이 많은순</option> 
+			<select class="selectpicker" name="selected" id="sort"> 
+				<option value="new"
+                    <c:if test="${sort eq 'new'}">selected="selected"</c:if>>최신순</option>
+                <option value="hprice"
+                    <c:if test="${sort eq 'hprice'}">selected="selected"</c:if>>높은 가격순</option>
+                <option value="rprice"
+                    <c:if test="${sort eq 'rprice'}">selected="selected"</c:if>>낮은 가격순</option>
 			</select>
 		</nav>
 		
 		<div class="bestlist">
+		<c:forEach items="${offclasses}" var="a">
+		
 			<div class="item" style="margin-left: 2rem;">
 				<table>
 					<tr>
 						<td colspan="2">
-							<img class="img" src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg">
+							<!-- to-do -->
+							<!-- <img class="img" src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg"> -->
+							<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<span class="name-line" style="margin-top: 0.5rem">가죽공예장인</span>
+							<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
 						</td>
 						<td>
+							<!-- to-do -->
 							<img class="heart" src="resources/image/empty-heart.jpeg">
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<span class="title-line">가죽으로 지갑 만들기</span>
+							<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
 						</td>					
 					</tr>
 					<tr>
 						<td colspan="2">
-							<span class="price-line">300000원</span>
+							<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
 						</td>					
 					</tr>
 				</table>
 			</div>
 			
+		</c:forEach>
 		</div>
+		
 	</div>
 </div>	
 

@@ -3,10 +3,63 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.kh.cluster.repository.OffclassQueryReporitory">
+<mapper namespace="com.kh.cluster.repository.OffclassQueryRepository">
 
-<select	id="searchByCategory" resultType="Offclass">
+	<!-- <select	id="searchByCategory" resultType="OffclassQueryVO">
+		select member_nick, class_name, class_price, class_regdate, fullname, cls.category_no from offclass cls 
+		    inner join creator cre on cls.creator_no=cre.creator_no
+		    inner join member m on cre.member_no=m.member_no
+		    inner join class_image ci on cls.class_no=ci.class_no
+		    inner join classcategory cc on cc.category_no=cls.category_no
+		where cc.category_big=#{categoryBig} 
+			<if test="categorySmall != null and categorySmall != ''">
+        		and cc.category_small=#{categorySmall}
+   			</if>
+			order by class_regdate desc
+	</select> -->
 	
-</select>
+	<!-- 1: n 관계 -->
+	<!-- 썸네일 플래그가 없어 n+1조회 사용 -->
+	<!-- <resultMap id="offclassQueryResult" type="OffclassQueryVO">
+		<result property="classNo" column="cls.category_no" />
+	    <result property="memberNick" column="member_nick" />
+	    <result property="className" column="class_name" />
+	    <result property="classPrice" column="class_price" />
+	    
+	    <collection property="images" javaType="java.util.ArrayList" ofType="OffclassImageVO">
+      		<result property="fullName" column="fullname"/>
+      		<result property="regDate" column="regdate"/>
+    	</collection>
+  	</resultMap> -->
 
+  <select id="searchByCategory" resultType="OffclassQueryVO">
+	    select cls.class_no, member_nick, class_name, class_price, class_regdate, cls.category_no from offclass cls
+		    inner join creator cre on cls.creator_no=cre.creator_no
+		    inner join member m on cre.member_no=m.member_no
+		    inner join classcategory cc on cc.category_no=cls.category_no
+	    where cc.category_big=#{categoryBig}
+	    <if test="categorySmall != null and categorySmall != ''">
+	      and cc.category_small=#{categorySmall}
+	    </if>
+	    <choose>
+	    	<when test="sort=='rprice'.toString()">
+	    		order by cls.class_price
+	    	</when>
+	    	<when test="sort=='hprice'.toString()">
+	    		order by cls.class_price desc
+	    	</when>
+	    	<otherwise>
+	    		order by cls.class_regdate desc
+	    	</otherwise>
+	    </choose>
+	    
+  </select>
+
+	<select id="searchTumbnail" resultType="OffclassImageVO">
+	 	select * from (
+    		select rownum rn, TMP.* from (
+        select * from class_image where class_no=#{classNo}
+    		)TMP
+		) where rn=1
+	</select>
 </mapper>

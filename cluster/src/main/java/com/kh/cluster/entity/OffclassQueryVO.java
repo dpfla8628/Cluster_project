@@ -1,24 +1,16 @@
 package com.kh.cluster.entity;
 
 public class OffclassQueryVO {
-	//offclass.class_no
 	private int classNo;
-	//member.member_no
 	private int memberNo;
-	//member.member_nick
 	private String memberNick;
-	//offclass.class_name
 	private String className;
-	//offclass.class_price
 	private int classPrice;
-	//classcategory.category_big
 	private String categoryBig;
-	//classcategory.category_small
 	private String categorySmall;
-	//class_image.fullname
-	private String fullName;
-	//classlike.classlike_no
+	private String thumbnailImage;
 	private int classlikeNo;
+	
 	public int getClassNo() {
 		return classNo;
 	}
@@ -61,11 +53,11 @@ public class OffclassQueryVO {
 	public void setCategorySmall(String categorySmall) {
 		this.categorySmall = categorySmall;
 	}
-	public String getFullName() {
-		return fullName;
+	public String getThumbnailImage() {
+		return thumbnailImage;
 	}
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
 	}
 	public int getClasslikeNo() {
 		return classlikeNo;
@@ -73,11 +65,12 @@ public class OffclassQueryVO {
 	public void setClasslikeNo(int classlikeNo) {
 		this.classlikeNo = classlikeNo;
 	}
+	
 	@Override
 	public String toString() {
 		return "OffclassQueryVO [classNo=" + classNo + ", memberNo=" + memberNo + ", memberNick=" + memberNick
 				+ ", className=" + className + ", classPrice=" + classPrice + ", categoryBig=" + categoryBig
-				+ ", categorySmall=" + categorySmall + ", fullName=" + fullName + ", classlikeNo=" + classlikeNo + "]";
+				+ ", categorySmall=" + categorySmall + ", thumbnailImage=" + thumbnailImage + ", classlikeNo="
+				+ classlikeNo + "]";
 	}
-	
 }

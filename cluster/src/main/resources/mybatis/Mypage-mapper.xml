@@ -114,5 +114,9 @@
 		where profile_member_no = #{memberNo}
 		order by regdate
 	</select>
-
+	
+	<select id="setcreator" resultType="Creator">
+		select * from creator where member_no = #{memberNo}
+	</select>
+	
 </mapper>
