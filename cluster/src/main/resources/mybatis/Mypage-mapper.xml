@@ -114,6 +114,6 @@
 		where profile_member_no = #{memberNo}
 		order by regdate
 	</select>
-	
+
 	
 </mapper>

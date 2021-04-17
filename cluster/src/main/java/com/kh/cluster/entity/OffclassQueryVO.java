@@ -1,18 +1,24 @@
 package com.kh.cluster.entity;
 
-import java.util.Arrays;
-
-public class MainVO {
+public class OffclassQueryVO {
+	//offclass.class_no
 	private int classNo;
+	//member.member_no
 	private int memberNo;
+	//member.member_nick
 	private String memberNick;
+	//offclass.class_name
 	private String className;
+	//offclass.class_price
 	private int classPrice;
+	//classcategory.category_big
 	private String categoryBig;
+	//classcategory.category_small
 	private String categorySmall;
+	//class_image.fullname
 	private String fullName;
-	private String[] files;
-	
+	//classlike.classlike_no
+	private int classlikeNo;
 	public int getClassNo() {
 		return classNo;
 	}
@@ -61,16 +67,17 @@ public class MainVO {
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public String[] getFiles() {
-		return files;
+	public int getClasslikeNo() {
+		return classlikeNo;
 	}
-	public void setFiles(String[] files) {
-		this.files = files;
+	public void setClasslikeNo(int classlikeNo) {
+		this.classlikeNo = classlikeNo;
 	}
 	@Override
 	public String toString() {
-		return "MainVO [classNo=" + classNo + ", memberNo=" + memberNo + ", memberNick=" + memberNick + ", className="
-				+ className + ", classPrice=" + classPrice + ", categoryBig=" + categoryBig + ", categorySmall="
-				+ categorySmall + ", fullName=" + fullName + ", files=" + Arrays.toString(files) + "]";
+		return "OffclassQueryVO [classNo=" + classNo + ", memberNo=" + memberNo + ", memberNick=" + memberNick
+				+ ", className=" + className + ", classPrice=" + classPrice + ", categoryBig=" + categoryBig
+				+ ", categorySmall=" + categorySmall + ", fullName=" + fullName + ", classlikeNo=" + classlikeNo + "]";
 	}
+	
 }

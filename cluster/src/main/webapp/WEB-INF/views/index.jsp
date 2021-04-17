@@ -57,7 +57,7 @@
 		float: right;
 	}
 </style>
-<jsp:include page="/WEB-INF/views/maintemplate/header.jsp"></jsp:include>
+<c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 		<section>
 		
 			<div class="container top">
@@ -253,4 +253,4 @@
 				</div>
 			</div>	
 				
-<jsp:include page="/WEB-INF/views/maintemplate/footer.jsp"></jsp:include>		
+<c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import>
