@@ -115,5 +115,4 @@
 		order by regdate
 	</select>
 
-	
 </mapper>

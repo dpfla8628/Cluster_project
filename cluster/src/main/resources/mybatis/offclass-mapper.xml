@@ -12,6 +12,10 @@
 	<update id="authUpdate">
 		update member set member_auth = '강사' where member_no = #{memberNo}
 	</update>
+	
+	<select id="setCreator" resultType="Creator">
+		select * from creator where member_no = #{memberNo}
+	</select>
 
 	<insert id="create">
 		insert into offclass
@@ -32,7 +36,7 @@
 			from (
 				select rownum rn, a.* 
 					from (
-						select * from offclass where class_check = '검수완료' order by class_no desc 
+						select * from offclass where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc 
 					) a
 				)
 		where rn between #{start} and #{end}
@@ -44,7 +48,7 @@
 			from (
 				select rownum rn, a.* 
 					from (
-						select * from offclass where class_check = '검수대기' or class_check = '반려' order by class_no desc 
+						select * from offclass where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo} order by class_no desc 
 					) a
 				)
 		where rn between #{start} and #{end}
@@ -53,14 +57,14 @@
 	<select id="classList" resultType="Offclass">
 		<![CDATA[
 			select * from offclass 
-			where class_check = '검수완료' order by class_no desc
+			where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc
 		]]>
 	</select>
 
 	<select id="checkList" resultType="Offclass">
 		<![CDATA[
 			select * from offclass 
-			where class_check = '검수대기' or class_check = '반려' order by class_no desc
+			where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo} order by class_no desc
 		]]>
 	</select>
 
@@ -77,11 +81,11 @@
 	</select>
 	
 	<select id="countClass" resultType="int">
-		select count(*) from offclass where class_check = '검수완료'
+		select count(*) from offclass where class_check = '검수완료' and creator_no = #{creatorNo}
 	</select>
 	
 	<select id="countCheck" resultType="int">
-		select count(*) from offclass where class_check = '검수대기' or class_check = '반려'
+		select count(*) from offclass where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo}
 	</select>
 	
 	<select id="readDate" resultType="Offclass">
@@ -99,5 +103,10 @@
 	<delete id="delete" parameterType="int">
 		delete from offclass where class_no = #{classNo} 
 	</delete>
+	
+	<update id="creatorEdit">
+		update creator set creator_info = #{creatorInfo}, creator_account = #{creatorAccount} where member_no = #{memberNo}
+	</update>
+	
 	
 </mapper>	

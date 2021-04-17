@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +45,8 @@ public class CreatorController {
 	@Value("${upload.path}")
 	private String uploadPath;
 	
+	HttpSession session;
+	
 	// 크리에이터 홍보 페이지
 	@GetMapping("/join")
 	public void creatorJoin(/*Member member,*/Model model) throws Exception{
@@ -72,21 +77,52 @@ public class CreatorController {
 	}
 	
 	// 크리에이터 페이지 메인
-	@GetMapping("/")
-	public String home() {
+	@GetMapping("/home")
+	public void home(HttpServletRequest req, Model model) throws Exception{
 		log.info("creator home()");
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
 		
-		return "/creator/home";
+		model.addAttribute("Creator", service.setcreator(memberNo));
 	}
+	
+	// 크리에이터 정보 수정
+	@GetMapping("/edit")
+	public void getEdit(HttpServletRequest req, Model model) throws Exception{
+		log.info("creator getEdit()");
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
 		
+		model.addAttribute("Creator", service.setcreator(memberNo));
+	}
+	
+	// 크리에이터 정보 수정
+	@PostMapping("/edit")
+	public String postEdit(Creator creator, Model model) throws Exception {
+		log.info("creator postEdit()");
+		
+		service.creatorEdit(creator);
+		
+		return "redirect:classinfo";
+	}
+	
 	// 크리에이터 진행 중 강의 정보
 	@GetMapping("/classinfo")
-	public String home(Creator creator, PagingVO vo, Model model
+	public void home(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator classinfo()");
 		
-		int total = service.countClass();
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
+		
+		Creator creator = service.setcreator(memberNo);
+		model.addAttribute("Creator", creator);
+		
+		int creatorNo = creator.getCreatorNo();
+		log.info("creatorNo =" + creatorNo );
+		
+		int total = service.countClass(creatorNo);
 		if(nowPage == null && cntPerPage == null) {
 			nowPage = "1";
 			cntPerPage = "5";
@@ -95,22 +131,28 @@ public class CreatorController {
 		}else if(cntPerPage == null) {
 			cntPerPage = "5";
 		}
-		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage), creatorNo);
 		model.addAttribute("paging", vo);
 		model.addAttribute("list", service.selectClass(vo));
-		//model.addAttribute("list", service.classList());
-				
-		return "/creator/classinfo";
 	}
 	
 	// 크리에이터 검수 중 강의 정보
 	@GetMapping("/classcheck")
-	public String register(Creator creator, PagingVO vo, Model model
+	public void register(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator classcheck()");
 		
-		int total = service.countCheck();
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
+
+		Creator creator = service.setcreator(memberNo);
+		model.addAttribute("Creator", creator);
+		
+		int creatorNo = creator.getCreatorNo();
+		log.info("creatorNo =" + creatorNo );
+		
+		int total = service.countCheck(creatorNo);
 		if(nowPage == null && cntPerPage == null) {
 			nowPage = "1";
 			cntPerPage = "5";
@@ -119,23 +161,28 @@ public class CreatorController {
 		}else if(cntPerPage == null) {
 			cntPerPage = "5";
 		}
-		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage), creatorNo);
 		model.addAttribute("paging", vo);
 		model.addAttribute("list", service.selectCheck(vo));
-		
-		//model.addAttribute("list", service.checkList());
-		
-		return "/creator/classcheck";
 	}
 
 	// 크리에이터 강의별 매출 정보
 	@GetMapping("salesbyclass")
-	public String salesbyclass(Creator creator, PagingVO vo, Model model
+	public void salesbyclass(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator salesbyclass()");
 		
-		int total = service.countClass();
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
+		
+		Creator creator = service.setcreator(memberNo);
+		model.addAttribute("Creator", creator);
+		
+		int creatorNo = creator.getCreatorNo();
+		log.info("creatorNo =" + creatorNo );
+		
+		int total = service.countClass(creatorNo);
 		if(nowPage == null && cntPerPage == null) {
 			nowPage = "1";
 			cntPerPage = "5";
@@ -144,34 +191,36 @@ public class CreatorController {
 		}else if(cntPerPage == null) {
 			cntPerPage = "5";
 		}
-		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage), creatorNo);
 		model.addAttribute("paging", vo);
 		model.addAttribute("list", service.selectClass(vo));
-		
-		//model.addAttribute("list", service.checkList());
-		
-		return "/creator/salesbyclass";
 	}
 	
 	// 크리에이터 기간 별 매출정보
 	@GetMapping("salesbyperiod")
-	public String salesbyperiod(Creator creator, Model model) throws Exception{
+	public void salesbyperiod(HttpServletRequest req, Model model) throws Exception{
 		log.info("creator salesbypreiod()");
 		
-		return "/creator/salesbyperiod";
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
+		
+		model.addAttribute("Creator", service.setcreator(memberNo));
 	}
 	
 	// 강의 검수 데이터 등록
 	@GetMapping("/registerForm")
-	public String registerForm(Creator creator, Model model) throws Exception {
+	public void registerForm(HttpServletRequest req, Model model) throws Exception {
 		log.info("creator registerForm()");
 		
-		List<ClassCategory> categoryList = service.categoryList();
+		session = req.getSession();
+		int memberNo = (int) session.getAttribute("no");
 		
+		model.addAttribute("Creator", service.setcreator(memberNo));
+		
+		List<ClassCategory> categoryList = service.categoryList();
+				
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(new Offclass());
-		
-		return "/creator/registerForm";
 	}
 	
 	// 강의 검수 데이터 저장

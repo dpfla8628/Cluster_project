@@ -33,18 +33,22 @@ public interface OffclassRepository {
 
 	public String getPicture(Integer classNo) throws Exception;
 
-	public int countClass();
+	public int countClass(Integer creatorNo) throws Exception;
 
-	public int countCheck();
+	public int countCheck(Integer creatorNo) throws Exception;
 
-	public List<Offclass> selectClass(PagingVO vo);
+	public List<Offclass> selectClass(PagingVO vo) throws Exception;
 
-	public List<Offclass> selectCheck(PagingVO vo);
+	public List<Offclass> selectCheck(PagingVO vo) throws Exception;
 
-	public Offclass readDate(Integer classNo);
+	public Offclass readDate(Integer classNo) throws Exception;
 
 	public void startDateUpdate(Offclass offclass) throws Exception;
 
 	public void endDateUpdate(Offclass offclass) throws Exception;
+
+	public Creator setCreator(int memberNo) throws Exception;
+
+	public void creatorEdit(Creator creator) throws Exception;
 
 }

@@ -38,14 +38,14 @@
     
     <nav class="t-header">
       <div class="t-header-brand-wrapper">
-        <a href="/creator/">
+        <a href="/creator/home">
           <h1 style="color: orange;">Cluster</h1>
         </a>
       </div>
       <div class="t-header-content-wrapper">
         <div class="t-header-content">
         	<div class="top_btn goedit"><i class="mdi mdi-border-color"></i>
-       			<a href="/">정보수정</a>
+       			<a href="/creator/edit?creatorNo=${Creator.creatorNo}">정보수정</a>
        		</div>
        		<div class="top_btn gomain"><i class="mdi mdi-home"></i>
        			<a href="/">메인페이지</a>
