@@ -102,7 +102,7 @@
 				<option value="all">전체</option>
 				<option value="ing">진행중</option>
 				<option value="comingSoon">진행예정</option>
-				<option value="end" selected>종료</option>
+				<option value="end" selected>진행종료</option>
 			</c:if>
 		</select>
 	

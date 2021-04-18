@@ -11,9 +11,13 @@
      			select 
        				M.member_no, M.member_id, M.member_Nick, M.member_phone, 
          			M.member_date, M.member_auth, count(O.member_no) order_count
-    			from member M left outer join classorder O on M.member_no = O.member_no
-     			group by M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
-     			order by M.member_no desc
+    			from 
+    				member M 
+    					left outer join classorder O on M.member_no = O.member_no and O.order_ok = '입금완료'
+     			group by 
+     				M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
+     			order by 
+     				M.member_no desc
     		)TMP
 		) where rn between #{startRow} and #{endRow}
 	</select>
@@ -25,13 +29,34 @@
       			select 
 			         M.member_no, M.member_id, M.member_Nick, M.member_phone, 
 			         M.member_date, M.member_auth, count(O.member_no) order_count
-     			from member M left outer join classorder O on M.member_no = O.member_no
-	    		where instr(${type}, #{key}) > 0
-	    		group by M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
-     			order by M.member_no desc
+     			from 
+     				member M 
+     					left outer join classorder O on M.member_no = O.member_no and O.order_ok = '입금완료'
+	    		where 
+	    			instr(${type}, #{key}) > 0
+	    		group by 
+	    			M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
+     			order by 
+     				M.member_no desc
     		)TMP
 		) where rn between #{startRow} and #{endRow}
 		]]> 
+	</select>
+	
+	<select id="searchOneMember" resultType="AdminMemberVO" parameterType="map">
+		select * from (
+		     select 
+		         M.member_no, M.member_id, M.member_Nick, M.member_phone, 
+		         M.member_date, M.member_auth, count(O.member_no) order_count
+		     from 
+		     	member M 
+		     		left outer join classorder O on M.member_no = O.member_no and O.order_ok = '입금완료'
+		     group by 
+		     	M.member_no, M.member_id, M.member_nick, M.member_phone, M.member_date, M.member_auth
+		     order by 
+		     	M.member_no desc
+		) where 
+			${type} = #{key}  
 	</select>
 	
 	<select id="countMemberList" resultType="int">
@@ -43,6 +68,123 @@
 		select count(*) from member where instr(${type}, #{key}) > 0
 		]]>
 	</select>
+	
+	<select id="getMemberOrderList" resultType="AdminClassorderVO" parameterType="map">
+		select * from (
+		    select rownum rn, TMP.* from (
+		        select 
+		            C.order_no, C.class_no, C.member_no, C.order_name, 
+		            C.order_price, C.order_date, C.order_ok, O.class_name 
+		        from 
+		            classorder C
+		                inner join offclass O on C.class_no = O.class_no         
+		        order by 
+		            order_date desc
+		    ) TMP
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="countMemberOrder" resultType="int">
+		select count(*) from classorder
+	</select>
+	
+	<select id="getSearchMemberOrderList" resultType="AdminClassorderVO" parameterType="map">
+		select * from (
+		    select rownum rn, TMP.* from (
+		        select 
+		            C.order_no, C.class_no, C.member_no, C.order_name, 
+		            C.order_price, C.order_date, C.order_ok, O.class_name 
+		        from 
+		            classorder C
+		                inner join offclass O on C.class_no = O.class_no 
+		        <where>
+		        	<if test="(type != null and type != '') and (key != null and key != '')">
+				        and
+				        <choose>
+				        	<when test="type == 'order_name'">
+				        		 <![CDATA[
+				       	 		 instr(${type}, #{key}) > 0
+				        		 ]]>
+				        	</when>
+				        	<when test="type == 'member_no'">
+				        		${type} = #{key}
+				        	</when>
+				        </choose>
+				    </if>
+		        	<if test="(startDate != null and startDate != '') or (endDate != null and endDate != '')">
+		        		and 
+		        		<choose>
+		        			<when test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+		        				order_date between 
+				        		to_date(#{startDate} || '00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				        		and to_date(#{endDate} || '23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		        			</when>
+		        			<when test="startDate != null and startDate != ''">
+		        				<![CDATA[
+		        				order_date >= to_date(#{startDate} || '00:00:00', 'YYYY-MM-DD HH24:MI:SS')
+		        				]]>
+		        			</when>
+		        			<otherwise>
+		        				<![CDATA[
+		        				order_date <= to_date(#{endDate} || '23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		        				]]>
+		        			</otherwise>
+		        		</choose>
+		        	</if>
+		        </where>
+		        order by 
+		            order_date desc, class_no
+		    ) TMP
+		) where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="countSearchMemberOrder" resultType="int" parameterType="map">
+		select 
+		    count(*) 
+		from 
+			classorder 
+		<where>
+			<if test="(type != null and type != '') and (key != null and key != '')">
+		        and
+		        <choose>
+		        	<when test="type == 'order_name'">
+		        		 <![CDATA[
+		       	 		 instr(${type}, #{key}) > 0
+		        		 ]]>
+		        	</when>
+		        	<when test="type == 'member_no'">
+		        		${type} = #{key}
+		        	</when>
+		        </choose>
+		    </if>
+			<if test="(startDate != null and startDate != '') or (endDate != null and endDate != '')">
+		        and 
+		        <choose>
+		        	<when test="(startDate != null and startDate != '') and (endDate != null and endDate != '')">
+		        		order_date between 
+				        to_date(#{startDate} || '00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+				        and to_date(#{endDate} || '23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		        	</when>
+		        	<when test="startDate != null and startDate != ''">
+		        		<![CDATA[
+		        		order_date >= to_date(#{startDate} || '00:00:00', 'YYYY-MM-DD HH24:MI:SS')
+		        		]]>
+		        	</when>
+		        	<otherwise>
+		        		<![CDATA[
+		        		order_date <= to_date(#{endDate} || '23:59:59', 'YYYY-MM-DD HH24:MI:SS')
+		        		]]>
+		        	</otherwise>
+		    	</choose>
+			</if>
+		</where>
+	</select>
+	
+	<update id="confirmPayment" parameterType="int">
+		update classorder set order_ok = '입금완료' where order_no = #{orderNo}
+	</update>
+	
+	
 	
 	<select id="get6MonthAgoNumberOfMember" resultType="int">
 		<![CDATA[
@@ -409,6 +551,51 @@
 		]]>
 	</select>
 	
+	<select id="getCreatorIncomeList" resultType="AdminCreatorVO">
+		select 
+		    C.creator_no, M.member_nick creator_nick, OC.class_name, CO.order_date, 
+		    sum(order_price) class_sales, sum(order_price) * 0.9 creator_income,
+		    CO.order_calc
+		from 
+		    classorder CO
+		        inner join offclass OC on CO.class_no = OC.class_no and CO.order_ok = '입금완료'
+		        inner join creator C on OC.creator_no = C.creator_no
+		        inner join member M on C.member_no = M.member_no
+		where to_char(CO.order_date, 'YYYY-MM-DD') = to_char(sysdate, 'YYYY-MM-DD')  
+		group by C.creator_no, M.member_nick, OC.class_name, CO.order_date, CO.order_calc
+		order by C.creator_no, CO.order_date desc, sum(order_price) desc
+	</select>
+	
+	<select id="getSearchCreatorIncomeList" resultType="AdminCreatorVO" parameterType="map">
+		select 
+		    C.creator_no, M.member_nick creator_nick, OC.class_name, CO.order_date, 
+		    sum(order_price) class_sales, sum(order_price) * 0.9 creator_income,
+		    CO.order_calc
+		from 
+		    classorder CO
+		        inner join offclass OC on CO.class_no = OC.class_no and CO.order_ok = '입금완료'
+		        inner join creator C on OC.creator_no = C.creator_no
+		        inner join member M on C.member_no = M.member_no
+		<where>
+			<if test="date != null and date != ''">
+				and to_char(CO.order_date, 'YYYY-MM-DD') = #{date}
+			</if>
+			
+			<if test="(type != null and type != '') and (key != null and key != '')">
+				<![CDATA[
+				and instr(${type}, #{key}) > 0
+				]]>
+			</if>
+		</where>        
+		group by C.creator_no, M.member_nick, OC.class_name, CO.order_date, CO.order_calc
+		order by C.creator_no, CO.order_date desc, sum(order_price) desc
+	</select>
+	
+	<update id="calcCreatorIncome" parameterType="string">
+		update classorder set order_calc = '정산완료' 
+		where to_char(order_date, 'YYYY-MM-DD') = #{date}
+	</update>
+	
 	
 	
 	<select id="getClassList" resultType="AdminOffclassVO" parameterType="map">
@@ -714,7 +901,7 @@
 	<select id="getSalesList" resultType="AdminClassorderVO">
 		<![CDATA[
 		select 
-			to_char(order_date, 'YYYY-MM-DD') orderdate, 
+			to_char(order_date, 'YYYY-MM-DD') salesdate, 
 			sum(order_price) daysales, 
 			sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
 		from 
@@ -733,7 +920,7 @@
 	
 	<select id="getSearchSalesList" resultType="AdminClassorderVO" parameterType="string">
 		<![CDATA[
-		select to_char(order_date, 'YYYY-MM-DD') orderdate, sum(order_price) daysales, sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
+		select to_char(order_date, 'YYYY-MM-DD') salesdate, sum(order_price) daysales, sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
 		from 
 		    classorder 
 		where 
@@ -799,9 +986,111 @@
 			to_char(order_date, 'YYYY-MM')
 	</select>
 	
+	<select id="getOpenClass" resultType="Offclass">
+		<![CDATA[
+		select * 
+		from 
+			offclass 
+		where 
+		    class_check = '검수완료' and class_end_check = '진행' 
+		    and class_start is not null and to_char(class_start, 'YYYY-MM-DD') <= to_char(sysdate, 'YYYY-MM-DD')
+		    and to_char(class_end, 'YYYY-MM-DD') >= to_char(sysdate, 'YYYY-MM-DD')
+		order by 
+			class_no asc
+		]]>
+	</select>
+	
+	<select id="getNoSearchParticularSales" resultType="AdminClassorderVO">
+		<![CDATA[
+		select
+		    to_char(order_date, 'YYYY-MM-DD') salesdate,
+		    O.class_name, 
+		    sum(order_price) daysales, 
+		    sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
+		from classorder C inner join offclass O on C.class_no = O.class_no
+		where 
+		    order_ok = '입금완료'
+		    and order_date >= trunc(sysdate, 'mm')
+		    and order_date < trunc(add_months(sysdate, 1), 'mm')
+		    and C.class_no = (select min(class_no) from offclass)
+		group by 
+		    to_char(order_date, 'YYYY-MM-DD'), O.class_name, to_char(order_date, 'YYYY-MM')
+		order by 
+		    to_char(order_date, 'YYYY-MM-DD') desc
+		]]>
+	</select>
+	<select id="getParticularThisYearSales" resultType="AdminClassorderVO">
+		select 
+		    to_char(order_date, 'YYYY') "year", sum(order_price) "yearsales" 
+		from 
+		    classorder 
+		where 
+		    order_ok = '입금완료' 
+		    and extract(year from order_date) = to_char(sysdate, 'YYYY')
+		    and class_no = (select min(class_no) from offclass)
+		group by 
+		    to_char(order_date, 'YYYY')
+	</select>
+	<select id="getParticularThisMonthSales" resultType="AdminClassorderVO">
+		select 
+		    to_char(order_date, 'YYYY-MM') "year_month", sum(order_price) "sales_for_month" 
+		from 
+		    classorder 
+		where 
+		    order_ok = '입금완료' 
+		    and to_char(order_date, 'YYYY-MM') = to_char(sysdate, 'YYYY-MM')
+		    and class_no = (select min(class_no) from offclass)
+		group by 
+		    to_char(order_date, 'YYYY-MM')
+	</select>
+	
+	<select id="getSearchParticularSales" resultType="AdminClassorderVO" parameterType="map">
+		<![CDATA[
+		select 
+			to_char(order_date, 'YYYY-MM-DD') salesdate,
+			O.class_name, 
+			sum(order_price) daysales, 
+			sum(sum(order_price)) over(order by to_char(order_date, 'YYYY-MM') asc rows between unbounded preceding and current row) monthsales
+		from 
+		    classorder C inner join offclass O on C.class_no = O.class_no 
+		where 
+		    order_ok = '입금완료'
+		    and order_date >= to_date(#{yearMonth} || '-01', 'YYYY-MM-DD')
+		    and order_date < last_day(to_date(#{yearMonth} || '-01', 'YYYY-MM-DD'))+1
+		    and C.class_no = #{classNo}
+		    
+		group by 
+		    to_char(order_date, 'YYYY-MM-DD'), O.class_name, to_char(order_date, 'YYYY-MM')
+		order by 
+		    to_char(order_date, 'YYYY-MM-DD') desc
+		]]>   
+	</select>
+	<select id="getSearchParticularYearSales" resultType="AdminClassorderVO" parameterType="map">
+		select 
+		    to_char(order_date, 'YYYY') "year", sum(order_price) "yearsales" 
+		from 
+		    classorder 
+		where 
+		    order_ok = '입금완료' 
+		    and extract(year from order_date) = substr(#{yearMonth}, 1, 4)
+		    and class_no = #{classNo}
+		group by to_char(order_date, 'YYYY') 
+	</select>
+	<select id="getSearchParticularMonthSales" resultType="AdminClassorderVO" parameterType="map">
+		select 
+		    to_char(order_date, 'YYYY-MM') "year_month", sum(order_price) "sales_for_month" 
+		from 
+		    classorder 
+		where 
+		    order_ok = '입금완료' 
+		    and to_char(order_date, 'YYYY-MM') = #{yearMonth}
+		    and class_no = #{classNo}
+		group by to_char(order_date, 'YYYY-MM')   
+	</select>
 	
 	
-	<insert id="addCategory" parameterType="ClassCategory">
+	
+	<insert id="addCategory" parameterType="string">
 		insert into classcategory values(classcategory_seq.nextval, #{categoryBig}, #{categorySmall})
 	</insert>
 	

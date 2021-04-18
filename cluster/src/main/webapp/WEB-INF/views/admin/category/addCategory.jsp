@@ -78,12 +78,41 @@
 	     });
 		
 		
-		//등록버튼 클릭시
+		//등록버튼 클릭시 비동기로 처리
 		$("#registBtn").click(function(e){
+			
+			var categoryBig = $("input[name=categoryBig]").val();
+			var categorySmall = $("input[name=categorySmall]").val();
+			
 			var confirm = window.confirm("정말로 등록하시겠습니까?");
 			
 			if(!confirm) {
 				e.preventDefault();
+			}
+			
+			else {
+				$.ajax({
+					url: "/admin/category/addCategory",
+					type: "POST",
+					data: {
+						categoryBig : categoryBig,
+						categorySmall : categorySmall
+					},
+					success: function(resp) {
+						if(resp == 'fail') {
+							alert("이미 존재하는 카테고리입니다.");
+							$("#categoryCheck").text("이미 존재하는 카테고리입니다.");
+						}
+						else {
+							$("#categoryCheck").text("");
+							$(".category").val("");
+							$(".countBig").text(0);
+							$(".countSmall").text(0);
+							alert("등록에 성공하였습니다.");
+						}
+					}
+					
+				});
 			}
 			
 		
@@ -123,20 +152,6 @@
 		});
 		
 		
-		
-		
-		//등록 성공시  
-		//cf) not empty, != null 둘다 됨
-		
-		if(${not empty success}) {
-			alert("${success}");
-		}
-		
-		//등록 실패시
-		else if(${fail != null}) {
-			alert("${fail}");
-		}
-		
 			 
 		
 });
@@ -148,34 +163,18 @@
 	<h2>카테고리 추가</h2>
 	
 	<div class="row">
-		<form action="addCategory" method="post">
-			<c:if test="${classCategory != null}">
-				<label>대분류</label>
-				<span class="countBig">0</span> / 10
-				<input type="text" class="input" name="categoryBig" value="${classCategory.categoryBig}" required>
+		
+		<label>대분류</label>
+		<span class="countBig">0</span> / 10
+		<input type="text" class="input category" name="categoryBig" placeholder="대분류를 입력하세요." required>
 				
-				
-				<label>소분류</label>
-				<span class="countSmall">0</span> / 10
-				<input type="text" class="input" name="categorySmall" value="${classCategory.categorySmall}" required>
-			</c:if>
-			<c:if test="${classCategory == null}">
-				<label>대분류</label>
-				<span class="countBig">0</span> / 10
-				<input type="text" class="input" name="categoryBig" placeholder="대분류를 입력하세요." required>
-				
-				
-				<label>소분류</label>
-				<span class="countSmall">0</span> / 10
-				<input type="text" class="input" name="categorySmall" placeholder="소분류를 입력하세요." required>
-			</c:if>
+		<label>소분류</label>
+		<span class="countSmall">0</span> / 10
+		<input type="text" class="input category" name="categorySmall" placeholder="소분류를 입력하세요." required>
 			
-			<c:if test="${fail != null}">
-				<span style="color:red;">이미 존재하는 카테고리입니다.</span>
-			</c:if>
+		<span id="categoryCheck" style="color:red;"></span>
 			
-			<input type="submit" class="input" id="registBtn" value="등록하기">
-		</form>
+		<button type="submit" class="input" id="registBtn">등록하기</button>
 	</div>
 	
 

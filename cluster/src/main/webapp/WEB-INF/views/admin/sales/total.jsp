@@ -22,7 +22,7 @@
 		//검색안한 default 상태일때 보여지는 날짜를 현재년월로 지정
 		$("#defaultYearMonth").val(now);
 		
-		//검색힌 월이든 현재월이든 만약 월매출이 없는 경우에는 id가 yearMonth인 span에 값이 없을 것이기 때문에 input[name=yearMonth]에서
+		//검색한 월이든 현재월이든 만약 월매출이 없는 경우에는 id가 yearMonth인 span에 값이 없을 것이기 때문에 input[name=yearMonth]에서
 		//value를 가져와서 찍어준다.
 		if(!$("#yearMonth").text()) {
 			
@@ -105,11 +105,11 @@
 			<c:otherwise>
 				<c:forEach items="${list}" var="adminClassorderVO">
 						<tr>
-							<td>${adminClassorderVO.orderdate}</td>
+							<td>${adminClassorderVO.salesdate}</td>
 							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.daysales}"/></td>
 							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.monthsales}"/></td>
 						</tr>
-					</c:forEach>
+				</c:forEach>
 			</c:otherwise>
 		</c:choose>
 	

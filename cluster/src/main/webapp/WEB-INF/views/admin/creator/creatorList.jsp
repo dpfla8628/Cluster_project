@@ -5,7 +5,7 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
-
+	
 </style>
 
 <script>
@@ -69,9 +69,36 @@
 						<tr>
 							<td>${adminCreatorVO.creatorNo}</td>
 							<td>${adminCreatorVO.creatorNick}</td>
-							<td>${adminCreatorVO.countIng}건</td>
-							<td>${adminCreatorVO.countComingSoon}건</td>
-							<td>${adminCreatorVO.countEnd}건</td>
+							<td>
+								<c:if test="${adminCreatorVO.countIng == 0}">
+									${adminCreatorVO.countIng}건
+								</c:if>
+								<c:if test="${adminCreatorVO.countIng != 0}">
+									<a href="/admin/class/openClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
+										${adminCreatorVO.countIng}건
+									</a>
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${adminCreatorVO.countComingSoon == 0}">
+									${adminCreatorVO.countComingSoon}건
+								</c:if>
+								<c:if test="${adminCreatorVO.countComingSoon != 0}">
+									<a href="/admin/class/comingSoonClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
+										${adminCreatorVO.countComingSoon}건
+									</a>
+								</c:if>
+							</td>
+							<td>
+								<c:if test="${adminCreatorVO.countEnd == 0}">
+									${adminCreatorVO.countEnd}건
+								</c:if>
+								<c:if test="${adminCreatorVO.countEnd != 0}">
+									<a href="/admin/class/closedClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
+										${adminCreatorVO.countEnd}건
+									</a>
+								</c:if>	
+							</td>
 							<td><a href="#">조회</a></td>
 						</tr>
 					</c:forEach>

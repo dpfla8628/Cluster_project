@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.kh.cluster.entity.AdminClassorderVO;
 import com.kh.cluster.entity.AdminCreatorVO;
 import com.kh.cluster.entity.AdminMemberVO;
 import com.kh.cluster.entity.AdminOffclassVO;
@@ -64,6 +65,7 @@ public class PagingUtil {
 		List<AdminMemberVO> adminMemberVOList = new ArrayList<>();
 		List<ClassCategory> classCategoryList = new ArrayList<>();
 		List<AdminCreatorVO> adminCreatorVOList = new ArrayList<>();
+		List<AdminClassorderVO> adminClassorderVOList = new ArrayList<>();
 		
 		//검색일 경우
 		if(isSearch) {
@@ -98,10 +100,20 @@ public class PagingUtil {
 			}
 			
 			else if(jspName.equals("memberList")) {
-				//검색조건에 맞는 회원이 몇명인지	
-				count = service.countSearchMemberList(type, key);
-				//검색조건에 맞는 회원 리스트
-				adminMemberVOList = service.searchMemberList(map);
+				//타입이 member_no로 검색시 list가 아닌 항상 1개행이 결과이지만 다른 검색과 PagingUtil을
+				//공유하기 때문에 어쩔수없이 service.searchOneMember(map)의 반환타입을 List<AdminMemberVO>
+				//로 해줬다
+				if(type.equals("member_no")) {
+					adminMemberVOList = service.searchOneMember(map);
+				}
+				else {
+					//검색조건에 맞는 회원이 몇명인지	
+					count = service.countSearchMemberList(type, key);
+					//검색조건에 맞는 회원 리스트
+					adminMemberVOList = service.searchMemberList(map);
+				}
+				
+				
 			}
 			
 			else if(jspName.equals("categoryList")) {
@@ -112,11 +124,12 @@ public class PagingUtil {
 			}
 			
 			else if(jspName.equals("creatorList")) {
-				//검색조건에 맞는 카테고리가 몇개인지	
+				//검색조건에 맞는 크리에이터 목록이 몇개인지	
 				count = service.countSearchCreatorList(key);
-				//검색조건에 맞는 카테고리 리스트
+				//검색조건에 맞는 크리에이터 목록 리스트
 				adminCreatorVOList = service.getSearchCreatorList(map);
 			}
+			
 			
 					
 		}
@@ -165,9 +178,9 @@ public class PagingUtil {
 			}
 			
 			else if(jspName.equals("creatorList")) {
-				//검색이 아닐때 카테고리가 몇개인지
+				//검색이 아닐때 크리에이터 목록이  몇개인지
 				count = service.countCreatorList();
-				//검색이 아닐때 카테고리 목록
+				//검색이 아닐때 크리에이터 목록
 				adminCreatorVOList = service.getCreatorList(map);
 			}
 			
@@ -199,10 +212,110 @@ public class PagingUtil {
 		map.put("adminMemberVOList", adminMemberVOList);
 		map.put("classCategoryList", classCategoryList);
 		map.put("adminCreatorVOList", adminCreatorVOList);
+		map.put("adminClassorderList", adminClassorderVOList);
 		
 		
 		
 		return map;
 				
 	}
+	
+	
+	
+	///////날짜 계산을 위해 getPaging메소드 오버로딩
+	public static Map<String, Object> getPaging(
+			Integer p, String type, String key, String startDate, String endDate, 
+			int listSize, int pageNavSize, String jspName) throws Exception {
+		
+		try {
+			if(p <= 0 || p == null) throw new Exception();
+		}
+		catch(Exception e) {
+			p = 1;
+		}
+		
+								
+		int endRow = p * listSize;
+		int startRow = endRow - listSize + 1;
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		
+		//검색인지 판정할 기준... 날짜계산만 하는경우 or 날짜계산+검색하는 경우 or 검색만 하는 경우
+		boolean isSearch = (startDate != null && endDate != null) || 
+				(startDate != null && endDate != null && type != null && key != null) || 
+				(type != null && key != null);
+							
+		
+		
+		//목록의 개수
+		int count = 0;
+		
+		//목록 조회한거 담을 list
+		List<AdminClassorderVO> adminClassorderVOList = new ArrayList<>();
+		
+		//검색일 경우
+		if(isSearch) {
+			map.put("startRow", startRow);
+			map.put("endRow", endRow);
+			map.put("type", type);
+			map.put("key", key);
+			map.put("startDate", startDate);
+			map.put("endDate", endDate);
+			
+			if(jspName.equals("memberOrder")) {
+				//검색일때 주문한 회원 목록 몇개인지
+				count = service.countSearchMemberOrder(map);
+				//검색일때 주문한 회원 목록 
+				adminClassorderVOList = service.getSearchMemberOrderList(map);
+			}
+			
+					
+		}
+		//검색이 아닐 경우
+		else {
+			map.put("startRow", startRow);
+			map.put("endRow", endRow);
+			
+			
+			
+			if(jspName.equals("memberOrder")) {
+				//검색이 아닐때 주문한 회원 목록 몇개인지
+				count = service.countMemberOrder();
+				//검색이 아닐때 주문한 회원 목록
+				adminClassorderVOList = service.getMemberOrderList(map);
+			}
+					
+		}
+		
+		
+		//페이지 네비게이션 
+						
+		int startNum = (p-1) / pageNavSize * pageNavSize + 1;
+		int endNum = startNum + pageNavSize - 1;
+		
+		
+		//필요한 페이지 개수
+		int pageSize = (count + listSize - 1) / listSize;
+		
+						
+		if(endNum > pageSize) endNum = pageSize;
+		
+		
+		map.put("p", p);
+		map.put("isSearch", isSearch);
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);
+		map.put("pageSize", pageSize);
+		
+		
+		//페이지에 따라 필요한 목록
+		map.put("adminClassorderList", adminClassorderVOList);
+		
+		
+		
+		return map;
+	}
+	
 }

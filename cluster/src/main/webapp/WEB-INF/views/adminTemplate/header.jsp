@@ -126,8 +126,8 @@
 					<li>
 						<a id="memberMenu" href="#">회원 관리</a>
 						<ul>
-							<li><a href="/admin/member/memberList">회원 목록</a></li>
-							<li><a href="#">클래스 지급</a></li>
+							<li><a href="/admin/member/memberList">전체 회원목록</a></li>
+							<li><a href="/admin/member/memberOrder">주문한 회원목록</a></li>
 						</ul>
 					</li>
 					<li>
@@ -141,7 +141,7 @@
 						<a id="eventMenu" href="#">이벤트 관리</a>
 						<ul>
 							<li><a href="/admin/event/eventList">이벤트 목록</a></li>
-							<li><a href="#">이벤트 등록</a></li>
+							<li><a href="/admin/event/registerEvent">이벤트 등록</a></li>
 						</ul>
 					</li>
 					<li>

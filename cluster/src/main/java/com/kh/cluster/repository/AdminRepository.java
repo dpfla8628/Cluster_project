@@ -13,16 +13,22 @@ import com.kh.cluster.entity.AdminTopClassVO;
 import com.kh.cluster.entity.AdminTopSalesVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Event;
+import com.kh.cluster.entity.Offclass;
 
 @Repository
 public interface AdminRepository {
 
 	public List<AdminMemberVO> memberList(Map<String, Object> map) throws Exception;
-
 	public List<AdminMemberVO> searchMemberList(Map<String, Object> map) throws Exception;
-	
+	public List<AdminMemberVO> searchOneMember(Map<String, Object> map) throws Exception;
 	public Integer countMemberList() throws Exception;
 	public Integer countSearchMemberList(String type, String key) throws Exception;
+	
+	public List<AdminClassorderVO> getMemberOrderList(Map<String, Object> map) throws Exception;
+	public List<AdminClassorderVO> getSearchMemberOrderList(Map<String, Object> map) throws Exception;
+	public Integer countMemberOrder() throws Exception;
+	public Integer countSearchMemberOrder(Map<String, Object> map) throws Exception;
+	public void confirmPayment(int orderNo) throws Exception;
 
 	public List<AdminTopSalesVO> getTop10Sales() throws Exception;
 	public List<AdminTopClassVO> getTop10Class() throws Exception;
@@ -65,6 +71,10 @@ public interface AdminRepository {
 	public Integer countCreatorList() throws Exception;
 	public Integer countSearchCreatorList(String key) throws Exception;
 	
+	public List<AdminCreatorVO> getCreatorIncomeList() throws Exception;
+	public List<AdminCreatorVO> getSearchCreatorIncomeList(Map<String, Object> map) throws Exception;
+	public void calcCreatorIncome(String date) throws Exception;
+	
 	
 	public List<AdminOffclassVO> getClassList(Map<String, Object> map) throws Exception;
 	public List<AdminOffclassVO> getSearchClassList(Map<String, Object> map) throws Exception;
@@ -95,8 +105,16 @@ public interface AdminRepository {
 	public AdminClassorderVO getThisMonthSales2() throws Exception;
 	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception;
 	
+	public List<Offclass> getOpenClass() throws Exception;
+	public List<AdminClassorderVO> getSearchParticularSales(Map<String, Object> map) throws Exception;
+	public AdminClassorderVO getSearchParticularYearSales(Map<String, Object> map);
+	public AdminClassorderVO getSearchParticularMonthSales(Map<String, Object> map);
+	public List<AdminClassorderVO> getNoSearchParticularSales() throws Exception;
+	public AdminClassorderVO getParticularThisYearSales() throws Exception;
+	public AdminClassorderVO getParticularThisMonthSales() throws Exception;
 	
-	public void addCategory(ClassCategory classCategory) throws Exception;
+	
+	public void addCategory(String categoryBig, String categorySmall) throws Exception;
 	public ClassCategory checkCategory(String categoryBig, String categorySmall) throws Exception;
 	public List<String> getcategoryBigList() throws Exception;
 	public List<String> getcategorySmallList() throws Exception;

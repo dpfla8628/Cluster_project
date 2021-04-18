@@ -1,15 +1,22 @@
 package com.kh.cluster.controller;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +24,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.service.AdminService;
 import com.kh.cluster.util.DateUtil;
+import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.PagingUtil;
+import com.kh.cluster.util.UploadFileUtils;
 
 @Controller
 @RequestMapping("/admin")
@@ -31,6 +42,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService service;
+	
+	@Value("${upload.path}")
+	private String uploadPath;
 	
 	@GetMapping("/home")
 	public String adminHome(Locale locale, Model model) throws Exception {
@@ -129,12 +143,43 @@ public class AdminController {
 	}
 	
 	@GetMapping("/creator/income")
-	public String income() {
+	public String income(@RequestParam(value="date", required=false) String date, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
 		
 		log.info("income");
 		
+		boolean isSearch = date != null && key != null;
+		
+		//날짜와 크리에이터명으로 검색시
+		if(isSearch) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("date", date);
+			map.put("type", type);
+			map.put("key", key);
+			
+			model.addAttribute("list", service.getSearchCreatorIncomeList(map));
+		}
+		else {
+			//날짜검색이 아닐때 현재날짜의 정산목록
+			model.addAttribute("list", service.getCreatorIncomeList());
+		}
+		
+		model.addAttribute("date", date);
+		model.addAttribute("type", type);
+		model.addAttribute("key", key);
+		
+		
 		return "admin/creator/income";
 	}
+	
+	@PostMapping("/creator/calcIncome")
+	@ResponseBody
+	public String calcIncome(@RequestParam(value="date", required=true) String date) throws Exception {
+		
+		service.calcCreatorIncome(date);
+		
+		return date;
+	}
+	
 	
 	@GetMapping("/class/checkClassOpen")
 	public String checkClassOpen(@RequestParam(value="p", required=false) Integer p, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
@@ -234,8 +279,9 @@ public class AdminController {
 		
 		log.info("memberList()");
 		
-		Map<String, Object> map = PagingUtil.getPaging(p, type, key, 15, 5, "memberList");
 		
+		Map<String, Object> map = PagingUtil.getPaging(p, type, key, 15, 5, "memberList");
+			
 		model.addAttribute("list", map.get("adminMemberVOList"));
 		model.addAttribute("startNum", map.get("startNum"));
 		model.addAttribute("endNum", map.get("endNum"));
@@ -244,8 +290,45 @@ public class AdminController {
 		model.addAttribute("type", map.get("type"));
 		model.addAttribute("key", map.get("key"));
 		model.addAttribute("isSearch", map.get("isSearch"));
-		
+	
+			
 		return "admin/member/memberList";
+		
+	}
+	
+	@GetMapping("/member/memberOrder")
+	public String memberOrder(
+			@RequestParam(value="p", required=false) Integer p,
+			@RequestParam(value="type", required=false) String type,
+			@RequestParam(value="key", required=false) String key,
+			@RequestParam(value="startDate", required=false) String startDate,
+			@RequestParam(value="endDate", required=false) String endDate,
+			Model model) throws Exception {
+		
+		log.info("memberOrder()");
+		
+		Map<String, Object> map = PagingUtil.getPaging(p, type, key, startDate, endDate, 15, 5, "memberOrder");
+		
+		model.addAttribute("list", map.get("adminClassorderList"));
+		model.addAttribute("startNum", map.get("startNum"));
+		model.addAttribute("endNum", map.get("endNum"));
+		model.addAttribute("pageSize", map.get("pageSize"));
+		model.addAttribute("p", map.get("p"));
+		model.addAttribute("type", map.get("type"));
+		model.addAttribute("key", map.get("key"));
+		model.addAttribute("startDate", map.get("startDate"));
+		model.addAttribute("endDate", map.get("endDate"));
+		model.addAttribute("isSearch", map.get("isSearch"));
+		
+		return "admin/member/memberOrder";
+	}
+	
+	@GetMapping("/member/confirmPayment")
+	public ResponseEntity<Integer> confirmPayment(@RequestParam(value="orderNo", required=true) int orderNo) throws Exception {
+		
+		service.confirmPayment(orderNo);
+		
+		return new ResponseEntity<Integer>(orderNo, HttpStatus.OK);
 		
 	}
 	
@@ -285,9 +368,44 @@ public class AdminController {
 	}
 	
 	@GetMapping("/sales/particular")
-	public String particular() {
+	public String particular(@RequestParam(value="classNo", required=false) Integer classNo, @RequestParam(value="yearMonth", required=false) String yearMonth, Model model) throws Exception {
 	
 		log.info("particular()");
+		
+		//검색인지 판정
+		boolean isSearch = classNo != null && yearMonth != null;
+		
+		
+		//검색일때
+		if(isSearch) {
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("classNo", classNo);
+			map.put("yearMonth", yearMonth);
+			
+			//검색한 클래스+년월의 일매출+월매출 가져오기
+			model.addAttribute("salesList", service.getParticularSales(map));
+			//검색시 해당 클래스의 연매출
+			model.addAttribute("yearSales", service.getParticularYearSales(map));
+			//검색시 해당 클래스의 월매출 
+			model.addAttribute("monthSales", service.getParticularMonthSales(map));
+		}
+		else {
+			//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 현재년월의 월매출+일매출
+			model.addAttribute("salesList", service.getParticularSales());
+			//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 연매출
+			model.addAttribute("yearSales", service.getParticularYearSales());
+			//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 월매출
+			model.addAttribute("monthSales", service.getParticularMonthSales());
+		}
+		
+		
+		//진행중인 클래스 목록 가져와서 셀렉박스에 찍어줘야함
+		model.addAttribute("openClassList", service.getOpenClassList());
+		//클래스 번호 넘겨주기
+		model.addAttribute("classNo", classNo);
+		//년월 넘겨주기
+		model.addAttribute("yearMonth", yearMonth);
 		
 		return "admin/sales/particular";
 	}
@@ -354,6 +472,80 @@ public class AdminController {
 		return "admin/event/eventList";
 	}
 	
+	
+	@GetMapping("/event/registerEvent")
+	public String registerEventForm() throws Exception {
+		
+		log.info("registerEventForm()");
+		
+		return "admin/event/registerEvent";
+		
+	}
+	@PostMapping("/event/registerEvent")
+	public String RegisterEvent() throws Exception {
+		
+		//*TODO
+		
+		return "admin/event/registerEvent";
+		
+	}
+	
+	@PostMapping(value = "uploadEventImage", produces = "text/plain; charset=UTF-8")
+	public ResponseEntity<String> uploadEventImage(MultipartFile file) throws Exception {
+		
+		log.info("원본 파일명 : " + file.getOriginalFilename());
+		
+		String savedName = UploadFileUtils.uploadFile(
+				uploadPath, file.getOriginalFilename(), file.getBytes());
+		
+		return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
+	
+	}
+	
+	@GetMapping("/displayFile")
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
+		
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		
+		log.info("파일명 : " + fileName);
+		
+		try {
+			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+			
+			MediaType mediaType = MediaUtils.getMediaType(formatName);
+			
+			HttpHeaders headers = new HttpHeaders();
+
+			in = new FileInputStream(uploadPath + fileName);
+			
+			if(mediaType != null) {
+				headers.setContentType(mediaType);
+			}
+			else {
+				fileName = fileName.substring(fileName.indexOf("_") + 1);
+				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				headers.add("Content-Disposition", "attachment; filename=\"" +
+							new String(fileName.getBytes("UTF-8"),
+							"ISO-8859-1") + "\"");
+			}
+			
+			entity = new ResponseEntity<byte[]>(
+					IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+		
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		}
+		finally {
+			in.close();
+		}
+		
+		return entity;
+	}
+	
+	
 	@GetMapping("/category/categoryList")
 	public String categoryList(@RequestParam(value="p", required=false) Integer p, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
 		
@@ -386,9 +578,9 @@ public class AdminController {
 	}
 	
 	
-	
 	@PostMapping("/category/addCategory")
-	public String addCategory(@ModelAttribute ClassCategory classCategory, @RequestParam String categoryBig, @RequestParam String categorySmall, RedirectAttributes rttr) throws Exception {
+	@ResponseBody
+	public String addCategory(String categoryBig, @RequestParam String categorySmall) throws Exception {
 		
 		log.info("addCategory()");
 		
@@ -396,18 +588,13 @@ public class AdminController {
 		
 		if(isExisting) {
 			
-			rttr.addFlashAttribute("classCategory", classCategory);
-			rttr.addFlashAttribute("fail", "이미 존재하는 카테고리입니다.");
-			
-			return "redirect:addCategory";
+			return "fail";
 		}
-		
 		else {
 			
-			service.addCategory(classCategory);
-			rttr.addFlashAttribute("success", "등록에 성공하였습니다.");
+			service.addCategory(categoryBig, categorySmall);
 			
-			return "redirect:addCategory";
+			return "success";
 		}
 	}
 	
@@ -432,13 +619,14 @@ public class AdminController {
 	}
 	
 	@GetMapping("/category/delete")
-	public String deleteCategory(@RequestParam(value="categoryNo", required=true) int categoryNo) throws Exception {
+	@ResponseBody
+	public int deleteCategory(@RequestParam(value="categoryNo", required=true) int categoryNo) throws Exception {
 		
 		log.info("deleteCategory()");
 		
 		service.deleteCategory(categoryNo);
 		
-		return "redirect:categoryList";
+		return categoryNo;
 	}
 	
 }

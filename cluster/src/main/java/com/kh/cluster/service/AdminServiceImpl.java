@@ -15,6 +15,7 @@ import com.kh.cluster.entity.AdminTopClassVO;
 import com.kh.cluster.entity.AdminTopSalesVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Event;
+import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.repository.AdminRepository;
 
 @Service
@@ -33,6 +34,11 @@ public class AdminServiceImpl implements AdminService {
 		
 		return repository.searchMemberList(map);
 	}
+	
+	@Override
+	public List<AdminMemberVO> searchOneMember(Map<String, Object> map) throws Exception {
+		return repository.searchOneMember(map);
+	}
 
 	@Override
 	public Integer countMemberList() throws Exception {
@@ -43,6 +49,32 @@ public class AdminServiceImpl implements AdminService {
 	public Integer countSearchMemberList(String type, String key) throws Exception {
 		return repository.countSearchMemberList(type, key);
 	}
+	
+	@Override
+	public List<AdminClassorderVO> getMemberOrderList(Map<String, Object> map) throws Exception {
+		return repository.getMemberOrderList(map);
+	}
+
+	@Override
+	public Integer countMemberOrder() throws Exception {
+		return repository.countMemberOrder();
+	}
+	
+	@Override
+	public List<AdminClassorderVO> getSearchMemberOrderList(Map<String, Object> map) throws Exception {
+		return repository.getSearchMemberOrderList(map);
+	}
+
+	@Override
+	public Integer countSearchMemberOrder(Map<String, Object> map) throws Exception {
+		return repository.countSearchMemberOrder(map);
+	}
+	
+	@Override
+	public void confirmPayment(int orderNo) throws Exception {
+		repository.confirmPayment(orderNo);
+	}
+	
 
 	@Override
 	public List<AdminTopSalesVO> getTop10Sales() throws Exception {
@@ -135,6 +167,23 @@ public class AdminServiceImpl implements AdminService {
 	public Integer countSearchCreatorList(String key) throws Exception {
 		return repository.countSearchCreatorList(key);
 	}
+	
+	@Override
+	public List<AdminCreatorVO> getCreatorIncomeList() throws Exception {
+		return repository.getCreatorIncomeList();
+	}
+	
+	@Override
+	public List<AdminCreatorVO> getSearchCreatorIncomeList(Map<String, Object> map) throws Exception {
+		return repository.getSearchCreatorIncomeList(map);
+	}
+	
+	@Override
+	public void calcCreatorIncome(String date) throws Exception {
+		repository.calcCreatorIncome(date);
+	}
+
+	
 
 	@Override
 	public List<AdminOffclassVO> getClassList(Map<String, Object> map) throws Exception {
@@ -245,10 +294,46 @@ public class AdminServiceImpl implements AdminService {
 	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception {
 		return repository.getSearchMonthSales(yearMonth);
 	}
+	
+	@Override
+	public List<Offclass> getOpenClassList() throws Exception {
+		return repository.getOpenClass();
+	}
+	
+	@Override
+	public List<AdminClassorderVO> getParticularSales() throws Exception {
+		return repository.getNoSearchParticularSales();
+	}
+	
+	@Override
+	public List<AdminClassorderVO> getParticularSales(Map<String, Object> map) throws Exception {
+		return repository.getSearchParticularSales(map);
+	}
+	
+	@Override
+	public AdminClassorderVO getParticularYearSales(Map<String, Object> map) throws Exception {
+		return repository.getSearchParticularYearSales(map);
+	}
 
 	@Override
-	public void addCategory(ClassCategory classCategory) throws Exception {
-		repository.addCategory(classCategory);
+	public AdminClassorderVO getParticularMonthSales(Map<String, Object> map) throws Exception {
+		return repository.getSearchParticularMonthSales(map);
+	}
+	
+	@Override
+	public AdminClassorderVO getParticularYearSales() throws Exception {
+		return repository.getParticularThisYearSales();
+	}
+
+	@Override
+	public AdminClassorderVO getParticularMonthSales() throws Exception {
+		return repository.getParticularThisMonthSales();
+	}
+	
+
+	@Override
+	public void addCategory(String categoryBig, String categorySmall) throws Exception {
+		repository.addCategory(categoryBig, categorySmall);
 	}
 	
 	@Override
@@ -349,14 +434,9 @@ public class AdminServiceImpl implements AdminService {
 		return repository.getSearchEndEventList(key);
 	}
 
-
-
 	
 
 	
 
-	
-
-	
 	
 }

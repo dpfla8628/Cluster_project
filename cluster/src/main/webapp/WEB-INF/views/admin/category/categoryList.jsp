@@ -45,7 +45,7 @@
 			
 		});
 		
-		//카테고리 삭제
+		//카테고리 삭제 비동기로 처리
 		$(".deleteBtn").click(function(){
 			
 			//삭제버튼을 클릭한 카테고리의 번호 가져오기
@@ -58,7 +58,17 @@
 				return false;
 			}
 			else {
-				location.href = "delete?categoryNo="+categoryNo;
+				$.ajax({
+					url: "/admin/category/delete",
+					data: {
+						categoryNo : categoryNo
+					},
+					type: "get",
+					success: function(categoryNo) {
+						$("."+categoryNo).remove();
+					}
+					
+				});
 			}
 			
 			
@@ -122,7 +132,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:forEach items="${list}" var="classCategory">
-						<tr>
+						<tr class="${classCategory.categoryNo}">
 							<td>${classCategory.categoryNo}</td>
 							<td>${classCategory.categoryBig}</td>
 							<td>${classCategory.categorySmall}</td>

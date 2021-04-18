@@ -119,7 +119,6 @@
 							<c:if test="${adminOffclassVO.classCheck == '검수대기'}">
 								<td><button type="submit" id="checkBtn">검수하기</button></td>		
 							</c:if>
-							
 						</tr>
 					</c:forEach>
 				</c:otherwise>

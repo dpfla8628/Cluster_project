@@ -11,20 +11,32 @@ import com.kh.cluster.entity.AdminTopClassVO;
 import com.kh.cluster.entity.AdminTopSalesVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Event;
+import com.kh.cluster.entity.Offclass;
 
 public interface AdminService {
 	
 	//페이징에 따른 회원목록 조회
 	public List<AdminMemberVO> memberList(Map<String, Object> map) throws Exception;
-
-	//검색을 통한 회원목록 조회	
+	//검색을 통한 회원목록 조회	(검색타입이 회원번호가 아닌 경우)
 	public List<AdminMemberVO> searchMemberList(Map<String, Object> map) throws Exception;
-	
+	//검색을 통한 회원목록 조회	(검색타입이 회원번호인 경우)
+	public List<AdminMemberVO> searchOneMember(Map<String, Object> map) throws Exception;
 	//회원이 몇명인지 조회
 	public Integer countMemberList() throws Exception;
-	
 	//검색일때 회원이 몇명인지 조회
 	public Integer countSearchMemberList(String type, String key) throws Exception;
+	
+	//검색이 아닐때 주문한 회원 목록
+	public List<AdminClassorderVO> getMemberOrderList(Map<String, Object> map) throws Exception;
+	//검색이 아닐때 주문한 회원 수
+	public Integer countMemberOrder() throws Exception;
+	//검색일때 주문한 회원 목록
+	public List<AdminClassorderVO> getSearchMemberOrderList(Map<String, Object> map) throws Exception;
+	//검색일때 주문한 회원 목록 몇개인지
+	public Integer countSearchMemberOrder(Map<String, Object> map) throws Exception;
+	//'확인완료' 버튼 클릭시 order_ok 값을 '입금완료'로 변경
+	public void confirmPayment(int orderNo) throws Exception;
+	
 	
 	//관리자 메인페이지 총매출액 TOP10 클래스 조회
 	public List<AdminTopSalesVO> getTop10Sales() throws Exception;
@@ -52,6 +64,13 @@ public interface AdminService {
 	public Integer countCreatorList() throws Exception;
 	//검색시 크리에이터 리스트 개수
 	public Integer countSearchCreatorList(String key) throws Exception;
+	
+	//검색이 아닐때 크리에이터 정산 목록
+	public List<AdminCreatorVO> getCreatorIncomeList() throws Exception;
+	//검색일때 크리에이터 정산 목록
+	public List<AdminCreatorVO> getSearchCreatorIncomeList(Map<String, Object> map) throws Exception;
+	//크리에이터 정산하기
+	public void calcCreatorIncome(String date) throws Exception;
 	
 	
 	
@@ -108,9 +127,25 @@ public interface AdminService {
 	//검색시 해당년에 해당하는 연매출
 	public AdminClassorderVO getSearchYearSales(String yearMonth) throws Exception;
 	
+	//진행중인 클래스 목록 가져오기(셀렉박스에 넣어주기 위함)
+	public List<Offclass> getOpenClassList() throws Exception;
+	//검색한 클래스의 해당년월 일매출+월매출 가져오기
+	public List<AdminClassorderVO> getParticularSales(Map<String, Object> map) throws Exception;
+	//검색시 해당 클래스의 연매출
+	public AdminClassorderVO getParticularYearSales(Map<String, Object> map) throws Exception;
+	//검색시 해당 클래스의 월매출 
+	public AdminClassorderVO getParticularMonthSales(Map<String, Object> map) throws Exception;
+	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 현재년월의 월매출+일매출
+	public List<AdminClassorderVO> getParticularSales() throws Exception;
+	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 연매출
+	public AdminClassorderVO getParticularYearSales() throws Exception;
+	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 월매출
+	public AdminClassorderVO getParticularMonthSales() throws Exception;
+	
+	
 	
 	//카테고리 추가
-	public void addCategory(ClassCategory classCategory) throws Exception;
+	public void addCategory(String categoryBig, String categorySmall) throws Exception;
 	//카테고리 중복체크
 	public boolean checkCategory(String categoryBig, String categorySmall) throws Exception;
 	//카테고리 대분류 리스트

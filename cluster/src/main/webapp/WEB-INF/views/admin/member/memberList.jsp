@@ -22,39 +22,57 @@
 		
 		$("#memberMenu").next("ul").slideDown();
 		
-		//검색버튼 클릭시 값이 key값이 없으면 전송x
+		//검색버튼 클릭시 
 		$("#searchBtn").click(function(){
 			
+			var selectBox = $("#selectBox").val();
 			var key = $("input[name=key]").val();
 			
+			//key값이 없으면 전송x
 			if(!key) {
 				alert("검색어를 입력해주세요!");
 				$("input[name=key]").focus();
 				return false;
 			}
-		})	
-	});
+			
+			//셀렉박스 타입이 '회원번호'인데 key값이 숫자가 아니라면
+			if(selectBox == "member_no" && isNaN(key)) {
+				alert("숫자만 입력해주세요!");
+				$("input[name=key]").focus();
+				return false;
+			}
+		});	
+
+});
 	
 
 </script>
 
 <div class="outbox">
-	<h2>회원 목록</h2>
+	<h2>전체 회원목록</h2>
 	
 	<div class="row">
 		<form action="memberList" method="get">
-			<select name="type">
+			<select name="type" id="selectBox">
 				<c:if test="${type != null && type == 'member_id'}">
 					<option value="member_id" selected>아이디</option>
 					<option value="member_nick">닉네임</option>
+					<option value="member_no">회원번호</option>
 				</c:if>
 				<c:if test="${type != null && type == 'member_nick'}">
 					<option value="member_id">아이디</option>
 					<option value="member_nick" selected>닉네임</option>
+					<option value="member_no">회원번호</option>
+				</c:if>
+				<c:if test="${type != null && type == 'member_no'}">
+					<option value="member_id">아이디</option>
+					<option value="member_nick">닉네임</option>
+					<option value="member_no" selected>회원번호</option>
 				</c:if>
 				<c:if test="${type == null}">
 					<option value="member_id">아이디</option>
 					<option value="member_nick">닉네임</option>
+					<option value="member_no">회원번호</option>
 				</c:if>
 			</select>
 			<c:if test="${key != null}">
@@ -93,7 +111,16 @@
 							<td>${adminMemberVO.memberId}</td>
 							<td>${adminMemberVO.memberNick}</td>
 							<td>${adminMemberVO.memberAuth}</td>
-							<td>${adminMemberVO.orderCount}</td>
+							<td>
+								<c:if test="${adminMemberVO.orderCount == 0}">
+									${adminMemberVO.orderCount}건
+								</c:if>
+								<c:if test="${adminMemberVO.orderCount != 0}">
+									<a href="/admin/member/memberOrder?startDate=&endDate=&type=member_no&key=${adminMemberVO.memberNo}">
+										${adminMemberVO.orderCount}건
+									</a>
+								</c:if>
+							</td>
 							<td><a href="#">조회</a></td>
 						</tr>
 					</c:forEach>
