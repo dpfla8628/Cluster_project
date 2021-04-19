@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>강의 상세페이지</title>
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             var no = $(".no").val();
@@ -61,7 +61,7 @@
          
         })
         
-	
+ 
 
  
     </script>
@@ -327,20 +327,19 @@
 
     </style>
 </head>
-
-
+ 
 <body>
     <c:set var="logInMember" value="${nick}" />
     <c:set var="classMember" value="${offClass.member.memberNick}" />
 
     <div>
-        <label>번호 : ${no}</label>
+ <%--        <label>번호 : ${no}</label>
         <label>닉네임 : ${nick}</label>
         <label>권한 : ${auth}</label>
 
         <a href="/class_detail/list">리스트</a>
         <a href="/mypage/index">마이페이지</a>
-        <a href="/login/">로긘</a>
+        <a href="/login/">로긘</a> --%>
         <hr>
     </div>
     <div class="outbox">
