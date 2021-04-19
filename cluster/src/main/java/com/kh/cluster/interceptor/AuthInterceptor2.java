@@ -16,7 +16,7 @@ import com.kh.cluster.util.CookieUtil;
 import com.kh.cluster.util.TokenUtil;
 
 @Component
-public class AuthInterceptor implements HandlerInterceptor{
+public class AuthInterceptor2 implements HandlerInterceptor{
 	
 	@Autowired
 	CookieUtil cookieUtil;
@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 	@Autowired
 	AuthService service;
 	
-	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
+	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor2.class);
 	
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
@@ -49,8 +49,8 @@ public class AuthInterceptor implements HandlerInterceptor{
 			}
 		}
 		
-		res.sendRedirect("/login/");
+		req.setAttribute("member", null);
 		
-		return false;
+		return true;
 	}
 }
