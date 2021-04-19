@@ -36,7 +36,7 @@
 			
 			//key값, startDate값, endDate값 중 하나라도 없으면 전송x
 			if(!key && !startDate && !endDate) {
-				alert("입금자 또는 날짜를 입력해주세요!");
+				alert("날짜 또는 검색어를 입력해주세요!");
 				$("input[name=key]").focus();
 				return false;
 			}

@@ -153,7 +153,8 @@
 								<fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminCreatorVO.classSales}"/>
 							</td>
 							<td>
-								<fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminCreatorVO.creatorIncome}"/></td>
+								<fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminCreatorVO.creatorIncome}"/>
+							</td>
 							<td class="orderCalc">${adminCreatorVO.orderCalc}</td>
 						</tr>
 					</c:forEach>
