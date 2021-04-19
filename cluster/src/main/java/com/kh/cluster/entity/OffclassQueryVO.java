@@ -9,7 +9,7 @@ public class OffclassQueryVO {
 	private String categoryBig;
 	private String categorySmall;
 	private String thumbnailImage;
-	private int classlikeNo;
+	private boolean isLiked;
 	
 	public int getClassNo() {
 		return classNo;
@@ -59,18 +59,18 @@ public class OffclassQueryVO {
 	public void setThumbnailImage(String thumbnailImage) {
 		this.thumbnailImage = thumbnailImage;
 	}
-	public int getClasslikeNo() {
-		return classlikeNo;
+	public boolean isLiked() {
+		return isLiked;
 	}
-	public void setClasslikeNo(int classlikeNo) {
-		this.classlikeNo = classlikeNo;
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
 	}
 	
 	@Override
 	public String toString() {
 		return "OffclassQueryVO [classNo=" + classNo + ", memberNo=" + memberNo + ", memberNick=" + memberNick
 				+ ", className=" + className + ", classPrice=" + classPrice + ", categoryBig=" + categoryBig
-				+ ", categorySmall=" + categorySmall + ", thumbnailImage=" + thumbnailImage + ", classlikeNo="
-				+ classlikeNo + "]";
+				+ ", categorySmall=" + categorySmall + ", thumbnailImage=" + thumbnailImage + ", isLiked=" + isLiked
+				+ "]";
 	}
 }

@@ -138,12 +138,12 @@
 			<nav>
 				<ul class="menu center" style="margin-top: 2rem">
 					<li><a href="${pageContext.request.contextPath}/crafts">공예</a></li>
-					<li><a href="${pageContext.request.contextPath}">운동</a></li>
-					<li><a href="${pageContext.request.contextPath}">드로잉</a></li>
-					<li><a href="${pageContext.request.contextPath}">음악</a></li>
-					<li><a href="${pageContext.request.contextPath}">요리</a></li>
-					<li><a href="${pageContext.request.contextPath}">스터디</a></li>
-					<li><a href="${pageContext.request.contextPath}">이벤트</a></li>
+					<li><a href="${pageContext.request.contextPath}/exercise">운동</a></li>
+					<li><a href="${pageContext.request.contextPath}/drawing">드로잉</a></li>
+					<li><a href="${pageContext.request.contextPath}/music">음악</a></li>
+					<li><a href="${pageContext.request.contextPath}/cooking">요리</a></li>
+					<li><a href="${pageContext.request.contextPath}/study">스터디</a></li>
+					<li><a href="${pageContext.request.contextPath}/event">이벤트</a></li>
 				</ul>
 			</nav>
 			

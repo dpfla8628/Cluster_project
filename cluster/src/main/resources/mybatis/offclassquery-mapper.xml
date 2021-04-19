@@ -5,6 +5,13 @@
 	
 <mapper namespace="com.kh.cluster.repository.OffclassQueryRepository">
 
+	<!-- <select id="searchByCategory" resultType="OffclassQueryVO">
+	    select cls.class_no, member_nick, class_name, class_price, class_regdate, cls.category_no from offclass cls
+		    inner join creator cre on cls.creator_no=cre.creator_no
+		    inner join member m on cre.member_no=m.member_no
+		    inner join classcategory cc on cc.category_no=cls.category_no
+	    where cc.category_big=#{categoryBig}
+	</select> -->
 	<!-- <select	id="searchByCategory" resultType="OffclassQueryVO">
 		select member_nick, class_name, class_price, class_regdate, fullname, cls.category_no from offclass cls 
 		    inner join creator cre on cls.creator_no=cre.creator_no
@@ -52,8 +59,7 @@
 	    		order by cls.class_regdate desc
 	    	</otherwise>
 	    </choose>
-	    
-  </select>
+	</select>
 
 	<select id="searchTumbnail" resultType="OffclassImageVO">
 	 	select * from (
@@ -62,4 +68,24 @@
     		)TMP
 		) where rn=1
 	</select>
+	
+	<select id="likeForMembers" resultType="int">
+		select class_no from classlike where
+			member_no=#{memberNo}
+		<if test="ids != null and !ids.isEmpty()">
+				and class_no in
+	    	<foreach collection="ids" item="id" separator="," open="(" close=")">
+	        		#{id}
+	    	</foreach>
+		</if>
+	</select>
+	
+	<insert id="likeOffclass">
+		insert into classlike(classlike_no, member_no, class_no) values
+			(classlike_seq.nextval, #{memberNo}, #{classNo})
+	</insert>
+	
+	<delete id="unLikeOffclass">
+		delete from classlike where member_no=#{memberNo} and class_no=#{classNo}
+	</delete>
 </mapper>
