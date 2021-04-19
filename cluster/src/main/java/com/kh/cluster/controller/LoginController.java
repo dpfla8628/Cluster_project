@@ -25,26 +25,7 @@ public class LoginController {
 		return "/auth/login";
 	}
 	
-	@PostMapping("/")
-	public String postLogin(HttpServletRequest req ,@RequestParam("memberId") String id, @RequestParam("memberPw") String pw) throws Exception {
-		AuthMember login = new AuthMember();
-		login.setMemberId(id);
-		login.setMemberPw(pw);
-		AuthMember resultMember = repo.loginNormal(login);
-		if(resultMember != null) {
-			HttpSession session = req.getSession();
-			session.setAttribute("no", resultMember.getMemberNo());
-			session.setAttribute("id", resultMember.getMemberId());
-			session.setAttribute("auth", resultMember.getMemberAuth());
-			session.setAttribute("nick", resultMember.getMemberNick());
-			session.setAttribute("phone", resultMember.getMemberPhone());
-
-			return "/auth/login-result";
-		}
-		
-		
-		return "/auth/login";
-	}
+	 
 	
 	@GetMapping("/logout")
 	public String getLogout(HttpServletRequest req) {
