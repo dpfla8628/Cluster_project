@@ -1,6 +1,5 @@
 package com.kh.cluster.entity;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public class AuthMember {
@@ -11,17 +10,31 @@ public class AuthMember {
 	private String memberPhone;
 	private Date memberDate;
 	private String memberAuth;
-	private String memberAccessToken;
-	private String memberRefreshToken;
+	private String memberToken;
 	private String fullName;
 	private String[] files;
 	private String memberAgreement1;
 	private String memberAgreement2;
 	private Integer memberAuthNum;
 	private String memberStatus;
-	
+	private String memberBy;
 	
 
+	public String getMemberBy() {
+		return memberBy;
+	}
+
+	public void setMemberBy(String memberBy) {
+		this.memberBy = memberBy;
+	}
+
+	public String getMemberToken() {
+		return memberToken;
+	}
+
+	public void setMemberToken(String memberToken) {
+		this.memberToken = memberToken;
+	}
 
 	public Integer getMemberAuthNum() {
 		return memberAuthNum;
@@ -41,15 +54,6 @@ public class AuthMember {
 
 	public String getMemberAgreement1() {
 		return memberAgreement1;
-	}
-
-	@Override
-	public String toString() {
-		return "AuthMember [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw
-				+ ", memberNick=" + memberNick + ", memberPhone=" + memberPhone + ", memberDate=" + memberDate
-				+ ", memberAuth=" + memberAuth + ", memberAccessToken=" + memberAccessToken + ", memberRefreshToken="
-				+ memberRefreshToken + ", fullName=" + fullName + ", files=" + Arrays.toString(files)
-				+ ", memberAgreement1=" + memberAgreement1 + ", memberAgreement2=" + memberAgreement2 + "]";
 	}
 
 	public void setMemberAgreement1(String memberAgreement1) {
@@ -122,16 +126,5 @@ public class AuthMember {
 	public void setMemberAuth(String memberAuth) {
 		this.memberAuth = memberAuth;
 	}
-	public String getMemberAccessToken() {
-		return memberAccessToken;
-	}
-	public void setMemberAccessToken(String memberAccessToken) {
-		this.memberAccessToken = memberAccessToken;
-	}
-	public String getMemberRefreshToken() {
-		return memberRefreshToken;
-	}
-	public void setMemberRefreshToken(String memberRefreshToken) {
-		this.memberRefreshToken = memberRefreshToken;
-	}
+	
 }

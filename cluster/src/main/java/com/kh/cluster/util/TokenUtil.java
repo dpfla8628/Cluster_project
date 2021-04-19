@@ -4,15 +4,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.kh.cluster.interceptor.AuthInterceptor;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 //토큰 관련 클래스
+@Component
 public class TokenUtil {
-	private static final String SECRET_KEY = "secreat";
+	
+	@Value("${jwt.secret}")
+	private String secrect;
+	
+	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
+	public static final int TOKEN_EXPIREDTIME = 60 * 60 * 6; //토큰 유효 시간(6시간), 초
 	
 	//토큰 생성
-	public static String createToken(String email) {
+	public String createToken(String email) {
+		log.info("createToken()");
 		//header설정
 		Map<String, Object> headers = new HashMap<>();
         headers.put("typ", "JWT");
@@ -22,8 +38,7 @@ public class TokenUtil {
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("email", email);
         
-        //토큰 유효시간 설정
-        Long expiredTime = 1000 * 60L * 60L * 2L; // 토큰 유효 시간 (2시간)
+        long expiredTime = TOKEN_EXPIREDTIME * 1000L; //밀리초
         
         // 토큰 만료 시간
         Date ext = new Date(); 
@@ -35,13 +50,32 @@ public class TokenUtil {
                 .setClaims(payloads) // Claims 설정
                 .setSubject("user") // 토큰 용도 
                 .setExpiration(ext) // 토큰 만료 시간 설정
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes()) // HS256과 Key로 Sign
+                .signWith(SignatureAlgorithm.HS256, secrect.getBytes()) // HS256과 Key로 Sign
                 .compact(); // 토큰 생성
         
 		return jwt;
 	}
+	
 	//유효 토큰 확인
-	//토큰 정보 확인
+	public String validateToken(String token) {
+		log.info("validateToken()");
+		
+		try{
+			Claims claims = Jwts.parser().setSigningKey(secrect.getBytes()).parseClaimsJws(token).getBody();
+			
+			return claims.get("email", String.class); //유효 토큰이면 email정보 반환
+			
+		}
+		catch(ExpiredJwtException e) { //토큰 만료 시
+			e.printStackTrace();
+		}
+		catch(Exception e) { // 그 외 예외 발생 시
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	//토큰 만료 시간 확인
 	
 }

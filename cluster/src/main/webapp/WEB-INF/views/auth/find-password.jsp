@@ -43,10 +43,47 @@
 			}
 		</style>
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				$(".title-text").click(function(){
 					location.href="${contextPath}/login/";
+				});
+				
+				$("#submitBtn").click(function(){
+					var target = $("#memberId").val().trim();
+					if(!target){
+						$("#findPwHelp").text("이메일을 입력해 주세요!");
+						$("#findPwHelp").addClass("text-danger");
+						return;
+					}
+					
+					var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+					if(!regex.test(target)){
+						$("#findPwHelp").text("올바른 이메일을 입력해 주세요!");
+						$("#findPwHelp").addClass("text-danger");
+						return;
+					}
+					
+					$.ajax({
+						type: "post",
+						dataType: "text",
+						async: true,
+						url:"${contextPath}/login/findpw",
+						data: {id : target},
+						success: function(data, textStatus){
+							if(data == "y"){
+							}
+							else if(data == "s"){
+								$("#findPwHelp").text("sns로그인을 해주세요!");
+								$("#findPwHelp").addClass("text-danger");
+							}
+							else{
+								$("#findPwHelp").text("등록되지 않은 회원입니다.");
+								$("#findPwHelp").addClass("text-danger");
+							}
+						}
+					});
 				});
 			});
 		</script>
@@ -65,10 +102,11 @@
 					</div>
 					
 					<div class="form-group">
-					  <input type="email" class="form-control" name="memberId" placeholder="이메일" aria-describedby="emailHelp" >
+					  <input type="email" class="form-control" id="memberId" name="memberId" placeholder="이메일" required>
+					  <small id="findPwHelp"></small>
 					</div>
 					
-					<button type="button" class="btn btn-outline-warning btn-lg btn-block btn-gap">이메일로 비밀번호 찾기</button>
+					<button type="button" id="submitBtn" class="btn btn-outline-warning btn-lg btn-block btn-gap">이메일로 비밀번호 변경 링크 보내기</button>
 					
 				</form>
 

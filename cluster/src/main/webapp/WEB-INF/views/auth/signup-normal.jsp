@@ -56,6 +56,11 @@
 			.title-text{
 				cursor: pointer;
 			}
+			
+			.moreInfo:hover{
+				color: #ffc107;
+			}
+			
 		</style>
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -138,7 +143,7 @@
 				
 				$("#memberPw").change(function(){
 					var target = $(this).val().trim();
-					var regex = /^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,16}$/;
+					var regex = /^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#$%^&+=]).{8,15}$/;
 					
 					if(regex.test(target)){
 						$("#pwHelp").text("사용 가능한 비밀번호입니다.");
@@ -147,13 +152,13 @@
 						$("#pwHelp").addClass("text-success");
 					}
 					else{
-						$("#pwHelp").text("영문, 숫자, 특수문자(#?!@$%^&*-) 포함 8~16 글자");
+						$("#pwHelp").text("영문, 숫자, 특수문자(!@#$%^&+=) 포함 8~15 글자");
 						$("#pwHelp").removeClass("text-muted");
 						$("#pwHelp").addClass("text-danger");
 					}
 				});
 				
-				$("#memberPasswordCheck").change(function(){
+				$("#memberPwCheck").change(function(){
 					var check = $(this).val().trim();
 					var target = $("#memberPw").val().trim();
 					
@@ -169,6 +174,34 @@
 						$("#pwCheck").addClass("text-danger");
 					}
 				});
+				
+				$("#signupBtn").click(function(){
+					var formSerializeArray = $('#signupForm').serializeArray();
+					var object = {};
+					for (var i = 0; i < formSerializeArray.length; i++){
+					    object[formSerializeArray[i]['name']] = formSerializeArray[i]['value'];
+					}
+					 
+					var json = JSON.stringify(object);
+
+					$.ajax({
+						type: "post",
+						dataType: "text",
+						async: true,
+						url:"${contextPath}/signup/check2",
+						contentType: "application/json",
+						data: json,
+						success: function(data, textStatus){
+							if(data == "y"){
+								$("#signupForm").submit();
+							}
+							else{
+								alert("회원가입 양식을 완성해주세요!");
+							}
+						}
+					});
+				});
+				
 			});
 		</script>
 	</head>
@@ -179,7 +212,7 @@
 			
 			<div class="row justify-content-md-center">
 				
-				<form class="form-width" action="/signup/" method="post">
+				<form class="form-width" id="signupForm" action="/signup/" method="post">
 				
 					<div class="title font-weight-bold text-center">
 						<span class="text-warning title-text">CLUSTER</span>
@@ -187,7 +220,7 @@
 					
 					<div class="form-group">
 					  	<label class="text-muted" for="memberNick">닉네임</label>
-					  	<input type="text" class="form-control" id="memberNick" name="memberNick" aria-describedby="nickHelp">
+					  	<input type="text" class="form-control" id="memberNick" name="memberNick" aria-describedby="nickHelp" required>
 					  	<small id="nickHelp" class="text-muted">
 					      한글, 영문, 숫자 2~10 글자
 						</small>
@@ -195,21 +228,21 @@
 					
 					<div class="form-group">
 					  	<label class="text-muted" for="memberId">아이디</label>
-					  	<input type="email" class="form-control" id="memberId" name="memberId" placeholder="example@email.com" aria-describedby="idHelp" >
+					  	<input type="email" class="form-control" id="memberId" name="memberId" placeholder="example@email.com" aria-describedby="idHelp" required>
 						<small id="idHelp" class="text-muted"></small>
 					</div>
 					
 					<div class="form-group">
 					  	<label class="text-muted" for="memberPw">비밀번호</label>
-					  	<input type="password" class="form-control" id="memberPw" name="memberPw" aria-describedby="pwHelp">
+					  	<input type="password" class="form-control" id="memberPw" name="memberPw" aria-describedby="pwHelp" required>
 					  	<small id="pwHelp" class="text-muted">
-					    	영문, 숫자, 특수문자(#?!@$%^&*-) 포함 8~16 글자
+					    	영문, 숫자, 특수문자(!@#$%^&+=) 포함 8~15 글자
 						</small>
 					</div>
 					
 					<div class="form-group">
-					  <label class="text-muted" for="memberPasswordCheck">비밀번호 확인</label>
-					  <input type="password" class="form-control" id="memberPasswordCheck" >
+					  <label class="text-muted" for="memberPwCheck">비밀번호 확인</label>
+					  <input type="password" class="form-control" id="memberPwCheck" name="memberPwCheck" required>
 					  <small id="pwCheck"></small>
 					</div>
 					
@@ -217,22 +250,23 @@
 					
 					<div class="cb-sizing text-muted">
 						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="memberAgreement1" name="memberAgreement1" value="y">
-							<label class="custom-control-label" for="memberAgreement1">만 14세 이상(필수)</label>
+							<input type="checkbox" class="custom-control-input" id="memberAgreement1" name="memberAgreement1" value="y" required>
+							<label class="custom-control-label" for="memberAgreement1">(필수) 만 14세 이상</label>
+							<small><a class="moreInfo text-muted" href="">더보기</a></small>
 						</div>
 						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="memberAgreement2" name="memberAgreement2" value="y">
-							<label class="custom-control-label" for="memberAgreement2">개인정보...(필수)</label>
+							<input type="checkbox" class="custom-control-input" id="memberAgreement2" name="memberAgreement2" value="y" required>
+							<label class="custom-control-label" for="memberAgreement2">(필수) 이용약관 동의</label>
+							<small><a class="moreInfo text-muted" href="">더보기</a></small>
 						</div>
 					</div>
 					
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block">회원가입 하기</button>
+					<button type="button" id="signupBtn" class="btn btn-outline-warning btn-lg btn-block">회원가입 하기</button>
 				
 				</form>
 			</div>
 		</div>
-		
-			
+					
 	</body>
 	
 	

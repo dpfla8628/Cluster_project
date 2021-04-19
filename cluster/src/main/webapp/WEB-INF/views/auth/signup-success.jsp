@@ -86,7 +86,9 @@
 					</div>
 					
 					<div class="text-center text">
-						<p>000<span class="text-muted">님</span></p>
+						<c:if test="${!empty member.memberNick }">
+							<p>${member.memberNick }<span class="text-muted">님</span></p>
+						</c:if>
 						<p class="text-muted">환영합니다!</p>
 						<p class="text-muted">CLUSTER에서 다양한 경험을 해보세요!</p>
 					</div>

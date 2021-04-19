@@ -10,6 +10,7 @@ public interface AuthRepository {
 	public String  checkId(String memberId) ;
 	public void insertNormal(AuthMember member);
 	public AuthMember selectMember(String memberId);
-	public String checkAuthNum(Integer authNum);
+	public AuthMember checkMember(Integer memberNo);
 	public void updateOne(HashMap<String, String> updateValue);
+	public void updateNull(HashMap<String, String> updateValue);
 }
