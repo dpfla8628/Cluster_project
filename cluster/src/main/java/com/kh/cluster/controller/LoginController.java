@@ -36,6 +36,9 @@ public class LoginController {
 			session.setAttribute("no", resultMember.getMemberNo());
 			session.setAttribute("id", resultMember.getMemberId());
 			session.setAttribute("auth", resultMember.getMemberAuth());
+			session.setAttribute("nick", resultMember.getMemberNick());
+			session.setAttribute("phone", resultMember.getMemberPhone());
+
 			return "/auth/login-result";
 		}
 		
