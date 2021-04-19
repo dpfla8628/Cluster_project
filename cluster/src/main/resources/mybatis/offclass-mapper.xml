@@ -5,11 +5,23 @@
 	
 <mapper namespace="com.kh.cluster.repository.OffclassRepository">
 
+	<insert id="join">
+		insert into creator values(creator_seq.nextval, #{creatorAccount}, #{creatorInfo}, #{memberNo})
+	</insert>
+
+	<update id="authUpdate">
+		update member set member_auth = '강사' where member_no = #{memberNo}
+	</update>
+	
+	<select id="setCreator" resultType="Creator">
+		select * from creator where member_no = #{memberNo}
+	</select>
+
 	<insert id="create">
 		insert into offclass
-		(class_no, class_name, class_info, class_price, class_start, class_end, class_place, class_member_set, class_talk, category_no, creator_no) 
+		(class_no, class_name, class_info, class_price, class_place, class_member_set, class_talk, category_no, creator_no) 
 		values
-		(offclass_seq.nextval, #{className}, #{classInfo}, #{classPrice}, #{classStart}, #{classEnd}, #{classPlace}, #{classMemberSet}, #{classTalk}, #{categoryNo}, #{creatorNo})
+		(offclass_seq.nextval, #{className}, #{classInfo}, #{classPrice}, #{classPlace}, #{classMemberSet}, #{classTalk}, #{categoryNo}, #{creatorNo})
 	</insert>
 
 	<select id="categoryList" resultType="ClassCategory">
@@ -24,7 +36,7 @@
 			from (
 				select rownum rn, a.* 
 					from (
-						select * from offclass where class_check = '검수완료' order by class_no desc 
+						select * from offclass where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc 
 					) a
 				)
 		where rn between #{start} and #{end}
@@ -36,7 +48,7 @@
 			from (
 				select rownum rn, a.* 
 					from (
-						select * from offclass where class_check = '검수대기' or class_check = '반려' order by class_no desc 
+						select * from offclass where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo} order by class_no desc 
 					) a
 				)
 		where rn between #{start} and #{end}
@@ -45,14 +57,14 @@
 	<select id="classList" resultType="Offclass">
 		<![CDATA[
 			select * from offclass 
-			where class_check = '검수완료' order by class_no desc
+			where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc
 		]]>
 	</select>
 
 	<select id="checkList" resultType="Offclass">
 		<![CDATA[
 			select * from offclass 
-			where class_check = '검수대기' or class_check = '반려' order by class_no desc
+			where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo} order by class_no desc
 		]]>
 	</select>
 
@@ -69,9 +81,32 @@
 	</select>
 	
 	<select id="countClass" resultType="int">
-		select count(*) from offclass
+		select count(*) from offclass where class_check = '검수완료' and creator_no = #{creatorNo}
 	</select>
 	
+	<select id="countCheck" resultType="int">
+		select count(*) from offclass where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo}
+	</select>
+	
+	<select id="readDate" resultType="Offclass">
+		select class_no, class_start, class_end, class_check, class_end_check, class_regdate from offclass where class_no = #{classNo}
+	</select>
+	
+	<update id="startDateUpdate">
+		update offclass set class_start = #{classStart} where class_no = #{classNo}
+	</update>
+	
+	<update id="endDateUpdate">
+		update offclass set class_end = #{classEnd} where class_no = #{classNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from offclass where class_no = #{classNo} 
+	</delete>
+	
+	<update id="creatorEdit">
+		update creator set creator_info = #{creatorInfo}, creator_account = #{creatorAccount} where member_no = #{memberNo}
+	</update>
 	
 	
 </mapper>	

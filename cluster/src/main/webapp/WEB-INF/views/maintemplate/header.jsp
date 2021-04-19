@@ -94,7 +94,7 @@
 			
 			<nav>
 				<ul class="menu center" style="margin-top: 2rem">
-					<li><a href="${pageContext.request.contextPath}">공예</a></li>
+					<li><a href="${pageContext.request.contextPath}/crafts">공예</a></li>
 					<li><a href="${pageContext.request.contextPath}">운동</a></li>
 					<li><a href="${pageContext.request.contextPath}">드로잉</a></li>
 					<li><a href="${pageContext.request.contextPath}">음악</a></li>

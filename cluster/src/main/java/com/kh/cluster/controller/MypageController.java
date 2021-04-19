@@ -70,11 +70,13 @@ public class MypageController {
 		session = req.getSession();
 		int memberNo = (int) session.getAttribute("no");
 		
+		log.info("creator = " + service.setcreator(memberNo));
 		MyMember mymember = service.read(memberNo);
 		model.addAttribute("mymember",mymember);
 		model.addAttribute("likeList",service.classlike(memberNo));
 		model.addAttribute("ordercount",service.count(mymember));
 		model.addAttribute("couponcount", service.couponcount(memberNo));
+		model.addAttribute("Creator", service.setcreator(memberNo));
 		return "/mypage/index";
 	}
 	
