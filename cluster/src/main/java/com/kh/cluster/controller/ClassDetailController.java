@@ -1,36 +1,27 @@
 package com.kh.cluster.controller;
 
- import java.io.FileInputStream;
-import java.io.InputStream;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+ 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.kh.cluster.entity.ClassLike;
-import com.kh.cluster.entity.ClassQuestion;
+ import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Criteria;
 import com.kh.cluster.entity.MyMember;
 import com.kh.cluster.entity.OffClassVo;
@@ -41,8 +32,7 @@ import com.kh.cluster.repository.AuthRepository;
 import com.kh.cluster.service.ClassDetailService;
 import com.kh.cluster.service.MypageService;
 import com.kh.cluster.service.ReviewService;
-import com.kh.cluster.util.MediaUtils;
-import com.kh.cluster.util.UploadFileUtils;
+ 
 
  
 

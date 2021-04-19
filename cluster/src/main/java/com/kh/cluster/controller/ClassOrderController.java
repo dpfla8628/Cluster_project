@@ -39,6 +39,7 @@ public class ClassOrderController {
 	
 	@Value("${upload.path}")
 	private String uploadPath;
+	
 	HttpSession session;
 
 	
