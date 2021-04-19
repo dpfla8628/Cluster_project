@@ -43,8 +43,8 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
-	@Value("${upload.path}")
-	private String uploadPath;
+	//@Value("${upload.path}")
+	//private String uploadPath;
 	
 	@GetMapping("/home")
 	public String adminHome(Locale locale, Model model) throws Exception {
@@ -490,60 +490,60 @@ public class AdminController {
 		
 	}
 	
-	@PostMapping(value = "uploadEventImage", produces = "text/plain; charset=UTF-8")
-	public ResponseEntity<String> uploadEventImage(MultipartFile file) throws Exception {
-		
-		log.info("원본 파일명 : " + file.getOriginalFilename());
-		
-		String savedName = UploadFileUtils.uploadFile(
-				uploadPath, file.getOriginalFilename(), file.getBytes());
-		
-		return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
+//	@PostMapping(value = "uploadEventImage", produces = "text/plain; charset=UTF-8")
+//	public ResponseEntity<String> uploadEventImage(MultipartFile file) throws Exception {
+//		
+//		log.info("원본 파일명 : " + file.getOriginalFilename());
+//		
+//		String savedName = UploadFileUtils.uploadFile(
+//				uploadPath, file.getOriginalFilename(), file.getBytes());
+//		
+//		return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
+//	
+//	}
 	
-	}
-	
-	@GetMapping("/displayFile")
-	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
-		
-		InputStream in = null;
-		ResponseEntity<byte[]> entity = null;
-		
-		log.info("파일명 : " + fileName);
-		
-		try {
-			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-			
-			MediaType mediaType = MediaUtils.getMediaType(formatName);
-			
-			HttpHeaders headers = new HttpHeaders();
-
-			in = new FileInputStream(uploadPath + fileName);
-			
-			if(mediaType != null) {
-				headers.setContentType(mediaType);
-			}
-			else {
-				fileName = fileName.substring(fileName.indexOf("_") + 1);
-				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-				headers.add("Content-Disposition", "attachment; filename=\"" +
-							new String(fileName.getBytes("UTF-8"),
-							"ISO-8859-1") + "\"");
-			}
-			
-			entity = new ResponseEntity<byte[]>(
-					IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
-		
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-		}
-		finally {
-			in.close();
-		}
-		
-		return entity;
-	}
+//	@GetMapping("/displayFile")
+//	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
+//		
+//		InputStream in = null;
+//		ResponseEntity<byte[]> entity = null;
+//		
+//		log.info("파일명 : " + fileName);
+//		
+//		try {
+//			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+//			
+//			MediaType mediaType = MediaUtils.getMediaType(formatName);
+//			
+//			HttpHeaders headers = new HttpHeaders();
+//
+//			in = new FileInputStream(uploadPath + fileName);
+//			
+//			if(mediaType != null) {
+//				headers.setContentType(mediaType);
+//			}
+//			else {
+//				fileName = fileName.substring(fileName.indexOf("_") + 1);
+//				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//				headers.add("Content-Disposition", "attachment; filename=\"" +
+//							new String(fileName.getBytes("UTF-8"),
+//							"ISO-8859-1") + "\"");
+//			}
+//			
+//			entity = new ResponseEntity<byte[]>(
+//					IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+//		
+//		}
+//		catch(Exception e) {
+//			e.printStackTrace();
+//			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+//		}
+//		finally {
+//			in.close();
+//		}
+//		
+//		return entity;
+//	}
 	
 	
 	@GetMapping("/category/categoryList")
