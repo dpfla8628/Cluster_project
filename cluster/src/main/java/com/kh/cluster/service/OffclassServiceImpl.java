@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.repository.OffclassRepository;
 import com.kh.cluster.util.PagingVO;
@@ -15,6 +16,17 @@ public class OffclassServiceImpl implements OffclassService{
 
 	@Autowired
 	private OffclassRepository repository;
+	
+
+	@Override
+	public void join(Creator creator) throws Exception {
+		repository.join(creator);
+	}
+	
+	@Override
+	public void authUpdate(Integer memberNo) throws Exception {
+		repository.authUpdate(memberNo);
+	}
 	
 	@Override
 	public List<Offclass> classList() throws Exception {
@@ -75,20 +87,53 @@ public class OffclassServiceImpl implements OffclassService{
 
 
 	@Override
-	public int countClass() {
-		return repository.countClass();
+	public int countClass(Integer creatorNo) throws Exception{
+		return repository.countClass(creatorNo);
 	}
 
+	@Override
+	public int countCheck(Integer creatorNo) throws Exception{
+		return repository.countCheck(creatorNo);
+	}
 
 	@Override
-	public List<Offclass> selectClass(PagingVO vo) {
+	public List<Offclass> selectClass(PagingVO vo) throws Exception{
 		return repository.selectClass(vo);
 	}
 
 
 	@Override
-	public List<Offclass> selectCheck(PagingVO vo) {
+	public List<Offclass> selectCheck(PagingVO vo) throws Exception{
 		return repository.selectCheck(vo);
 	}
 
+
+	@Override
+	public Offclass readDate(Integer classNo) throws Exception {
+		return repository.readDate(classNo);
+	}
+
+
+	@Override
+	public void startDateModify(Offclass offclass) throws Exception {
+		repository.startDateUpdate(offclass);
+	}
+
+
+	@Override
+	public void endDateModify(Offclass offclass) throws Exception {
+		repository.endDateUpdate(offclass);
+	}
+
+	@Override
+	public Creator setcreator(int memberNo) throws Exception{
+		return repository.setCreator(memberNo);
+	}
+
+	@Override
+	public void creatorEdit(Creator creator) throws Exception {
+		repository.creatorEdit(creator);
+	}
+
+	
 }

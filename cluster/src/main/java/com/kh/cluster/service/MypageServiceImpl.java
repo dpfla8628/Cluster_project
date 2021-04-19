@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.MyClassOrder;
 import com.kh.cluster.entity.MyClassQuestion;
@@ -140,6 +141,11 @@ public class MypageServiceImpl implements MypageService{
 	public void reviewwww(MyReview myreview) throws Exception {
 		repository.reviewwww(myreview);
 		
+	}
+
+	@Override
+	public Creator setcreator(int memberNo) throws Exception {
+		return repository.setcreator(memberNo);
 	}
 
 
