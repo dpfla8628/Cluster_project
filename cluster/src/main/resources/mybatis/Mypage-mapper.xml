@@ -119,5 +119,4 @@
 		select * from creator where member_no = #{memberNo}
 	</select>
 	
-	
 </mapper>

@@ -19,10 +19,10 @@
 			let queryParams = getUrlParams();
 			
 			if (queryParams.subcategory) {
-                self.location = "/crafts?subcategory=" + queryParams.subcategory + "&sort=" + this.value;
+                self.location = "/music?subcategory=" + queryParams.subcategory + "&sort=" + this.value;
                 return;
             }
-            self.location = "/crafts?sort=" + this.value;
+            self.location = "/music?sort=" + this.value;
 		})
 
       function getUrlParams() {
@@ -35,7 +35,7 @@
 	    	alert($(this).attr("classNo") + "값으로 페이지 이동 예정");
 	    	
 	    	/* to-do
-	    	self.location = "/crafts?classNo=" + ${classNo}.value; */
+	    	self.location = "/music?classNo=" + ${classNo}.value; */ 
 	    	
 	    })
 	    
@@ -150,12 +150,12 @@
 <div class="d-flex" id="wrapper">
 
 	<div class="border-right" id="sidebar-wrapper">
-		<div class="sidebar-heading">공예 </div>
+		<div class="sidebar-heading">음악</div>
 		
 		<div class="list-group list-group-flush">
-			<a href="/crafts?subcategory=도자기" class="list-group-item list-group-item-action bg-light">도자기</a>
-			<a href="/crafts?subcategory=가죽" class="list-group-item list-group-item-action bg-light">가죽</a>
-			<a href="/crafts?subcategory=액세서리" class="list-group-item list-group-item-action bg-light border-bottom">액세서리</a>
+			<a href="/music?subcategory=한국화" class="list-group-item list-group-item-action bg-light">실용음악</a>
+			<a href="/music?subcategory=서양화" class="list-group-item list-group-item-action bg-light">피아노</a>
+			<a href="/music?subcategory=유화" class="list-group-item list-group-item-action bg-light border-bottom">바이올린</a>
 		</div>
 	</div>
 
