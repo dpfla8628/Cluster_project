@@ -11,43 +11,14 @@ public class MyClassOrder {
 	private int orderPrice;
 	private Date orderDate;
 	private String orderOk;
+	private String orderCalc;
 	private String classImage;
 	private Date classEnd;
 	private String classTalk;
 	private String reviewContext;
-	
-	
-	
-	public String getReviewContext() {
-		return reviewContext;
-	}
-	public void setReviewContext(String reviewContext) {
-		this.reviewContext = reviewContext;
-	}
-	public String getClassImage() {
-		return classImage;
-	}
-	public void setClassImage(String classImage) {
-		this.classImage = classImage;
-	}
-	public Date getClassEnd() {
-		return classEnd;
-	}
-	public void setClassEnd(Date classEnd) {
-		this.classEnd = classEnd;
-	}
-	public String getClassTalk() {
-		return classTalk;
-	}
-	public void setClassTalk(String classTalk) {
-		this.classTalk = classTalk;
-	}
-	public String getClassName() {
-		return className;
-	}
-	public void setClassName(String className) {
-		this.className = className;
-	}
+	private int couponNo;
+ 	private String memberPhone;
+	private String memberId;
 	public int getOrderNo() {
 		return orderNo;
 	}
@@ -65,6 +36,12 @@ public class MyClassOrder {
 	}
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
+	}
+	public String getClassName() {
+		return className;
+	}
+	public void setClassName(String className) {
+		this.className = className;
 	}
 	public String getOrderName() {
 		return orderName;
@@ -90,6 +67,57 @@ public class MyClassOrder {
 	public void setOrderOk(String orderOk) {
 		this.orderOk = orderOk;
 	}
+	public String getOrderCalc() {
+		return orderCalc;
+	}
+	public void setOrderCalc(String orderCalc) {
+		this.orderCalc = orderCalc;
+	}
+	public String getClassImage() {
+		return classImage;
+	}
+	public void setClassImage(String classImage) {
+		this.classImage = classImage;
+	}
+	public Date getClassEnd() {
+		return classEnd;
+	}
+	public void setClassEnd(Date classEnd) {
+		this.classEnd = classEnd;
+	}
+	public String getClassTalk() {
+		return classTalk;
+	}
+	public void setClassTalk(String classTalk) {
+		this.classTalk = classTalk;
+	}
+	public String getReviewContext() {
+		return reviewContext;
+	}
+	public void setReviewContext(String reviewContext) {
+		this.reviewContext = reviewContext;
+	}
+	public int getCouponNo() {
+		return couponNo;
+	}
+	public void setCouponNo(int couponNo) {
+		this.couponNo = couponNo;
+	}
+	public String getMemberPhone() {
+		return memberPhone;
+	}
+	public void setMemberPhone(String memberPhone) {
+		this.memberPhone = memberPhone;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	
+	
+	 
 	
 	
 }

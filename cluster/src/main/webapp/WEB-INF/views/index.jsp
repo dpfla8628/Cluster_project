@@ -2,6 +2,82 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $("#sort").on("change", function(){
+		let queryParams = getUrlParams();
+		
+		if (queryParams.subcategory) {
+            self.location = "/crafts?subcategory=" + queryParams.subcategory + "&sort=" + this.value;
+            return;
+        }
+        self.location = "/crafts?sort=" + this.value;
+	})
+
+  function getUrlParams() {
+    var params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+    return params;
+  }
+    
+    $(".detail").css("cursor","pointer").on("click", function(){
+    	var classNo = $(this).attr("classNo");
+    	
+    	self.location = "/detail/" + classNo;
+    	
+    	/* alert(classNo + "값으로 페이지 이동 예정"); */
+    	
+    	/* to-do */
+    	/* self.location = "/detail?classNo=" + classNo; */
+    	
+    })
+    
+    $(".heart").css("cursor","pointer").on("click", function(e){
+    	var $thisObj = $(this);
+    	var classNo = $thisObj.attr("classNo");
+    	var isLiked = $thisObj.attr("isLiked");
+    	
+    	var method = '';
+    	var updateLiked = '';
+    	var updateSrc = '';
+    	
+    	if(isLiked == "true") {
+    		method = "DELETE";
+    		updateLiked = "false";
+    		updateSrc = "resources/image/empty-heart.jpeg";
+    	}
+    	else {
+    		method = "POST";
+    		updateLiked = "true";
+	    	updateSrc = "resources/image/full-heart.png";
+    	}
+    	
+    	$.ajax({
+			url: "/offclass/"+classNo+"/like",
+			type: method,
+			success: function (data) {
+				$thisObj.attr("isLiked", updateLiked);
+				$thisObj.attr("src", updateSrc);
+				
+			},
+    		error: function (xhr) {
+    			/* alert("실패!" + xhr.status); */
+    			
+    			if(xhr.status == 401) {
+    				alert("로그인을 해주셔야 합니다.")
+    				self.location= "/login/";
+    				return;
+    			}
+    			alert("오류가 발생하였습니다.");
+    		}
+		})
+    	
+    })
+	
+})
+</script>
 <style>
 	.bestlist{
 		display: grid;
@@ -17,7 +93,7 @@
 		padding: 1rem;
 		width: 210px;
 	}
-	img{
+	.img{
 		width: 200px;
 		height: 200px;
 	}
@@ -27,19 +103,19 @@
     	font-weight:600;
     	color: gray;
     	display: inline-block;
-    	width:100px;
-    	margin-left: 0.5em;
+    	/* width:100px; */
+    	/* margin-left: 0.5em; */
     	white-space: nowrap;
     	overflow: hidden;
     	text-overflow: ellipsis;
     }
-    /* .title-line:hover{
+    .title-line:hover{
     	text-decoration: underline;
-    } */
-    .content-line{
-    	font-size: 0.9em;
+    }
+    .title-line{
+    	font-size: 1em;
     	display: inline-block;
-    	width:280px;
+    	width:200px;
     	white-space: nowrap;
     	overflow: hidden;
     	text-overflow: ellipsis;
@@ -51,32 +127,13 @@
     	-webkit-line-clamp: 2;
     	-webkit-box-orient: vertical;
     }
-	.heart {
-    	width: 15px;
-	    height: 15px;
-	    background: white/* #ea2027 */;
-	    position: relative;
-	    transform: rotate(45deg);
-	    border: 1px solid gray;
-	  }
-	.heart::before,
-	.heart::after {
-	    content: "";
-	    width: 15px;
-	    height: 15px;
-	    position: absolute;
-	    border-radius: 50%;
-	    background: white/* #ea2027 */;
-	    border: 1px solid gray;
-	  }
-	.heart::before {
-	    left: -50%;
-	  }
-	.heart::after {
-	    top: -50%;
-	  }
+	.heart{
+		width: 30px;
+		height: 30px;
+		float: right;
+	}
 </style>
-<jsp:include page="/WEB-INF/views/maintemplate/header.jsp"></jsp:include>
+<c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 		<section>
 		
 			<div class="container top">
@@ -123,39 +180,301 @@
 			<div class="container top">
 				<div class="row">
 					<div class="col">
-						<a href="#" style="font-weight: bold; font-size: large;">공예 BEST &gt;</a>
+						<a href="/crafts" style="font-weight: bold; font-size: large;">공예 더보기 &gt;</a>
 					</div>
 				</div>
 			</div>
 			
 			<div class="bestlist" style="padding-left: 5rem">
-				
-				<!-- for문 써야함 -->
+				<c:forEach items="${craftClasses}" var="a">
 				<div class="item">
-			  		<a href="#">
-						<img src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg">
-						<span class="heart" style="float: right"></span>
-						<span class="name-line">크리에이터 이름</span>
-						<br><br>
-						<span class="title-line">클래스 제목</span>
-						<br>
-						<span class="price-line">클래스 가격</span>
-					</a>
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${a.liked}">
+										<img class="heart" classNo=${a.classNo} isLiked="true" 
+											src="resources/image/full-heart.png">
+									</c:when>
+									
+									<c:otherwise>
+										<img class="heart" classNo=${a.classNo} isLiked="false" 
+										src="resources/image/empty-heart.jpeg">
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
+							</td>					
+						</tr>
+					</table>
 				</div>
-				
-				<div class="item">
-			  		<a href="#">
-						<img src="https://image.freepik.com/free-vector/leather-texture-realistic-samples-set_1284-23446.jpg">
-						<span class="name-line">크리에이터 이름</span>
-						<span class="heart" style="float:right margin-top:1em"></span>
-						<br><br>
-						<span class="title-line">클래스 제목</span>
-						<br>
-						<span class="price-line">클래스 가격</span>
-					</a>
-				</div>
-				
+				</c:forEach>
 			</div>
-		
-
-<jsp:include page="/WEB-INF/views/maintemplate/footer.jsp"></jsp:include>		
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="/exercise" style="font-weight: bold; font-size: large;">운동 더보기 &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<c:forEach items="${exerciseClasses}" var="a">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${a.liked}">
+										<img class="heart" classNo=${a.classNo} isLiked="true" 
+											src="resources/image/full-heart.png">
+									</c:when>
+									
+									<c:otherwise>
+										<img class="heart" classNo=${a.classNo} isLiked="false" 
+										src="resources/image/empty-heart.jpeg">
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+				</c:forEach>
+			</div>		
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="/drawing" style="font-weight: bold; font-size: large;">드로잉 더보기 &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<c:forEach items="${drowingClasses}" var="a">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${a.liked}">
+										<img class="heart" classNo=${a.classNo} isLiked="true" 
+											src="resources/image/full-heart.png">
+									</c:when>
+									
+									<c:otherwise>
+										<img class="heart" classNo=${a.classNo} isLiked="false" 
+										src="resources/image/empty-heart.jpeg">
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+				</c:forEach>
+			</div>	
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="/music" style="font-weight: bold; font-size: large;">음악 더보기 &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<c:forEach items="${musicClasses}" var="a">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${a.liked}">
+										<img class="heart" classNo=${a.classNo} isLiked="true" 
+											src="resources/image/full-heart.png">
+									</c:when>
+									
+									<c:otherwise>
+										<img class="heart" classNo=${a.classNo} isLiked="false" 
+										src="resources/image/empty-heart.jpeg">
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+				</c:forEach>
+			</div>	
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="/cooking" style="font-weight: bold; font-size: large;">요리 더보기 &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<c:forEach items="${cookingClasses}" var="a">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${a.liked}">
+										<img class="heart" classNo=${a.classNo} isLiked="true" 
+											src="resources/image/full-heart.png">
+									</c:when>
+									
+									<c:otherwise>
+										<img class="heart" classNo=${a.classNo} isLiked="false" 
+										src="resources/image/empty-heart.jpeg">
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+				</c:forEach>
+			</div>	
+			
+			<div class="container top">
+				<div class="row">
+					<div class="col">
+						<a href="/study" style="font-weight: bold; font-size: large;">스터디 더보기 &gt;</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bestlist" style="padding-left: 5rem">
+				<c:forEach items="${sutudyClasses}" var="a">
+				<div class="item">
+					<table>
+						<tr>
+							<td colspan="2">
+								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="name-line detail" classNo=${a.classNo} style="margin-top: 0.5rem">${a.memberNick}</span>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${a.liked}">
+										<img class="heart" classNo=${a.classNo} isLiked="true" 
+											src="resources/image/full-heart.png">
+									</c:when>
+									
+									<c:otherwise>
+										<img class="heart" classNo=${a.classNo} isLiked="false" 
+										src="resources/image/empty-heart.jpeg">
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="title-line detail" classNo=${a.classNo}>${a.className}</span>
+							</td>					
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="price-line detail" classNo=${a.classNo}>${a.classPrice} 원</span>
+							</td>					
+						</tr>
+					</table>
+				</div>
+				</c:forEach>
+			</div>	
+				
+<c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import>

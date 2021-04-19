@@ -1,10 +1,10 @@
 package com.kh.cluster.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
+ 
 public class Member {
-	
-	private int memberNo;
+	private Integer memberNo;
 	private String memberId;
 	private String memberPw;
 	private String memberNick;
@@ -13,10 +13,27 @@ public class Member {
 	private String memberAuth;
 	private String memberAccessToken;
 	private String memberRefreshToken;
+	private String fullName;
+	private String[] files;
 	
-	public Member() {
-		super();
+
+
+	public String getFullName() {
+		return fullName;
 	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(String[] files) {
+		this.files = files;
+	}
+	
 	public int getMemberNo() {
 		return memberNo;
 	}
@@ -71,13 +88,7 @@ public class Member {
 	public void setMemberRefreshToken(String memberRefreshToken) {
 		this.memberRefreshToken = memberRefreshToken;
 	}
-	@Override
-	public String toString() {
-		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberNick="
-				+ memberNick + ", memberPhone=" + memberPhone + ", memberDate=" + memberDate + ", memberAuth="
-				+ memberAuth + ", memberAccessToken=" + memberAccessToken + ", memberRefreshToken=" + memberRefreshToken
-				+ "]";
-	}
 	
-	
+
+ 	 
 }
