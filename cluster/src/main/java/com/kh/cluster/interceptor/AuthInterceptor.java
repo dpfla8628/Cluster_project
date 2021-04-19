@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.kh.cluster.controller.LoginController;
-import com.kh.cluster.entity.AuthMember;
+ import com.kh.cluster.entity.AuthMember;
 import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.service.AuthService;
 import com.kh.cluster.util.CookieUtil;

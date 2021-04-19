@@ -9,6 +9,7 @@ public class MyCoupon {
 	private Date couponEnd;
 	private String couponName;
 	private String eventTitle;
+	private int couponDiscount;
 	public int getMemberNo() {
 		return memberNo;
 	}
@@ -45,6 +46,14 @@ public class MyCoupon {
 	public void setEventTitle(String eventTitle) {
 		this.eventTitle = eventTitle;
 	}
+	public int getCouponDiscount() {
+		return couponDiscount;
+	}
+	public void setCouponDiscount(int couponDiscount) {
+		this.couponDiscount = couponDiscount;
+	}
+	
+	
 	
 	
 	
