@@ -38,22 +38,6 @@
 				color: white;
 			}
 			
-			.col{
-				padding-right: 0.3rem;
-				padding-left: 0.3rem;
-				font-size: 0.8rem;
-			}
-			.col-container{
-				margin-top: 1rem;
-			}
-			.a-col:hover{
-				text-decoration: none;
-			}
-			
-			.btn-gap{
-				margin-top: 1.5rem;
-			}
-			
 			.title-text{
 				cursor: pointer;
 			}
@@ -66,39 +50,41 @@
 					location.href="${contextPath}/login/";
 				});
 				
-				$("#loginBtn").click(function(){
-					var formSerializeArray = $('#loginForm').serializeArray();
-					var object = {};
-					for (var i = 0; i < formSerializeArray.length; i++){
-					    object[formSerializeArray[i]['name']] = formSerializeArray[i]['value'];
+				$("#submitBtn").click(function(){
+					var target = $("#memberId").val().trim();
+					if(!target){
+						$("#findPwHelp").text("이메일을 입력해 주세요!");
+						$("#findPwHelp").addClass("text-danger");
+						return;
 					}
-					 
-					var json = JSON.stringify(object);
-
+					
+					var regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+					if(!regex.test(target)){
+						$("#findPwHelp").text("올바른 이메일을 입력해 주세요!");
+						$("#findPwHelp").addClass("text-danger");
+						return;
+					}
+					
 					$.ajax({
 						type: "post",
 						dataType: "text",
 						async: true,
-						url:"${contextPath}/login/",
-						contentType: "application/json",
-						data: json,
+						url:"${contextPath}/login/findpw",
+						data: {id : target},
 						success: function(data, textStatus){
 							if(data == "y"){
-								$("#loginForm").submit();
 							}
-							else if(data == "ny"){
-								$("#hiddenSubmit").attr("action", "/login/resend").attr("method", "post");
-								$("#hiddenEmail").val($("#memberId").val());
-								$("#hiddenSubmit").submit();
+							else if(data == "s"){
+								$("#findPwHelp").text("sns로그인을 해주세요!");
+								$("#findPwHelp").addClass("text-danger");
 							}
 							else{
-								$("#loginResult").text("로그인 정보가 올바르지 않습니다.");
-								$("#loginResult").addClass("text-danger");
+								$("#findPwHelp").text("등록되지 않은 회원입니다.");
+								$("#findPwHelp").addClass("text-danger");
 							}
 						}
 					});
 				});
-				
 			});
 		</script>
 	</head>
@@ -109,38 +95,22 @@
 			
 			<div class="row justify-content-md-center">
 				
-				<form class="form-width" id="loginForm" action="/login/result" method="post">
+				<form class="form-width">
 				
 					<div class="title font-weight-bold text-center">
 						<span class="text-warning title-text">CLUSTER</span>
 					</div>
 					
 					<div class="form-group">
-					  <input type="email" class="form-control" name="memberId" placeholder="이메일" id="memberId">
+					  <input type="email" class="form-control" id="memberId" name="memberId" placeholder="이메일" required>
+					  <small id="findPwHelp"></small>
 					</div>
 					
-					<div class="form-group">
-					  <input type="password" class="form-control" name="memberPw" placeholder="비밀번호" >
-					  <small id="loginResult"></small>
-					</div>
-					
-					<button type="button" id="loginBtn" class="btn btn-outline-warning btn-lg btn-block btn-gap">로그인</button>
-					<hr>
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block">구글로 시작하기</button>
-			
-					<div class="container col-container">
-						<div class="row justify-content-md-center">
-						    <div class="col text-right"><a class="a-col text-muted" href="/login/find">비밀번호 찾기</a></div>
-						    <div class="col text-left"><a class="a-col text-muted" href="/signup/">회원가입</a></div>
-					    </div>
-					</div>
+					<button type="button" id="submitBtn" class="btn btn-outline-warning btn-lg btn-block btn-gap">이메일로 비밀번호 변경 링크 보내기</button>
 					
 				</form>
+
 			</div>
-		    
-		    <form id="hiddenSubmit">
-		    	<input type="hidden" name="email" id="hiddenEmail">
-		    </form>
 		    
 		</div>
 		

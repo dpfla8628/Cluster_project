@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.cluster.repository.ClassOrderRepository">
+
+	
+	<select id="couponList" resultType="MyCoupon">
+		select 
+		    * 
+		from 
+		    member M
+		    inner join member_coupon MC on M.member_no = MC.member_no
+		    inner join coupon C on MC.coupon_no = C.coupon_no
+		    where M.member_no= #{memberNo}
+	</select>
+	
+	<!-- 주문폼 작성  -->
+	<insert id="order" parameterType="MyClassOrder">
+		insert into classorder values(order_seq.nextval, #{classNo}, #{memberNo}, #{orderName}, #{orderPrice}, sysdate, '입금대기','정산대기')
+	</insert>
+	
+	<delete id="useCoupon" parameterType="MyClassOrder">
+		delete member_coupon where member_no = #{memberNo} and coupon_no=#{couponNo}
+	</delete>
+	
+	<select id="kakaopay" resultType="MyClassOrder">
+		select 
+		    * 
+		from
+		    classorder CO
+		    inner join member M on CO.member_no = M.member_no
+		    inner join offclass O on CO.class_no = O.class_no
+		    where order_no=#{orderNo}
+	</select>
+	
+	<update id="payOk">
+		update classorder set order_ok = '입금완료' where order_no= #{orderNo}
+	</update>
+	
+	<select id="getNo" resultType="int">
+		select * from (select * from classorder where member_no =#{memberNo} order by rownum desc) where rownum =1
+	</select>
+	 	<update id="changePhone" parameterType="Member">
+ 		update member set member_phone = #{memberPhone} where member_no=#{memberNo}
+ 		
+ 	</update>
+</mapper>

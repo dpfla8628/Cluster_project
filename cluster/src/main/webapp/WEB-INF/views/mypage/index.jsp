@@ -152,7 +152,7 @@ $(document).ready(function(){
           	
           </div>
       </div>
-
+</div>
 <script>
     var swiper = new Swiper('.swiper-container', {
       slidesPerView: 3,

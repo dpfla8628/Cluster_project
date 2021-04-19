@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.kh.cluster.repository.ReviewRepository">
+ 
+	
+	<select id="reviewCount" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM Review where class_no=#{classNo}
+    </select>
+
+   <select id="reviewList" resultType="review">
+		<![CDATA[
+        	select 
+				*
+			from 
+				member M
+			    inner join review R on M.member_no = R.member_no
+			    inner join offclass O on R.class_no = O.class_no
+                left outer join profile P on M.member_no = P.profile_member_no
+
+			where 
+			    O.class_no = #{classNo}
+				order by review_no desc
+		]]>
+    </select>  
+    
+       <select id="reviewList2" resultType="review">
+		<![CDATA[
+		select * from member m
+		left outer join profile p on m.member_no=p.profile_member_no
+		where member_no=#{memberNo}
+		]]>
+    </select>  
+    
+    <insert id="reviewInsert" parameterType="Review">
+        update review set review_ok = #{reviewOk} where review_no=#{reviewNo} 
+    </insert>
+    
+    <update id="reviewUpdate" parameterType="Review">
+        update review set review_ok = #{reviewOk} where review_no=#{reviewNo}
+    </update>
+    
+    <update id="reviewDelete" parameterType="int">
+        update review set review_ok = null where review_no=#{reviewNo}
+    </update> 
+ 
+	
+<!--   <select id="reviewList" resultType="Review" parameterType="map">
+	<![CDATA[
+		 	SELECT * 
+			FROM (
+			SELECT ROWNUM RN, A.* 
+				FROM (
+					SELECT 
+						R.class_no
+			  			, R.review_no
+			  			, R.member_no
+			  			, R.review_context
+			  			, R.review_date
+			  			, R.review_ok
+			  			, M.member_nick
+					FROM review R
+					inner join member M on R.member_no = M.member_no
+                    where class_no= #{classNo}
+					ORDER BY review_no DESC 
+					) A
+				)
+			WHERE RN BETWEEN 1 AND #{endNum}
+            ]]>
+            
+	</select>  -->
+	 
+
+	 
+</mapper>
