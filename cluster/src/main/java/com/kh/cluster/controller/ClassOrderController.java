@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.MyClassOrder;
 import com.kh.cluster.entity.MyCoupon;
  import com.kh.cluster.entity.OffClassVo;
@@ -40,8 +41,6 @@ public class ClassOrderController {
 	@Value("${upload.path}")
 	private String uploadPath;
 	
-	HttpSession session;
-
 	
  	@RequestMapping(value = {"/order/{classNo}"} ,method=RequestMethod.GET )
  	public ModelAndView order(HttpServletRequest req, @PathVariable int classNo) throws Exception{
@@ -49,8 +48,8 @@ public class ClassOrderController {
 		
 		ModelAndView view = new ModelAndView();
 		
-		session= req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+  		AuthMemberVO authMember = (AuthMemberVO)req.getAttribute("member");
+		int memberNo = authMember.getMemberNo();
 		
 		//회원이 가지고 있는 쿠폰 조회
 		List<MyCoupon> couponList = orderService.couponList(memberNo);
@@ -77,8 +76,9 @@ public class ClassOrderController {
  		orderService.useCoupon(myClassOrder);
  		orderService.changePhone(myClassOrder);
  		
- 		session= req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+  		AuthMemberVO authMember = (AuthMemberVO)req.getAttribute("member");
+		int memberNo = authMember.getMemberNo();
+ 	 
 		
 		int orderNo = orderService.getNo(memberNo);
  		

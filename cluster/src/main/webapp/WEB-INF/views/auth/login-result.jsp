@@ -13,5 +13,7 @@
 	<h3>권한 : ${member.memberAuth}</h3>
 	<a href="/login/logout">로그아웃</a>
 	<a href="/mypage/index">마이페이지</a>
+	<a href="/class_detail/list">리스트</a>
+	<a href="/class_detail/detail/146">클래스 상세</a>
 </body>
 </html>

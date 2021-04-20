@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>강의 상세페이지</title>
+    <link rel="stylesheet" type="text/css" href="/css/class.css">
      <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -47,7 +48,7 @@
                     alert('로그인 후 이용 가능합니다');
                     return false;
                 } else {
-                    window.open('/class_detail/classQuestion/${offClass.classNo}/${no}', '', 'toolbar=no, menubar=no, scrollbar=no,resizable=no, status=no, height=' + popupHeight + ', width=' + popupWidth + ', left=' + popupX + ', top=' + popupY);
+                    window.open('/class_detail/classQuestion/${offClass.classNo}/${member.memberNo}', '', 'toolbar=no, menubar=no, scrollbar=no,resizable=no, status=no, height=' + popupHeight + ', width=' + popupWidth + ', left=' + popupX + ', top=' + popupY);
 
                 }
             })
@@ -64,287 +65,30 @@
  
 
  
-    </script>
-
-
-
-
+    </script> 
     <style>
-        padding: 0;
-        margin: 0;
-        }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        #left_side {
-            width: 600px;
-            height: 400px;
-            float: left;
-            margin-right: 20px;
-        }
-
-        #right_side {
-            width: 400px;
-            height: 400px;
-            /*            border: 0.5px dotted gray;*/
-            display: inline-block;
-            position: fixed;
-            margin-left: 100px;
-
-        }
-
-        .img {
-            margin: 10px 0;
-        }
-
-        #classBox,
-        #creatorBox {
-            border: 0.1px solid lightgray;
-            width: 350px;
-            height: auto;
-            margin-bottom: 10px;
-            padding: 30px;
-        }
-
-        .outbox {
-            display: block;
-            width: 1000px;
-            margin: 0 auto;
-            height: auto;
-        }
-
-        .link>a {
-            margin-left: 80px;
-        }
-
-        #reviewBox {
-            height: auto;
-
-        }
-
-        /*   .askBtn {
-        	margin-top : 2rem;
-            width: 600px;
-            height: 50px;
-            background-color: transparent;
-            font-size: 16px;
-            border-color : #ffc107;
-        } */
-        .askBtn:hover {
-            background-color: #ffc107;
-            color: white;
-        }
-
-        .moreReviewBtn,
-        .askBtn {
-            width: 600px;
-            height: 50px;
-            background-color: transparent;
-            font-size: 16px;
-            border: 1px solid;
-            border-color: #ffc107;
-        }
-
-        .moreReviewBtn:hover {
-            background-color: #ffc107;
-            color: white;
-        }
-
-        #creatorName {
-            font-size: 20px;
-            font-weight: 600;
-
-        }
-
-        .reviewImg {
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-
-        }
-
-        .reviewImgBox {
-            float: left;
-            margin-right: 10px;
-        }
-
-        .reviewImgBox::after {
-            content: "";
-            display: block;
-            clear: both;
-        }
-
-        .reviewNick {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .reviewDate {
-            font-size: 11px;
-            font-weight: 300;
-        }
-
-
-        .review-left {
-            margin-top: 0px;
-            padding: 0px;
-            margin-bottom: -3px;
-        }
-
-        .reviewBtn {
-            float: right;
-            /* width: 100px; */
-            border: none;
-            background-color: transparent;
-            font-weight: 300;
-            text-decoration: none;
-            color: black;
-            font-size: 13px;
-            margin-left: 50px;
-        }
-
-        .reviewBtn>a:hover {
-            font-weight: bold;
-        }
-
-        .reviewOkNick {
-            font-size: 15px;
-        }
-
-        .reviewContext {
-            font-size: 13px;
-            margin: 1rem 0;
-        }
-
-        .reviewOk {
-            margin-top: 0px;
-            margin-left: 1.6rem;
-            font-weight: 300;
-            font-size: 13px;
-        }
-
-        .profileImg {
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-        }
-
-        .profileBox {
-            float: left;
-
-        }
-
-        .creatorInfoBox {
-            float: left;
-            margin: 5px 10px;
-        }
-
-
-        .float-box::after {
-            content: "";
-            display: block;
-            clear: both;
-        }
-
-
-        .creatorInfo {
-            margin-top: 10px;
-            font-weight: 300;
-        }
-
-
-
-        .iconBox {
-            float: left;
-        }
-
-        .orderBtn {
-            height: 50px;
-            width: 250px;
-            border: none;
-            font-size: 16px;
-            background-color: #ffc107;
-        }
-
-        .price {
-            font-size: 17px;
-            text-align: right
-        }
-
-        .orderBox {
-            margin-top: 2rem;
-            text-align: right;
-        }
-
-        .reviewA {
-
-            width: 500px;
-            height: 50px;
-            margin-top: 1rem;
-            padding-left: 5px;
-
-        }
-
-        .link>a {
-            text-decoration: none;
-            color: gray;
-            font-weight: 300;
-        }
-
-        .link>a:hover {
-            color: black;
-            font-weight: 500;
-        }
-
-        .photo {
-            width: 600px;
-            height: 130px;
-        }
-
-        .memberSet {
-            font-weight: 300;
-            float: right;
-            -webkit-animation: blink 1.5s ease-in-out infinite alternate;
-            -moz-animation: blink 1.5s ease-in-out infinite alternate;
-            animation: blink 1.5s ease-in-out infinite alternate;
-        }
-		@-webkit-keyframes blink {
-            0% {opacity: 0;}
-            100% {opacity: 1;}
-        }
-
-        @-moz-keyframes blink {
-            0% {opacity: 0;}
-            100% {opacity: 1;}
-        }
-
-        @keyframes blink {
-            0% {opacity: 0;}
-            100% {opacity: 1;}
-        }
 
     </style>
 </head>
  
 <body>
-    <c:set var="logInMember" value="${nick}" />
-    <c:set var="classMember" value="${offClass.member.memberNick}" />
+    <c:set var="logInMember" value="${member.memberNick}" />
+    <c:set var="classMember" value="${offClass.authMember.memberNick}" />
 
     <div>
- <%--        <label>번호 : ${no}</label>
+         <label>번호 : ${member.memberNo}</label>
         <label>닉네임 : ${nick}</label>
         <label>권한 : ${auth}</label>
 
         <a href="/class_detail/list">리스트</a>
         <a href="/mypage/index">마이페이지</a>
-        <a href="/login/">로긘</a> --%>
+        <a href="/login/">로긘</a> 
         <hr>
     </div>
     <div class="outbox">
         <div id="left_side">
-            <input type="hidden" class="no" value="${no}">
+            <input type="hidden" class="no" value="${member.memberNo}">
             <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="0" end="0">
                 <c:set var="fullname" value="${readImg.fullName}" />
                 <div>
@@ -503,7 +247,7 @@
 
                 </div>
                 <br>
-                <button class="askBtn">${offClass.member.memberNick}님에게 문의하기</button>
+                <button class="askBtn">${offClass.authMember.memberNick}님에게 문의하기</button>
             </div>
 
             <div id="refund">
@@ -548,7 +292,7 @@
 
                     </div>
                     <div class="creatorInfoBox">
-                        <div id="creatorName"><label>${offClass.member.memberNick}</label></div>
+                        <div id="creatorName"><label>${offClass.authMember.memberNick}</label></div>
                         <div id="creatorSNS"><img src="/image/icon.png" width="100"></div>
                     </div>
                 </div>
