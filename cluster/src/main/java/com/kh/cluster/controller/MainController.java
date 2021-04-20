@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.cluster.entity.AuthMember;
+import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.OffclassQueryVO;
 import com.kh.cluster.service.OffclassQueryService;
+import com.kh.cluster.service.OffclassService;
 
 @Controller
 public class MainController {
@@ -29,6 +33,9 @@ public class MainController {
 	
 	@Autowired
 	OffclassQueryService service;
+	
+	@Autowired
+	private OffclassService offclassService;
 
 	@GetMapping("/")
 	public String main(HttpServletRequest req, Model model) throws Exception {
@@ -251,5 +258,32 @@ public class MainController {
 		size = Math.min(classes.size(), size);
 		
 		return classes.subList(0, size);
+	}
+	
+	// 크리에이터 홍보 페이지
+	@GetMapping("/join")
+	public void creatorJoin(HttpServletRequest req, AuthMember member, Model model) throws Exception{
+		log.info("creator join()");
+		
+		List<ClassCategory> categoryList = offclassService.categoryList();
+		model.addAttribute("categoryList", categoryList);
+	}
+	
+	// 크리에이터 신청 페이지
+	@GetMapping("/joinForm")
+	public void getJoinForm(HttpServletRequest req, AuthMember member, Model model) throws Exception{
+		log.info("creator getJoinForm()");
+		
+		model.addAttribute(new Creator());
+	}
+	
+	// 크리에이터 신청 페이지
+	@PostMapping("/joinForm")
+	public String postJoinForm(Integer memberNo, Creator creator, Model model) throws Exception{
+		log.info("creator postJoinForm()");
+		
+		offclassService.join(creator);
+		offclassService.authUpdate(memberNo);
+		return "redirect:/";
 	}
 }
