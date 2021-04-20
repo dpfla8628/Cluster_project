@@ -196,7 +196,7 @@
            		 <c:forEach items="${readImg}" var="readImg" varStatus="st"  begin="0" end="0">
                  <c:set var="fullname" value="${readImg.fullName}"/>
             	<div>
-               		<img class="img" width="200" src="/creator/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+               		<img class="img" width="200" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
             	</div>  
          </c:forEach>
             </div>

@@ -44,9 +44,14 @@
       </div>
       <div class="t-header-content-wrapper">
         <div class="t-header-content">
-        	<div class="top_btn goedit"><i class="mdi mdi-border-color"></i>
-       			<a href="/creator/edit?creatorNo=${Creator.creatorNo}">정보수정</a>
-       		</div>
+        	<c:choose>
+        		<c:when test="${member.memberAuth == '강사'}">
+	        		<div class="top_btn goedit"><i class="mdi mdi-border-color"></i>
+	       				<a href="/creator/edit?creatorNo=${Creator.creatorNo}">정보수정</a>
+	       			</div>
+       			</c:when>
+        	</c:choose>
+        	
        		<div class="top_btn gomain"><i class="mdi mdi-home"></i>
        			<a href="/">메인페이지</a>
        		</div>

@@ -89,10 +89,11 @@
     <div class="outbox">
         <div id="left_side">
             <input type="hidden" class="no" value="${member.memberNo}">
+            
             <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="0" end="0">
                 <c:set var="fullname" value="${readImg.fullName}" />
                 <div>
-                    <img class="img" width="600" src="/creator/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                    <img class="img" width="600" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                 </div>
             </c:forEach>
             <div class="link">
@@ -108,7 +109,7 @@
                     <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="1">
                         <c:set var="fullname" value="${readImg.fullName}" />
                         <div>
-                            <img class="img" width="600" src="/creator/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                            <img class="img" width="600" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                         </div>
                     </c:forEach>
                     <br>

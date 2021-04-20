@@ -116,6 +116,7 @@
 	})
 </script>
 <c:import url="/WEB-INF/views/creator/template/aside.jsp"></c:import>
+<div class="page-content-wrapper">
 <div class="col-lg-12">
     <div class="grid">
         <p class="grid-header">강의 등록 페이지</p>

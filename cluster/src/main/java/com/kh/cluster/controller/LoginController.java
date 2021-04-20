@@ -3,6 +3,7 @@ package com.kh.cluster.controller;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class LoginController {
 	//필요정보 auth, id, no
 	@PostMapping("/")
 	@ResponseBody
-	public String postLogin(@RequestBody AuthMember loginMember, HttpServletResponse res) {
+	public String postLogin(@RequestBody AuthMember loginMember, HttpSession session, HttpServletResponse res) {
 		log.info("postLogin()");
 		
 		//로그인확인
@@ -62,6 +63,9 @@ public class LoginController {
 			Cookie cookie = cookieUtil.createCookie("accessToken", token);
 			res.addCookie(cookie);
 			
+			//세션에 권한 저장
+			session.setAttribute("memberAuth", member.getMemberAuth());
+			
 			return "y";
 		}
 		
@@ -77,7 +81,7 @@ public class LoginController {
 		Cookie cookie = cookieUtil.getCookie(req, "accessToken");
 		System.out.println(cookie.getValue());
 		
-		return "redirect:/login/result";
+		return "redirect:/";
 	}
 	
 	@GetMapping("/result")
@@ -131,6 +135,9 @@ public class LoginController {
 		Cookie cookie = cookieUtil.removeCookie("accessToken");
 		res.addCookie(cookie);
 		
+		//세션 삭제
+		req.getSession().invalidate();
+		
 		return "redirect:/login/";
 	}
 	
@@ -151,10 +158,5 @@ public class LoginController {
 		redirect.addFlashAttribute("email", email);
 		
 		return "redirect:/login/resend";
-	}
-	
-	@GetMapping("/test")
-	public String getTest() {
-		return "";
 	}
 }

@@ -100,14 +100,14 @@
 						</form>
 					</div>
 					<c:choose>
-		                <c:when test="${empty no}">
+		                <c:when test="${empty member}">
 		                   <div class="col-md-6 right">
 								<button type="button" class="btn btn-secondary" id="btn-login">로그인</button>
 								<button type="button" class="btn btn-info" style="margin-left: 0.5rem" id="regist-btn">무료회원가입</button>
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="service-btn">고객센터</button>
 							</div>
 		                </c:when>
-		                <c:when test="${auth eq '일반'}">
+		                <c:when test="${member.memberAuth eq '일반'}">
 		                	<div class="col-md-6 right">
 								<button type="button" class="btn btn-info" id="btn-mypage">마이페이지</button>
 								<button type="button" class="btn btn-info" id="btn-join-creator">크리에이터 신청</button>
@@ -115,7 +115,7 @@
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-service">고객센터</button>
 							</div>	
 		                </c:when>
-		                <c:when test="${auth eq '강사'}">
+		                <c:when test="${member.memberAuth eq '강사'}">
 		                	<div class="col-md-6 right">
 								<button type="button" class="btn btn-info" id="btn-mypage">마이페이지</button>
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-logout">로그아웃</button>
