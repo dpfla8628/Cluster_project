@@ -24,13 +24,14 @@
 		})
 		
 		$("#btnList").on("click", function(){
-			self.location = "/creator/join"
+			self.location = "/creator/home"
 		})
 	});
 	
 </script>
 
 <c:import url="/WEB-INF/views/creator/template/aside.jsp"></c:import>
+<div class="page-content-wrapper">
 <div class="col-lg-12">
     <div class="grid">
         <p class="grid-header">크리에이터 수정 페이지</p>

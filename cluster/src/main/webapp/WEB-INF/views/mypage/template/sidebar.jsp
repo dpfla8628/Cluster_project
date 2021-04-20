@@ -31,9 +31,9 @@ $(document).ready(function(){
   
 		<li>
 		<!-- 만약 크리에이터 권한이 있다면??? -->
-		<c:if test="${auth eq '강사'}">
+		<c:if test="${member.memberAuth eq '강사'}">
 			<li>
-            <a href="/creator/home?creatorNo=${Creator.creatorNo}">
+            <a href="/creator/home">
               <span class="link-title">크리에이터 페이지 이동하기</span>
               <i class="mdi mdi-arrow-right-bold"></i>
             </a>

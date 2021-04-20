@@ -37,6 +37,7 @@ import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.UploadFileUtils;
 import com.sun.javafx.collections.MappingChange.Map;
 import com.kh.cluster.entity.AuthMember;
+import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.MyClassOrder;
 import com.kh.cluster.entity.MyCoupon;
@@ -67,8 +68,10 @@ public class MypageController {
 	public String index(HttpServletRequest req, Model model, MyClassLike like) throws Exception {
 		log.info("index()");
 		
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
 		
 		log.info("creator = " + service.setcreator(memberNo));
 		MyMember mymember = service.read(memberNo);
@@ -83,8 +86,12 @@ public class MypageController {
 	@GetMapping("/myedit")
 	public String getEdit(HttpServletRequest req,Model model)throws Exception{
 		log.info("getEdit()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		MyMember mymember = new MyMember();
 		mymember=service.read(memberNo);
 		model.addAttribute("mymember",mymember);
@@ -94,8 +101,11 @@ public class MypageController {
 	@PostMapping("/mydelete")
 	public String deleteProfile(HttpServletRequest req) throws Exception {
 		log.info("postdelete()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		service.delete(memberNo);
 		return "redirect:/mypage/myedit";
 	}
@@ -117,16 +127,22 @@ public class MypageController {
 	
 	@GetMapping("/mycoupon")
 	public String coupon(HttpServletRequest req,Model model)throws Exception{
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		model.addAttribute("couponlist",service.couponlist(memberNo));
 		return "mypage/mycoupon";
 	}
 	
 	@GetMapping("/myclass")
 	public String myclass(HttpServletRequest req,Model model)throws Exception{
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		model.addAttribute("orderList", service.orderlist(memberNo));
 		return "/mypage/myclass";
 	}
@@ -134,8 +150,11 @@ public class MypageController {
 	@GetMapping("/myreview_list")
 	public String myreview_list(HttpServletRequest req,Model model)throws Exception{
 		log.info("review_list()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		model.addAttribute("reviewList",service.riviewlist(memberNo));
 		
 		return "mypage/myreview_list";
@@ -177,8 +196,10 @@ public class MypageController {
 	}
 	@PostMapping("/myreview_write")
 	public String p_myreview_write(HttpServletRequest req,MyReview myreview, Model model)throws Exception{
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 		int classNo = Integer.parseInt(req.getParameter("classNo"));
 		String context = req.getParameter("reviewContext");
 		myreview.setReviewContext(context);
@@ -192,16 +213,22 @@ public class MypageController {
 	@GetMapping("/myorder")
 	public void myorder(Model model, HttpServletRequest req)throws Exception{
 		log.info("myorder()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		model.addAttribute("orderList", service.orderlist(memberNo));
 	}
 	
 	@GetMapping("/myquestion")
 	public String myquestion(HttpServletRequest req,Model model)throws Exception{
 		log.info("myquestion()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		model.addAttribute("questionList",service.readq(memberNo));
 		
 		return "/mypage/myquestion";
@@ -271,8 +298,11 @@ public class MypageController {
 	@PostMapping("/memberout")
 	public String memberout(HttpServletRequest req) throws Exception {
 		log.info("memberout()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		//session = req.getSession();
+		//int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
 		service.memberout(memberNo);
 		return "redirect:/login/";
 	}
