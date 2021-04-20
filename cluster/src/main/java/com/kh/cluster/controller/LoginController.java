@@ -131,6 +131,9 @@ public class LoginController {
 		Cookie cookie = cookieUtil.removeCookie("accessToken");
 		res.addCookie(cookie);
 		
+		//세션 삭제
+		req.getSession().invalidate();
+		
 		return "redirect:/login/";
 	}
 	
@@ -151,10 +154,5 @@ public class LoginController {
 		redirect.addFlashAttribute("email", email);
 		
 		return "redirect:/login/resend";
-	}
-	
-	@GetMapping("/test")
-	public String getTest() {
-		return "";
 	}
 }
