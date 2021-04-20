@@ -1,0 +1,60 @@
+package com.kh.cluster.filter;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@WebFilter(urlPatterns= "/admin/*")
+public class AdminFilter implements Filter {
+	
+	
+	private static final Logger log = LoggerFactory.getLogger(AdminFilter.class);
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		
+			HttpServletRequest req = (HttpServletRequest) request;
+			HttpServletResponse resp = (HttpServletResponse) response;
+			HttpSession session = req.getSession();
+		
+			
+			//관리자 권한 검사
+			
+			
+			String memberAuth = (String)session.getAttribute("memberAuth");
+			
+			boolean isAdmin = memberAuth != null && memberAuth.equals("관리자");
+			
+			//관리자라면 통과
+			if(isAdmin) {
+				
+				log.info("filter ---- before");
+				
+				chain.doFilter(request, response);
+				
+				log.info("filter ---- after");
+			}
+			
+			//관리자가 아니라면 메인페이지로 강제 리다이렉트
+			else {
+				
+				resp.sendRedirect("/");
+				//resp.sendError(403);
+			}
+		
+		
+	}
+
+}
