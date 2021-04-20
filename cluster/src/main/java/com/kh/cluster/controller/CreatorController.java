@@ -25,9 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.cluster.entity.AuthMember;
+import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.interceptor.Permission;
+import com.kh.cluster.interceptor.Permission.MemberAuth;
 import com.kh.cluster.service.OffclassService;
 import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.PagingVO;
@@ -47,57 +51,39 @@ public class CreatorController {
 	
 	HttpSession session;
 	
-	// 크리에이터 홍보 페이지
-	@GetMapping("/join")
-	public void creatorJoin(/*Member member,*/Model model) throws Exception{
-		log.info("creator join()");
-		
-		List<ClassCategory> categoryList = service.categoryList();
-		
-		model.addAttribute("categoryList", categoryList);
-		
-	}
-	
-	// 크리에이터 신청 페이지
-	@GetMapping("/joinForm")
-	public void getJoinForm(/*Member member,*/Model model) throws Exception{
-		log.info("creator getJoinForm()");
-		
-		model.addAttribute(new Creator());
-	}
-	
-	// 크리에이터 신청 페이지
-	@PostMapping("/joinForm")
-	public String postJoinForm(Integer memberNo, Creator creator, Model model) throws Exception{
-		log.info("creator postJoinForm()");
-		
-		service.join(creator);
-		service.authUpdate(memberNo);
-		return "redirect:/";
-	}
-	
 	// 크리에이터 페이지 메인
 	@GetMapping("/home")
-	public void home(HttpServletRequest req, Model model) throws Exception{
+	@Permission(authority = MemberAuth.강사)
+	public void home(HttpServletRequest req, Creator creator, Model model) throws Exception{
 		log.info("creator home()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
 		
-		model.addAttribute("Creator", service.setcreator(memberNo));
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		//String memberAuth = member.getMemberAuth();
+		
+		//if(memberAuth != null && memberAuth.equals("강사")) {
+			model.addAttribute("Creator", service.setcreator(memberNo));
+		//	return "/creator/home";
+		//}else {
+		//	return "redirect:/";
+		//}
+		
 	}
 	
 	// 크리에이터 정보 수정
 	@GetMapping("/edit")
+	@Permission(authority = MemberAuth.강사)
 	public void getEdit(HttpServletRequest req, Model model) throws Exception{
 		log.info("creator getEdit()");
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 		
 		model.addAttribute("Creator", service.setcreator(memberNo));
 	}
 	
 	// 크리에이터 정보 수정
 	@PostMapping("/edit")
+	@Permission(authority = MemberAuth.강사)
 	public String postEdit(Creator creator, Model model) throws Exception {
 		log.info("creator postEdit()");
 		
@@ -108,13 +94,14 @@ public class CreatorController {
 	
 	// 크리에이터 진행 중 강의 정보
 	@GetMapping("/classinfo")
+	@Permission(authority = MemberAuth.강사)
 	public void home(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator classinfo()");
 		
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 		
 		Creator creator = service.setcreator(memberNo);
 		model.addAttribute("Creator", creator);
@@ -138,13 +125,14 @@ public class CreatorController {
 	
 	// 크리에이터 검수 중 강의 정보
 	@GetMapping("/classcheck")
+	@Permission(authority = MemberAuth.강사)
 	public void register(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator classcheck()");
 		
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 
 		Creator creator = service.setcreator(memberNo);
 		model.addAttribute("Creator", creator);
@@ -168,13 +156,14 @@ public class CreatorController {
 
 	// 크리에이터 강의별 매출 정보
 	@GetMapping("salesbyclass")
+	@Permission(authority = MemberAuth.강사)
 	public void salesbyclass(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
 		log.info("creator salesbyclass()");
 		
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 		
 		Creator creator = service.setcreator(memberNo);
 		model.addAttribute("Creator", creator);
@@ -198,22 +187,24 @@ public class CreatorController {
 	
 	// 크리에이터 기간 별 매출정보
 	@GetMapping("salesbyperiod")
+	@Permission(authority = MemberAuth.강사)
 	public void salesbyperiod(HttpServletRequest req, Model model) throws Exception{
 		log.info("creator salesbypreiod()");
 		
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 		
 		model.addAttribute("Creator", service.setcreator(memberNo));
 	}
 	
 	// 강의 검수 데이터 등록
 	@GetMapping("/registerForm")
+	@Permission(authority = MemberAuth.강사)
 	public void registerForm(HttpServletRequest req, Model model) throws Exception {
 		log.info("creator registerForm()");
 		
-		session = req.getSession();
-		int memberNo = (int) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
 		
 		model.addAttribute("Creator", service.setcreator(memberNo));
 		
@@ -225,6 +216,7 @@ public class CreatorController {
 	
 	// 강의 검수 데이터 저장
 	@PostMapping("/registerForm")
+	@Permission(authority = MemberAuth.강사)
 	public String registClass(Offclass offclass, Model model) throws Exception{
 		log.info("creator registClass()");
 		
@@ -241,6 +233,7 @@ public class CreatorController {
 	
 	// 검수 후 시작날짜 설정
 	@GetMapping("/startdate")
+	@Permission(authority = MemberAuth.강사)
 	public void getStartDateModify(int classNo, Model model) throws Exception{
 		log.info("creator getStartDateUpdate()");
 		
@@ -249,6 +242,7 @@ public class CreatorController {
 	
 	// 검수 후 설정한 날짜로 수정
 	@PostMapping("/startdatemodify")
+	@Permission(authority = MemberAuth.강사)
 	public String postStartDateModify(Offclass offclass, Model model) throws Exception{
 		log.info("creator postStartDateUpdate()");
 		
@@ -259,6 +253,7 @@ public class CreatorController {
 	
 	// 검수 후 종료날짜 설정
 	@GetMapping("/enddate")
+	@Permission(authority = MemberAuth.강사)
 	public void getEndDateModify(int classNo, Model model) throws Exception{
 		log.info("creator getEndDateUpdate()");
 		
@@ -267,6 +262,7 @@ public class CreatorController {
 	
 	// 검수 후 설정한 날짜로 수정
 	@PostMapping("/enddatemodify")
+	@Permission(authority = MemberAuth.강사)
 	public String postEndDateModify(Offclass offclass, Model model) throws Exception{
 		log.info("creator postEndDateUpdate()");
 		
@@ -277,6 +273,7 @@ public class CreatorController {
 		
 	// 검수 진행 중, 반려 시 데이터 삭제
 	@GetMapping("/delete")
+	@Permission(authority = MemberAuth.강사)
 	public String removeClass(int classNo, Model model) throws Exception{
 		log.info("creator deleteClass()");
 		
@@ -286,6 +283,7 @@ public class CreatorController {
 	}
 	
 	@PostMapping(value = "/uploadAjax", produces = "text/plain; charset=UTF-8")
+	@Permission(authority = MemberAuth.강사)
 	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception{
 		log.info("원본 파일명 : " + file.getOriginalFilename());
 		
@@ -296,6 +294,7 @@ public class CreatorController {
 	}
 	
 	@GetMapping("/displayFile")
+	@Permission(authority = MemberAuth.강사)
 	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception{
 		
 		InputStream in = null;

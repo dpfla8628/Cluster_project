@@ -46,11 +46,11 @@
 </script>
 
 <c:import url="/WEB-INF/views/creator/template/aside.jsp"></c:import>
+<div class="page-content-wrapper">
 <div class="col-lg-6">
   <div class="grid">
     <p class="grid-header">진행 중 강의 목록</p>
     <div class="item-wrapper">
-    	<p>크리에이트번호 : ${Creator.creatorNo}</p>
       <div class="table-responsive">
       	<div>
 			<button type="button" class="btn btn-outline-warning" id="btnRegister">신규강의 신청</button>      	

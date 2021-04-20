@@ -41,7 +41,8 @@ public class MypageController {
 	private final static Logger log =
 			LoggerFactory.getLogger(MypageController.class);
 	
-	   private MypageService service;
+	@Autowired
+	private MypageService service;
 	   AuthRepository repo;
 	   
 	   @Value("${upload.path}")
@@ -274,7 +275,6 @@ public class MypageController {
 	      
 	      return entity;
 	   }
-	   
 	   @GetMapping("/getAttach/{memberNo}")
 	   @ResponseBody
 	   public List<String> getAttach(@PathVariable("memberNo") Integer memberNo) 
@@ -295,6 +295,4 @@ public class MypageController {
 	      return "redirect:/login/";
 	   }
 
-}
-
-
+	}

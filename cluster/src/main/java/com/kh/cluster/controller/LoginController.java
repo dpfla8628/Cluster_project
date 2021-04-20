@@ -63,6 +63,7 @@ public class LoginController {
 			Cookie cookie = cookieUtil.createCookie("accessToken", token);
 			res.addCookie(cookie);
 			
+			//세션에 권한 저장
 			session.setAttribute("memberAuth", member.getMemberAuth());
 			
 			return "y";

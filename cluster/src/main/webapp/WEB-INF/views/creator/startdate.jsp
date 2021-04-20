@@ -31,6 +31,7 @@
 </script>
 
 <c:import url="/WEB-INF/views/creator/template/aside.jsp"></c:import>
+<div class="page-content-wrapper">
 <div class="col-lg-12">
     <div class="grid">
         <p class="grid-header">시작날짜 수정</p>
@@ -62,5 +63,5 @@
             </div>
         </div>
     </div>
-</div>	
+	
 <c:import url="/WEB-INF/views/creator/template/footer.jsp"></c:import>  
