@@ -3,6 +3,7 @@ package com.kh.cluster.controller;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class LoginController {
 	//필요정보 auth, id, no
 	@PostMapping("/")
 	@ResponseBody
-	public String postLogin(@RequestBody AuthMember loginMember, HttpServletResponse res) {
+	public String postLogin(@RequestBody AuthMember loginMember, HttpSession session, HttpServletResponse res) {
 		log.info("postLogin()");
 		
 		//로그인확인
@@ -61,6 +62,8 @@ public class LoginController {
 			//토큰 쿠키에 저장
 			Cookie cookie = cookieUtil.createCookie("accessToken", token);
 			res.addCookie(cookie);
+			
+			session.setAttribute("memberAuth", member.getMemberAuth());
 			
 			return "y";
 		}

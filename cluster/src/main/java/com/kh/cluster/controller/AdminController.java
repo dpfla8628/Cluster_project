@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.service.AdminService;
 import com.kh.cluster.util.DateUtil;
@@ -43,11 +45,11 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
-	//@Value("${upload.path}")
-	//private String uploadPath;
+//	@Value("${upload.path}")
+//	private String uploadPath;
 	
 	@GetMapping("/home")
-	public String adminHome(Locale locale, Model model) throws Exception {
+	public String adminHome(HttpServletRequest req, Locale locale, Model model) throws Exception {
 		
 		log.info("adminHome()");
 		
@@ -501,7 +503,7 @@ public class AdminController {
 //		return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
 //	
 //	}
-	
+//	
 //	@GetMapping("/displayFile")
 //	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
 //		
@@ -544,7 +546,6 @@ public class AdminController {
 //		
 //		return entity;
 //	}
-	
 	
 	@GetMapping("/category/categoryList")
 	public String categoryList(@RequestParam(value="p", required=false) Integer p, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
