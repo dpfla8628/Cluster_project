@@ -35,6 +35,24 @@
 		)
 	</insert>
 	
+	<insert id="insertSNS" parameterType="hashmap">
+		insert into member VALUES(
+			member_seq.nextval, 
+			#{email}, 
+			null, 
+			#{nick}, 
+			null, 
+			sysdate, 
+			'일반', 
+			null, 
+			null, 
+			'y',
+			'y',
+			'y',
+			's'
+		)
+	</insert>
+	
 	<select id="selectMember" resultType="AuthMember" parameterType="string">
 		select * from member where member_id = #{memberId}
 	</select>
