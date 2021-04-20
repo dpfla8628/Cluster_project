@@ -80,7 +80,7 @@ public class LoginController {
 		Cookie cookie = cookieUtil.getCookie(req, "accessToken");
 		System.out.println(cookie.getValue());
 		
-		return "redirect:/login/result";
+		return "redirect:/";
 	}
 	
 	@GetMapping("/result")
