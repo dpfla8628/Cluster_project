@@ -179,7 +179,7 @@
 				<table>
 					<tr>
 						<td colspan="2">
-							<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 						</td>
 					</tr>
 					<tr>
