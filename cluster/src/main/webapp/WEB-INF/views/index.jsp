@@ -25,7 +25,7 @@ $(document).ready(function(){
     $(".detail").css("cursor","pointer").on("click", function(){
     	var classNo = $(this).attr("classNo");
     	
-    	self.location = "/detail/" + classNo;
+    	self.location = "class_detail/detail/" + classNo;
     	
     	/* alert(classNo + "값으로 페이지 이동 예정"); */
     	
