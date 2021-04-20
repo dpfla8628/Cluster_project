@@ -36,6 +36,7 @@
 </script>
 
 <c:import url="/WEB-INF/views/creator/template/aside.jsp"></c:import>
+<div class="page-content-wrapper">
 <div class="col-lg-6">
   <div class="grid">
     <p class="grid-header">검수 진행 중 강의 목록</p>

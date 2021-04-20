@@ -11,10 +11,10 @@
  	</div>
     <div class="page-content-wrapper-inner">
         <div class="viewport-header">
-            
+            <p>memberNo = ${member.memberNo}</p>
+            <p>creatorNo = ${Creator.creatorNo}</p>
         </div>
         <div class="content-viewport">
-        	<p>크리에이트번호 : ${Creator.creatorNo}</p>
             <div class="row">
                 <div class="col-md-7 equel-grid order-md-2">
                     <div class="grid d-flex flex-column justify-content-between overflow-hidden">
@@ -73,7 +73,7 @@
                         <div class="col-6 equel-grid">
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
-                                    <div class="profile-img img-rounded bg-inverse-danger no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-emoticon-happy mdi-2x"></i></div>
+                                    <div class="profile-img img-rounded bg-inverse-warning no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-emoticon-happy mdi-2x"></i></div>
                                     <h2 class="font-weight-medium"><span class="animated-count">100</span>명</h2><small class="text-gray d-block mt-3">강의 참가자</small>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                         <div class="col-6 equel-grid">
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
-                                    <div class="profile-img img-rounded bg-inverse-warning no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-view-carousel mdi-2x"></i></div>
+                                    <div class="profile-img img-rounded bg-inverse-success no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-view-carousel mdi-2x"></i></div>
                                     <h2 class="font-weight-medium animated-count"><span class="animated-count">12</span>개</h2><small class="text-gray d-block mt-3">현재 진행 강의 수</small>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                         <div class="col-6 equel-grid">
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
-                                    <div class="profile-img img-rounded bg-inverse-success no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-heart mdi-2x"></i></div>
+                                    <div class="profile-img img-rounded bg-inverse-danger no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-heart mdi-2x"></i></div>
                                     <h2 class="font-weight-medium"><span class="animated-count">100</span>회</h2><small class="text-gray d-block mt-3">총 좋아요</small>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                         <div class="col-6 equel-grid">
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
-                                    <div class="profile-img img-rounded bg-inverse-warning no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-keyboard mdi-2x"></i></div>
+                                    <div class="profile-img img-rounded bg-inverse-info no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-keyboard mdi-2x"></i></div>
                                     <h2 class="font-weight-medium animated-count"><span class="animated-count">100</span>회</h2><small class="text-gray d-block mt-3">총 리뷰</small>
                                 </div>
                             </div>
@@ -179,7 +179,7 @@
   		</div>
 		
 	</div>
-</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script>
 		let myChartOne = document.getElementById('myChartOne').getContext('2d');
