@@ -99,6 +99,10 @@
 					});
 				});
 				
+				$("#googleBtn").click(function(){
+					location.href = "${contextPath}/auth/check";
+				});
+				
 			});
 		</script>
 	</head>
@@ -126,7 +130,7 @@
 					
 					<button type="button" id="loginBtn" class="btn btn-outline-warning btn-lg btn-block btn-gap">로그인</button>
 					<hr>
-					<button type="submit" class="btn btn-outline-warning btn-lg btn-block">구글로 시작하기</button>
+					<button type="button" id="googleBtn" class="btn btn-outline-warning btn-lg btn-block">구글로 시작하기</button>
 			
 					<div class="container col-container">
 						<div class="row justify-content-md-center">

@@ -20,4 +20,5 @@ public interface AuthService {
 	public void deleteToken(String memberId);
 	public void resendMail(String memberId, Subject subject);
 	public AuthMember isMember(String memberId);
+	public AuthMember signUpSNS(Map<String, String> member);
 }

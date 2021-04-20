@@ -133,10 +133,4 @@ public class SignUpController {
 		return result == true ? "y" : "n";
 	}
 	
-	@GetMapping("/google")
-	public String signUpToGoogle() {
-		return "";
-	}
-	
-	
 }
