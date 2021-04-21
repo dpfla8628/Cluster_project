@@ -126,7 +126,6 @@
                     <div class="col-md-8 mx-auto">	
 						<form:form modelAttribute="offclass" action="registerForm" enctype="multipart/form-data">
 							<input type="hidden" name="creatorNo" value="${Creator.creatorNo}"/>
-							<p>크리에이트번호 : ${Creator.creatorNo}</p>
 							<div class="form-group row showcase_row_area">
 			                    <div class="col-md-3 showcase_text_area"><label for="inputType1">강의 명</label></div>
 			                    <div class="col-md-9 showcase_content_area"><form:input type="text" class="form-control" id="inputType1" path="className"/></div>

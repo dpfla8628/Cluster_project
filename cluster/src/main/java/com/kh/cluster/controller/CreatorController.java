@@ -3,7 +3,10 @@ package com.kh.cluster.controller;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,13 +28,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.cluster.entity.AuthMember;
 import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
-import com.kh.cluster.interceptor.Permission;
-import com.kh.cluster.interceptor.Permission.MemberAuth;
+import com.kh.cluster.service.AdminService;
 import com.kh.cluster.service.OffclassService;
 import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.PagingVO;
@@ -46,6 +47,9 @@ public class CreatorController {
 	@Autowired
 	private OffclassService service;
 	
+	@Autowired
+	private AdminService adminService;
+	
 	@Value("${upload.path}")
 	private String uploadPath;
 	
@@ -53,26 +57,42 @@ public class CreatorController {
 	
 	// 크리에이터 페이지 메인
 	@GetMapping("/home")
-	@Permission(authority = MemberAuth.강사)
-	public void home(HttpServletRequest req, Creator creator, Model model) throws Exception{
+	//@Permission(authority = MemberAuth.강사)
+	public void home(HttpServletRequest req, Creator creator, Locale locale, Model model) throws Exception{
 		log.info("creator home()");
 		
 		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
 		int memberNo = member.getMemberNo();
-		//String memberAuth = member.getMemberAuth();
 		
-		//if(memberAuth != null && memberAuth.equals("강사")) {
-			model.addAttribute("Creator", service.setcreator(memberNo));
-		//	return "/creator/home";
-		//}else {
-		//	return "redirect:/";
-		//}
+		//멤버 정보 전달
+		creator = service.setcreator(memberNo);
+		model.addAttribute("Creator", creator);
+		int creatorNo = creator.getCreatorNo();
 		
+		//현재 날짜
+		Date date = new Date();
+		
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		String serverTime = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", serverTime);
+		
+		//총 강의 개수 전달
+		model.addAttribute("TotalClass", service.totalClass(creatorNo));
+		//현재 진행 강의 개수 전달
+		model.addAttribute("OpenClass", service.openClass(creatorNo));
+		//총 강의 참가자 수 전달
+		model.addAttribute("TotalEntrant", service.totalEntrant(creatorNo));
+		//총 받은 좋아요 수 전달
+		model.addAttribute("TotalLike", service.totalLike(creatorNo));
+		
+		//매출Top10 강의 정보 전달
+		model.addAttribute("TopTenClass", adminService.getTop10Sales());
 	}
 	
 	// 크리에이터 정보 수정
 	@GetMapping("/edit")
-	@Permission(authority = MemberAuth.강사)
+	//@Permission(authority = MemberAuth.강사)
 	public void getEdit(HttpServletRequest req, Model model) throws Exception{
 		log.info("creator getEdit()");
 		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
@@ -83,7 +103,7 @@ public class CreatorController {
 	
 	// 크리에이터 정보 수정
 	@PostMapping("/edit")
-	@Permission(authority = MemberAuth.강사)
+	//@Permission(authority = MemberAuth.강사)
 	public String postEdit(Creator creator, Model model) throws Exception {
 		log.info("creator postEdit()");
 		
@@ -94,7 +114,7 @@ public class CreatorController {
 	
 	// 크리에이터 진행 중 강의 정보
 	@GetMapping("/classinfo")
-	@Permission(authority = MemberAuth.강사)
+	//@Permission(authority = MemberAuth.강사)
 	public void home(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
@@ -125,7 +145,7 @@ public class CreatorController {
 	
 	// 크리에이터 검수 중 강의 정보
 	@GetMapping("/classcheck")
-	@Permission(authority = MemberAuth.강사)
+	//@Permission(authority = MemberAuth.강사)
 	public void register(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
@@ -156,7 +176,7 @@ public class CreatorController {
 
 	// 크리에이터 강의별 매출 정보
 	@GetMapping("salesbyclass")
-	@Permission(authority = MemberAuth.강사)
+	//@Permission(authority = MemberAuth.강사)
 	public void salesbyclass(HttpServletRequest req, PagingVO vo, Model model
 					,@RequestParam(value="nowPage", required = false)String nowPage
 					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
@@ -187,7 +207,7 @@ public class CreatorController {
 	
 	// 크리에이터 기간 별 매출정보
 	@GetMapping("salesbyperiod")
-	@Permission(authority = MemberAuth.강사)
+	//@Permission(authority = MemberAuth.강사)
 	public void salesbyperiod(HttpServletRequest req, Model model) throws Exception{
 		log.info("creator salesbypreiod()");
 		
@@ -196,10 +216,60 @@ public class CreatorController {
 		
 		model.addAttribute("Creator", service.setcreator(memberNo));
 	}
+			
+	// 검수 후 시작날짜 설정
+	@GetMapping("/startdate")
+	//@Permission(authority = MemberAuth.강사)
+	public void getStartDateModify(int classNo, Model model) throws Exception{
+		log.info("creator getStartDateUpdate()");
+		
+		model.addAttribute(service.readDate(classNo));
+	}
+	
+	// 검수 후 설정한 날짜로 수정
+	@PostMapping("/startdatemodify")
+	//@Permission(authority = MemberAuth.강사)
+	public String postStartDateModify(Offclass offclass, Model model) throws Exception{
+		log.info("creator postStartDateUpdate()");
+		
+		service.startDateModify(offclass);
+		
+		return "redirect:classinfo";
+	}
+	
+	// 검수 후 종료날짜 설정
+	@GetMapping("/enddate")
+	//@Permission(authority = MemberAuth.강사)
+	public void getEndDateModify(int classNo, Model model) throws Exception{
+		log.info("creator getEndDateUpdate()");
+		
+		model.addAttribute(service.readDate(classNo));
+	}
+	
+	// 검수 후 설정한 날짜로 수정
+	@PostMapping("/enddatemodify")
+	//@Permission(authority = MemberAuth.강사)
+	public String postEndDateModify(Offclass offclass, Model model) throws Exception{
+		log.info("creator postEndDateUpdate()");
+		
+		service.endDateModify(offclass);
+		
+		return "redirect:classinfo";
+	}
+		
+	// 검수 진행 중, 반려 시 데이터 삭제
+	@GetMapping("/delete")
+	//@Permission(authority = MemberAuth.강사)
+	public String removeClass(int classNo, Model model) throws Exception{
+		log.info("creator deleteClass()");
+		
+		service.classRemove(classNo);
+		
+		return "redirect:classcheck";
+	}
 	
 	// 강의 검수 데이터 등록
 	@GetMapping("/registerForm")
-	@Permission(authority = MemberAuth.강사)
 	public void registerForm(HttpServletRequest req, Model model) throws Exception {
 		log.info("creator registerForm()");
 		
@@ -216,7 +286,6 @@ public class CreatorController {
 	
 	// 강의 검수 데이터 저장
 	@PostMapping("/registerForm")
-	@Permission(authority = MemberAuth.강사)
 	public String registClass(Offclass offclass, Model model) throws Exception{
 		log.info("creator registClass()");
 		
@@ -228,62 +297,10 @@ public class CreatorController {
 		
 		service.registClass(offclass);
 				
-		return "redirect:classcheck";
-	}
-	
-	// 검수 후 시작날짜 설정
-	@GetMapping("/startdate")
-	@Permission(authority = MemberAuth.강사)
-	public void getStartDateModify(int classNo, Model model) throws Exception{
-		log.info("creator getStartDateUpdate()");
-		
-		model.addAttribute(service.readDate(classNo));
-	}
-	
-	// 검수 후 설정한 날짜로 수정
-	@PostMapping("/startdatemodify")
-	@Permission(authority = MemberAuth.강사)
-	public String postStartDateModify(Offclass offclass, Model model) throws Exception{
-		log.info("creator postStartDateUpdate()");
-		
-		service.startDateModify(offclass);
-		
-		return "redirect:classinfo";
-	}
-	
-	// 검수 후 종료날짜 설정
-	@GetMapping("/enddate")
-	@Permission(authority = MemberAuth.강사)
-	public void getEndDateModify(int classNo, Model model) throws Exception{
-		log.info("creator getEndDateUpdate()");
-		
-		model.addAttribute(service.readDate(classNo));
-	}
-	
-	// 검수 후 설정한 날짜로 수정
-	@PostMapping("/enddatemodify")
-	@Permission(authority = MemberAuth.강사)
-	public String postEndDateModify(Offclass offclass, Model model) throws Exception{
-		log.info("creator postEndDateUpdate()");
-		
-		service.endDateModify(offclass);
-		
-		return "redirect:classinfo";
-	}
-		
-	// 검수 진행 중, 반려 시 데이터 삭제
-	@GetMapping("/delete")
-	@Permission(authority = MemberAuth.강사)
-	public String removeClass(int classNo, Model model) throws Exception{
-		log.info("creator deleteClass()");
-		
-		service.classRemove(classNo);
-		
-		return "redirect:classcheck";
+		return "redirect:/creator/classcheck";
 	}
 	
 	@PostMapping(value = "/uploadAjax", produces = "text/plain; charset=UTF-8")
-	@Permission(authority = MemberAuth.강사)
 	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception{
 		log.info("원본 파일명 : " + file.getOriginalFilename());
 		
@@ -294,7 +311,6 @@ public class CreatorController {
 	}
 	
 	@GetMapping("/displayFile")
-	@Permission(authority = MemberAuth.강사)
 	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception{
 		
 		InputStream in = null;
@@ -330,6 +346,4 @@ public class CreatorController {
 		
 		return entity;
 	}
-	
-	
 }

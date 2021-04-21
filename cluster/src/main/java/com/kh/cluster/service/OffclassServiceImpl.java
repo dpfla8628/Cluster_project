@@ -87,12 +87,12 @@ public class OffclassServiceImpl implements OffclassService{
 
 
 	@Override
-	public int countClass(Integer creatorNo) throws Exception{
+	public Integer countClass(Integer creatorNo) throws Exception{
 		return repository.countClass(creatorNo);
 	}
 
 	@Override
-	public int countCheck(Integer creatorNo) throws Exception{
+	public Integer countCheck(Integer creatorNo) throws Exception{
 		return repository.countCheck(creatorNo);
 	}
 
@@ -126,7 +126,7 @@ public class OffclassServiceImpl implements OffclassService{
 	}
 
 	@Override
-	public Creator setcreator(int memberNo) throws Exception{
+	public Creator setcreator(Integer memberNo) throws Exception{
 		return repository.setCreator(memberNo);
 	}
 
@@ -135,5 +135,23 @@ public class OffclassServiceImpl implements OffclassService{
 		repository.creatorEdit(creator);
 	}
 
+	@Override
+	public Integer totalClass(Integer creatorNo) throws Exception {
+		return repository.totalClass(creatorNo);
+	}
+
+	@Override
+	public Integer openClass(Integer creatorNo) throws Exception{
+		return repository.openClass(creatorNo);
+	}
 	
+	@Override
+	public Integer totalLike(Integer creatorNo) throws Exception {
+		return repository.totalLike(creatorNo);
+	}
+	
+	@Override
+	public Integer totalEntrant(Integer creatorNo) throws Exception {
+		return repository.totalEntrant(creatorNo);
+	}
 }

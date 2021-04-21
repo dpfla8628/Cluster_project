@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kh.cluster.controller.CreatorController;
+import com.kh.cluster.entity.AuthMemberVO;
 
 @WebFilter(urlPatterns = "/creator/*")
 public class CreatorFilter implements Filter{
@@ -40,6 +41,8 @@ public class CreatorFilter implements Filter{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		
+		//AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		//String auth = member.getMemberAuth();
 		HttpSession session = req.getSession();
 		String auth = (String) session.getAttribute(SESSION_ATTRIBUTE_AUTH);
 		
@@ -47,7 +50,7 @@ public class CreatorFilter implements Filter{
 		log.info("auth = " + auth);
 		if(auth == null) {
 			res.sendRedirect(LOGIN_PAGE);
-		}else if(auth.equals("강사")) {
+		}else if(auth.equals("강사") || auth.equals("관리자")) {
 			chain.doFilter(req, res);
 		}else {
 			res.sendRedirect(HOME_PAGE);
