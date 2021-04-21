@@ -260,15 +260,16 @@ public class MainController {
 			throws Exception {
 
 		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
-		Integer memberNo = member.getMemberNo();
+		Integer memberNo = null;
 
-		// 로그인하지 않은 사용자는 httpstatus코드 401번을 반환한다.
-		if (memberNo == null) {
-			return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
-		}
 		// 성공하면 httpstatus코드 200을 반환한다.
-		service.updateOffclassLike(memberNo, classNo, true);
-		return ResponseEntity.ok("Success");
+		if (member != null) {
+			memberNo = member.getMemberNo();
+			service.updateOffclassLike(memberNo, classNo, true);
+			return ResponseEntity.ok("Success");
+		}
+		// 로그인하지 않은 사용자는 httpstatus코드 401번을 반환한다.
+		return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
 
 	}
 

@@ -103,7 +103,6 @@
 							</div>
 						</form>
 					</div>
-					${member.memberAuth}<br>
 					<c:choose>
 		                <c:when test="${empty member}">
 		                   <div class="col-md-6 right">
