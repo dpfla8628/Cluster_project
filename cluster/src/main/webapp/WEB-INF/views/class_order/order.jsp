@@ -196,21 +196,21 @@
            		 <c:forEach items="${readImg}" var="readImg" varStatus="st"  begin="0" end="0">
                  <c:set var="fullname" value="${readImg.fullName}"/>
             	<div>
-               		<img class="img" width="200" src="/creator/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+               		<img class="img" width="200" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
             	</div>  
          </c:forEach>
             </div>
             <div>
                 <h2>주문자 정보</h2>
                 <input type="hidden" name="classNo" value="${offClass.classNo}">
-                <input type="hidden" name="memberNo" value="${no}">
+                <input type="hidden" name="memberNo" value="${member.memberNo}">
                 <div>
                     <label>입금자 이름</label><br>
                     <input type="text" class="name" name="orderName" value="">
                 </div>
                 <div>
                     <label>휴대폰 번호</label><br>
-                    <input type="text" class="phone" name="memberPhone" maxlength="13" value="${phone}">
+                    <input type="text" class="phone" name="memberPhone" maxlength="13" value="${member.memberPhone}">
                 </div>
             </div>
 

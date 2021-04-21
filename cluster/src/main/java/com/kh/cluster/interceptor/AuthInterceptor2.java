@@ -49,7 +49,8 @@ public class AuthInterceptor2 implements HandlerInterceptor{
 			}
 		}
 		
-		req.setAttribute("member", null);
+		AuthMemberVO member= null;
+		req.setAttribute("member", member);
 		
 		return true;
 	}

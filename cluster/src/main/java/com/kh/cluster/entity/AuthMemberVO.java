@@ -6,15 +6,17 @@ public class AuthMemberVO {
 	private String memberId;
 	private String memberAuth;
 	private String memberNick;
-	private String memberBy;
-	
+ 	private String memberPhone;
+ 	private String memberBy;
+ 	
 	public AuthMemberVO(AuthMember member) {
 		this.setMemberNo(member.getMemberNo());
 		this.setMemberId(member.getMemberId());
 		this.setMemberAuth(member.getMemberAuth());
 		this.setMemberNick(member.getMemberNick());
-		this.setMemberBy(member.getMemberBy());
-	}
+ 		this.setMemberPhone(member.getMemberPhone());
+ 		this.setMemberBy(member.getMemberBy());
+ 	}
 	
 	public String getMemberBy() {
 		return memberBy;
@@ -48,6 +50,14 @@ public class AuthMemberVO {
 	}
 	public void setMemberAuth(String memberAuth) {
 		this.memberAuth = memberAuth;
+	}
+
+	public String getMemberPhone() {
+		return memberPhone;
+	}
+
+	public void setMemberPhone(String memberPhone) {
+		this.memberPhone = memberPhone;
 	}
 	
 }

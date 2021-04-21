@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/class.css">
+
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
 	$(document).ready(function(){
@@ -17,7 +19,17 @@
 				 return false;
 			 }
 			 else if(confirm("문의 등록 완료하시겠습니까?")){
-				  close()
+					var form = $("#qnaForm").serialize();
+			        $.ajax({
+			            type : "post", 
+			            url : "/class_detail/classQuestion/${offClass.classNo}/${member.memberNo}",  
+			            data : form,  
+ 			            success : function(data){
+ 			            	alert("문의 완료! \n문의 내역은 마이페이지에서 확인 가능합니다");
+ 			            	 window.close(); 
+			            }
+			        });
+ 
 			  }
 			 else{
 				 return false
@@ -28,46 +40,23 @@
 	})
 </script> 
     <style>
-        .outBox {
-            border: 1px solid #ffc107;
-            width: 400px;
-            height: 500px;
-			margin: auto 0.5rem;
-            
-        }
 
-     
-       .classQ {
-            width: 350px;
-            height: 400px;
-            resize: none;
-            margin: auto 1rem;
-            border : 1px solid lightgray;
-        } 
-
-        .sendBtn {
-            width: 355px;
-            height: 40px;
-            border: none;
-            margin: 0.5rem 1rem;
-
-        }
        
     </style>
 </head>
 <body>
-	<div class="outBox">
-         <form:form modelAttribute="qna" action="${memberLogIn.memberNo}" methos="POST">
+	<div class="qnaOutBox">
+         <form id="qnaForm">
            <div class="questionForm">
             <input type="hidden" name="classNo" value="${offClass.classNo}">
-            <input type="hidden" name="memberNo" value="${memberLogIn.memberNo}">
+            <input type="hidden" name="memberNo" value="${member.memberNo}">
             <br>
             <div>
                 <textarea class="classQ" name="classQ" placeholder="문의 내용"></textarea>
             </div>
             <input type="submit" class="sendBtn" value="문의하기">
             </div>
-    </form:form>
+    </form>
  </div>
 </body>
 </html>

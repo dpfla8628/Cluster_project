@@ -30,7 +30,7 @@
 			<result property="memberNo" column="member_no"/>
 		</collection>
 				
-		<collection javaType="Member" property="member">
+		<collection javaType="AuthMember" property="authMember">
 			<id property="memberNo" column="member_no"/>
 			<result property="memberId" column="member_id"/>
 			<result property="memberPw" column="member_pw"/>
@@ -38,8 +38,13 @@
 			<result property="memberPhone" column="member_phone"/>
 			<result property="memberDate" column="member_date"/>
 			<result property="memberAuth" column="member_auth"/>
-			<result property="memberAccessToken" column="member_access_token"/>
-			<result property="memberRefreshToken" column="member_refresh_token"/>
+			<result property="memberToken" column="member_token"/>
+			<result property="memberAuthNum" column="member_auth_num"/>
+			<result property="memberStatus" column="member_status"/>
+			<result property="memberAgreement1" column="member_agreement1"/>
+			<result property="memberAgreement2" column="member_agreement2"/>
+			<result property="memberBy" column="member_by"/>
+			
 		</collection>
 		
 		<collection javaType="Review" property="review">
