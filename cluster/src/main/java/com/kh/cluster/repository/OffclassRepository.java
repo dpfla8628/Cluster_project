@@ -33,9 +33,9 @@ public interface OffclassRepository {
 
 	public String getPicture(Integer classNo) throws Exception;
 
-	public int countClass(Integer creatorNo) throws Exception;
+	public Integer countClass(Integer creatorNo) throws Exception;
 
-	public int countCheck(Integer creatorNo) throws Exception;
+	public Integer countCheck(Integer creatorNo) throws Exception;
 
 	public List<Offclass> selectClass(PagingVO vo) throws Exception;
 
@@ -47,8 +47,16 @@ public interface OffclassRepository {
 
 	public void endDateUpdate(Offclass offclass) throws Exception;
 
-	public Creator setCreator(int memberNo) throws Exception;
+	public Creator setCreator(Integer memberNo) throws Exception;
 
 	public void creatorEdit(Creator creator) throws Exception;
+
+	public Integer totalClass(Integer creatorNo) throws Exception;
+
+	public Integer openClass(Integer creatorNo) throws Exception;
+
+	public Integer totalLike(Integer creatorNo) throws Exception;
+
+	public Integer totalEntrant(Integer creatorNo) throws Exception;
 
 }

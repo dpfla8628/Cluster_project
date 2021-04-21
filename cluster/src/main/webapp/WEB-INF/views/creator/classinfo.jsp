@@ -94,7 +94,7 @@
 						<tr>
 							<td align="center">${offclass.classNo}</td>
 							<td align="left">
-								<a href="/creator/read?classNo=${offclass.classNo}">
+								<a href="/class_detail/detail/${offclass.classNo}">
 									${offclass.className}
 								</a>
 							</td>
@@ -111,7 +111,7 @@
 							<tr>
 							<td align="center">${offclass.classNo}</td>
 							<td align="left">
-								<a href="/creator/read?classNo=${offclass.classNo}">
+								<a href="/class_detail/detail/${offclass.classNo}">
 									${offclass.className}
 								</a>
 							</td>
@@ -132,7 +132,7 @@
 							<tr>
 							<td align="center">${offclass.classNo}</td>
 							<td align="left">
-								<a href="/creator/read?classNo=${offclass.classNo}">
+								<a href="/class_detail/detail/${offclass.classNo}">
 									${offclass.className}
 								</a>
 							</td>
@@ -151,7 +151,7 @@
 							<tr>
 							<td align="center">${offclass.classNo}</td>
 							<td align="left">
-								<a href="/creator/read?classNo=${offclass.classNo}">
+								<a href="/class_detail/detail/${offclass.classNo}">
 									${offclass.className}
 								</a>
 							</td>

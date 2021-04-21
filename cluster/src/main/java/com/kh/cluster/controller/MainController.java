@@ -53,7 +53,7 @@ public class MainController {
 
 		HttpSession session = req.getSession();
 		Integer memberNo = (Integer) session.getAttribute("no");
-
+		log.info("memberNo() = " + memberNo);
 		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
 		List<OffclassQueryVO> craftClasses = service.searchByCategory(memberNo, "공예", null, "new");
 		List<OffclassQueryVO> exerciseClasses = service.searchByCategory(memberNo, "운동", null, "new");

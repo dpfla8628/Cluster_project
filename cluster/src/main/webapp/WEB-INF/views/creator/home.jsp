@@ -4,6 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:import url="/WEB-INF/views/creator/template/header.jsp"></c:import>
 
+<style>
+	.table:not(.table-bordered) thead tr th{
+		background-color: orange;
+    	color: white;
+    	font-weight: bold;
+    	text-align: center;
+    }
+</style>
+
 <c:import url="/WEB-INF/views/creator/template/aside.jsp"></c:import>
 <div class="page-content-wrapper">
     <div class="grid">
@@ -11,8 +20,7 @@
  	</div>
     <div class="page-content-wrapper-inner">
         <div class="viewport-header">
-            <p>memberNo = ${member.memberNo}</p>
-            <p>creatorNo = ${Creator.creatorNo}</p>
+            
         </div>
         <div class="content-viewport">
             <div class="row">
@@ -66,7 +74,7 @@
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
                                     <div class="profile-img img-rounded bg-inverse-primary no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-account-group mdi-2x"></i></div>
-                                    <h2 class="font-weight-medium"><span class="animated-count">21</span>개</h2><small class="text-gray d-block mt-3">총 강의 개수</small>
+                                    <h2 class="font-weight-medium"><span class="animated-count">${TotalClass}</span>개</h2><small class="text-gray d-block mt-3">총 강의 개수</small>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +82,7 @@
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
                                     <div class="profile-img img-rounded bg-inverse-warning no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-emoticon-happy mdi-2x"></i></div>
-                                    <h2 class="font-weight-medium"><span class="animated-count">100</span>명</h2><small class="text-gray d-block mt-3">강의 참가자</small>
+                                    <h2 class="font-weight-medium"><span class="animated-count">${TotalEntrant}</span>명</h2><small class="text-gray d-block mt-3">강의 참가자</small>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +92,7 @@
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
                                     <div class="profile-img img-rounded bg-inverse-success no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-view-carousel mdi-2x"></i></div>
-                                    <h2 class="font-weight-medium animated-count"><span class="animated-count">12</span>개</h2><small class="text-gray d-block mt-3">현재 진행 강의 수</small>
+                                    <h2 class="font-weight-medium animated-count"><span class="animated-count">${OpenClass}</span>개</h2><small class="text-gray d-block mt-3">현재 진행 강의 수</small>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +100,7 @@
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
                                     <div class="profile-img img-rounded bg-inverse-danger no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-heart mdi-2x"></i></div>
-                                    <h2 class="font-weight-medium"><span class="animated-count">100</span>회</h2><small class="text-gray d-block mt-3">총 좋아요</small>
+                                    <h2 class="font-weight-medium"><span class="animated-count">${TotalLike}</span>회</h2><small class="text-gray d-block mt-3">총 좋아요</small>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +139,8 @@
                         </div>
                 		<div class="grid-body">
                 			<div class="d-flex justify-content-between">
-                				<p class="card-title">매출 Top 10</p>
+                				<p class="card-title">현재 매출 Top 10</p>
+                				<p> [${serverTime} 기준]</p>
                 			</div>
                 		</div>
                 	</div>
@@ -141,15 +150,14 @@
 			        <table class="table table-striped">
 			          <thead>
 			            <tr>
-			              <th>번호</th>
+			              <th>랭킹</th>
 						  <th>강의명</th>
-						  <th>진행상황</th>
-						  <th>매출액</th>
+						  <th>크리에이터</th>
 			            </tr>
 			          </thead>
 			          <tbody>
 			          	<c:choose>
-							<c:when test="${empty list}">
+							<c:when test="${empty TopTenClass}">
 								<tr>
 									<td align="center" colspan="7">
 										진행중인 강의가 없습니다.
@@ -157,16 +165,11 @@
 								</tr>
 							</c:when>
 							<c:otherwise>
-								<c:forEach items="${list}" var="offclass">
+								<c:forEach items="${TopTenClass}" var="adminTopSalesVO">
 									<tr>
-										<td align="center">${offclass.classNo}</td>
-										<td align="left">
-											<a href="/creator/read?classNo=${offclass.classNo}">
-												${offclass.className}
-											</a>
-										</td>
-										<td align="center">${offclass.classRegdate}</td>
-										<td align="center">${offclass.classCheck}</td>
+										<td align="center">${adminTopSalesVO.rank}</td>
+										<td align="left">${adminTopSalesVO.className}</td>
+										<td align="center">${adminTopSalesVO.memberNick}</td>
 																				
 									</tr>
 								</c:forEach>
