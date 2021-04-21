@@ -3,8 +3,10 @@ package com.kh.cluster.repository;
 import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.util.PagingVO;
 
 public interface OffclassRepository {
@@ -59,4 +61,15 @@ public interface OffclassRepository {
 
 	public Integer totalEntrant(Integer creatorNo) throws Exception;
 
+	public List<OffclassQnAVO> selectClassQnA(PagingVO vo) throws Exception;
+
+	public ClassQuestion readQuestion(Integer classqNo) throws Exception;
+
+	public void classAnswer(ClassQuestion classQuestion) throws Exception;
+
+	public Integer countQuestion(Integer creatorNo) throws Exception;
+
+	public Integer countAnswer(Integer creatorNo) throws Exception;
+
+	
 }

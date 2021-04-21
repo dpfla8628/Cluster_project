@@ -3,8 +3,10 @@ package com.kh.cluster.service;
 import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.util.PagingVO;
 
 public interface OffclassService {
@@ -80,6 +82,21 @@ public interface OffclassService {
 
 	// 모든 강의에 참가했던 인원 수 확인
 	public Integer totalEntrant(Integer creatorNo) throws Exception;
+
+	// 페이징 처리 후 강의에 대한 질문 목록 확인
+	public List<OffclassQnAVO> selectClassQnA(PagingVO vo) throws Exception;
+
+	// 강의에 대한 질문 확인
+	public ClassQuestion readQuestion(Integer classqNo)throws Exception;
+
+	// 강의에 대한 질문 답변 입력
+	public void classAnswer(ClassQuestion classQuestion) throws Exception;
+
+	// 강의에 대한 질문 총 개수
+	public Integer countQuestion(Integer creatorNo) throws Exception;
+
+	// 강의에 대한 질문 답변 총 개수
+	public Integer countAnswer(Integer creatorNo) throws Exception;
 
 	
 	
