@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.kh.cluster.interceptor.AuthInterceptor;
 import com.kh.cluster.interceptor.AuthInterceptor2;
-import com.kh.cluster.interceptor.AuthInterceptor3;
+import com.kh.cluster.interceptor.CreatorInterceptor;
 
 @Configuration
 public class AuthConfig implements WebMvcConfigurer{
@@ -17,20 +17,20 @@ public class AuthConfig implements WebMvcConfigurer{
 	@Autowired
 	AuthInterceptor2 authInterceptor2;
 	@Autowired
-	AuthInterceptor3 authInterceptor3;
+	CreatorInterceptor creatorInterceptor;
  
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(authInterceptor2)
+				.addPathPatterns("/**");
+		
 		registry.addInterceptor(authInterceptor)
- 				.addPathPatterns("/login/result","/login/logout", "/signup/welcome", "/class_detail/classQuestion/*/*")
-				.addPathPatterns("/login/result","/login/logout", "/signup/welcome",
-						"/mypage/**", "/creator/**", "/join", "/joinForm")
+ 				.addPathPatterns("/login/result","/login/logout", "/signup/welcome", "/class_detail/classQuestion/*/*",
+ 								 "/mypage/**", "/creator/**", "/join", "/joinForm")
  				.excludePathPatterns("/login/", "/signup/", "/mypage/**", "/creator/**");
 		
- 		
-		registry.addInterceptor(authInterceptor2)
-				.addPathPatterns("/", "/auth/check", "/event/**")
-				.addPathPatterns("/class_detail/detail/*", "/class_detail/detail/*", "/class_detail/review/*","/class_order/order/*");
+		registry.addInterceptor(creatorInterceptor)
+        		.addPathPatterns("/creator/**");
 		
 		registry.addInterceptor(authInterceptor3)
 				.addPathPatterns();

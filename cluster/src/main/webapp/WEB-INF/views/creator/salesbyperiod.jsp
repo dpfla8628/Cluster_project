@@ -50,7 +50,6 @@
            </label>
            <label class="btn btn-outline-info">
            	<input type="radio" name="options" id="option2">
-             <!-- <input type="radio" name="options" OnClick="window.location.href='/mypage/myclassend';"> -->
              	월별
            </label>
            <label class="btn btn-outline-info">
@@ -65,7 +64,7 @@
 			              <div class="d-flex justify-content-between">
 			                 <p class="card-title">요일 별 매출</p>
 			              </div>
-				     </div><canvas class="mt-4 chartjs-render-monitor" id="weeklyChart" height="255" style="display: block; width: 406px; height: 255px;" width="406"></canvas>
+				     </div><canvas class="mt-4 chartjs-render-monitor" id="weeklyChart" height="250" style="display: block; width: 450px; height: 450px;" width="450"></canvas>
 			    </div>	 		 
         	 </div>   
           
@@ -75,7 +74,7 @@
 			              <div class="d-flex justify-content-between">
 			                 <p class="card-title">월 별 매출</p>
 			              </div>
-		          	</div><canvas class="mt-4 chartjs-render-monitor" id="monthChart"  height="255" style="display: block; width: 406px; height: 255px;" width="406"></canvas>
+		          	</div><canvas class="mt-4 chartjs-render-monitor" id="monthChart"  height="250" style="display: block; width: 450px; height: 450px;" width="450"></canvas>
 		 		</div>	 
 	         </div>
           
@@ -85,7 +84,7 @@
 				              <div class="d-flex justify-content-between">
 				                 <p class="card-title">년도 별 매출</p>
 				              </div>
-				        </div><canvas class="mt-4 chartjs-render-monitor" id="yearChart" height="255" style="display: block; width: 406px; height: 255px;" width="406"></canvas>
+				        </div><canvas class="mt-4 chartjs-render-monitor" id="yearChart" height="250" style="display: block; width: 450px; height: 450px;" width="450"></canvas>
 			 	   </div>	 
        		</div>   
    		</div>
