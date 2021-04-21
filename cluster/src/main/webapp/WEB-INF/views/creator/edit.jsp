@@ -40,7 +40,7 @@
                 <div class="row mb-3">
                     <div class="col-md-8 mx-auto">	
 						<form:form modelAttribute="Creator" action="edit" method="post">
-							<input type="hidden" name="memberNo" value="${no}"/>
+							<input type="hidden" name="memberNo" value="${member.memberNo}"/>
 							
 							<div class="form-group row showcase_row_area">
 			                    <div class="col-md-3 showcase_text_area"><label for="inputType9">크리에이터 설명</label></div>
@@ -59,9 +59,6 @@
 								<button type="button" class="btn btn-outline-warning" id="btnList">취소 하기</button>      
 							</div>
 		
-							 <h3>번호 : ${no}</h3>
-				             <h3>id : ${id}</h3>
-							 <h3>권한 : ${auth}</h3>	
 					</div>
                 </div>
             </div>

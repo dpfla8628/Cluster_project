@@ -76,7 +76,7 @@
 		select fullname from class_image where class_no = #{classNo}
 	</select>
 	
-	<select id="getClassNo" resultType="Integer">
+	<select id="getClassNo" resultType="int">
 		select offclass_seq.currval from dual
 	</select>
 	
@@ -108,5 +108,20 @@
 		update creator set creator_info = #{creatorInfo}, creator_account = #{creatorAccount} where member_no = #{memberNo}
 	</update>
 	
+	<select id="totalClass" resultType="int">
+		select count(*) from offclass where creator_no = #{creatorNo}
+	</select>
+	
+	<select id="openClass" resultType="int">
+		select count(*) from offclass where creator_no = #{creatorNo} and class_end_check = '진행'
+	</select>
+	
+	<select id="totalLike" resultType="int">
+		select count(*) from classlike C inner join offclass O on O.class_no = C.class_no where O.creator_no = #{creatorNo}
+	</select>
+	
+	<select id="totalEntrant" resultType="int">
+		select count(*) from classorder C inner join offclass O on C.class_no = O.class_no where C.order_ok ='입금완료' and O.creator_no = #{creatorNo}
+	</select>
 	
 </mapper>	
