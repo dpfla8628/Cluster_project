@@ -26,8 +26,9 @@ public class OffClassVo {
   
 	private Creator creator;
 	private Review review;
-	private Member member;
+	private AuthMember authMember;
 	private ClassCategory classCategory;
+	
 	
 	public Integer getClassNo() {
 		return classNo;
@@ -143,11 +144,11 @@ public class OffClassVo {
 	public void setReview(Review review) {
 		this.review = review;
 	}
-	public Member getMember() {
-		return member;
+	public AuthMember getAuthMember() {
+		return authMember;
 	}
-	public void setMember(Member member) {
-		this.member = member;
+	public void setAuthMember(AuthMember authMember) {
+		this.authMember = authMember;
 	}
 	public ClassCategory getClassCategory() {
 		return classCategory;
@@ -163,9 +164,10 @@ public class OffClassVo {
 				+ ", classPlace=" + classPlace + ", classMemberSet=" + classMemberSet + ", classTalk=" + classTalk
 				+ ", catogoryNo=" + catogoryNo + ", creatorNo=" + creatorNo + ", files=" + Arrays.toString(files)
 				+ ", memberNo=" + memberNo + ", fullName=" + fullName + ", creator=" + creator + ", review=" + review
-				+ ", member=" + member + ", classCategory=" + classCategory + "]";
+				+ ", authMember=" + authMember + ", classCategory=" + classCategory + "]";
 	}
 	
+	 
 	
 	 
 	 

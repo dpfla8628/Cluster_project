@@ -17,7 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
  import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
- 
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -89,7 +89,7 @@ public class ClassDetailController {
  		int classMemberCount = service.classMemberCount(classNo);
  		
  		//크리에이터 프로필 이미지
-		int memberNo = offClass.getMember().getMemberNo();
+		int memberNo = offClass.getAuthMember().getMemberNo();
 		MyMember mymember = mypageService.read(memberNo);
 		
 		//클래스 이미지
@@ -113,19 +113,20 @@ public class ClassDetailController {
  		
  		ModelAndView view = new ModelAndView();
  		OffClassVo offClass = service.read(classNo); 
+  		
  		view.setViewName("class_detail/classQuestion");
  		view.addObject("offClass",offClass);
  		return view;
   	}
  	
+    @ResponseBody
 	@RequestMapping(value="/classQuestion/{classNo}/{memberNo}", method=RequestMethod.POST)
- 	public String question2(@PathVariable("classNo") int classNo, @PathVariable("memberNo") int memberNo, @ModelAttribute("qna") ClassQuestion qna) throws Exception {
+ 	public void question2(@PathVariable("classNo") int classNo, @PathVariable("memberNo") int memberNo, @ModelAttribute("qna") ClassQuestion qna) throws Exception {
  		log.info("question");
  		
  		service.askClass(qna);
  		
- 		return "/class_detail/list";
- 	}
+  	}
 	
 	
 	//리뷰 페이지
