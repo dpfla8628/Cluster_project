@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.cluster.entity.AuthMember;
+import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.OffclassQueryVO;
@@ -51,8 +52,11 @@ public class MainController {
 	public String main(HttpServletRequest req, Model model) throws Exception {
 		log.info("main()");
 
-		HttpSession session = req.getSession();
-		Integer memberNo = (Integer) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		Integer memberNo = extractMemberNo(member);
+//		HttpSession session = req.getSession();
+//		Integer memberNo = (Integer) session.getAttribute("no");
+		log.info("memberNo()::{}", memberNo);
 
 		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
 		List<OffclassQueryVO> craftClasses = service.searchByCategory(memberNo, "공예", null, "new");
@@ -86,7 +90,7 @@ public class MainController {
 			MediaType mType = MediaUtils.getMediaType(formatName);
 
 			HttpHeaders headers = new HttpHeaders();
-			
+
 			log.info("fullFilePath ::{}", uploadPath + fileName);
 			in = new FileInputStream(uploadPath + fileName);
 
@@ -119,8 +123,8 @@ public class MainController {
 		log.info("craftCate()");
 		log.info("subcategory::{}", subcategory);
 
-		HttpSession session = req.getSession();
-		Integer memberNo = (Integer) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		Integer memberNo = extractMemberNo(member);
 
 		sort = parseSort(sort);
 
@@ -130,6 +134,7 @@ public class MainController {
 		}
 		model.addAttribute("offclasses", list);
 		model.addAttribute("sort", sort);
+		model.addAttribute("member", member);
 
 		return "/maincate/crafts";
 	}
@@ -254,8 +259,8 @@ public class MainController {
 	public ResponseEntity<String> likeOffclass(HttpServletRequest req, @PathVariable("offclassNo") int classNo)
 			throws Exception {
 
-		HttpSession session = req.getSession();
-		Integer memberNo = (Integer) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		Integer memberNo = member.getMemberNo();
 
 		// 로그인하지 않은 사용자는 httpstatus코드 401번을 반환한다.
 		if (memberNo == null) {
@@ -271,8 +276,8 @@ public class MainController {
 	public ResponseEntity<String> unLikeOffclass(HttpServletRequest req, @PathVariable("offclassNo") int classNo)
 			throws Exception {
 
-		HttpSession session = req.getSession();
-		Integer memberNo = (Integer) session.getAttribute("no");
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		Integer memberNo = member.getMemberNo();
 
 		// 로그인하지 않은 사용자는 httpstatus코드 401번을 반환한다.
 		if (memberNo == null) {
@@ -305,6 +310,13 @@ public class MainController {
 		size = Math.min(classes.size(), size);
 
 		return classes.subList(0, size);
+	}
+
+	private Integer extractMemberNo(AuthMemberVO member) {
+		if (member != null) {
+			return member.getMemberNo();
+		}
+		return null;
 	}
 
 	// 크리에이터 홍보 페이지

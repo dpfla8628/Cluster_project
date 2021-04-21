@@ -17,6 +17,10 @@
 			self.location = "/login/"
 		})
 		
+		$("#btn-regist").on("click", function() {
+			self.location = "/signup/"
+		})
+		
 		$('#btn-logout').on("click", function() {
 			self.location = "/login/logout"
 			alert("로그아웃이 완료되었습니다.");
@@ -99,14 +103,15 @@
 							</div>
 						</form>
 					</div>
+					${member.memberAuth}<br>
 					<c:choose>
 		                <c:when test="${empty member}">
 		                   <div class="col-md-6 right">
 								<button type="button" class="btn btn-secondary" id="btn-login">로그인</button>
-								<button type="button" class="btn btn-info" style="margin-left: 0.5rem" id="regist-btn">무료회원가입</button>
-								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="service-btn">고객센터</button>
+								<button type="button" class="btn btn-info" style="margin-left: 0.5rem" id="btn-regist">무료회원가입</button>
+								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-service">고객센터</button>
 							</div>
-		                </c:when>
+		                </c:when> 
 		                <c:when test="${member.memberAuth eq '일반'}">
 		                	<div class="col-md-6 right">
 								<button type="button" class="btn btn-info" id="btn-mypage">마이페이지</button>

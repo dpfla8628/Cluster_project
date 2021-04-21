@@ -50,7 +50,7 @@ public class OffclassQueryServiceImpl implements OffclassQueryService {
 		
 		return offClasses;
 	}
-
+	
 	@Override
 	public void updateOffclassLike(int memberNo, int classNo, boolean isLike) throws Exception {
 		if(isLike) {
