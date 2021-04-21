@@ -2,7 +2,7 @@ package com.kh.cluster.entity;
 
 //인터셉터에서 컨트롤러로 넘겨주는 회원정보 클래스
 public class AuthMemberVO {
-	private int memberNo;
+	private Integer memberNo;
 	private String memberId;
 	private String memberAuth;
 	private String memberNick;
@@ -33,10 +33,10 @@ public class AuthMemberVO {
 	public void setMemberNick(String memberNick) {
 		this.memberNick = memberNick;
 	}
-	public int getMemberNo() {
+	public Integer getMemberNo() {
 		return memberNo;
 	}
-	public void setMemberNo(int memberNo) {
+	public void setMemberNo(Integer memberNo) {
 		this.memberNo = memberNo;
 	}
 	public String getMemberId() {
