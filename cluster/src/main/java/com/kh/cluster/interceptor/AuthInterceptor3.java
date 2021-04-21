@@ -16,7 +16,7 @@ import com.kh.cluster.util.CookieUtil;
 import com.kh.cluster.util.TokenUtil;
 
 @Component
-public class AuthInterceptor2 implements HandlerInterceptor{
+public class AuthInterceptor3 implements HandlerInterceptor{
 	
 	@Autowired
 	CookieUtil cookieUtil;
@@ -25,13 +25,13 @@ public class AuthInterceptor2 implements HandlerInterceptor{
 	@Autowired
 	AuthService service;
 	
-	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor2.class);
+	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
 	
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
 			throws Exception {
 		
-		log.info("authInterceptor2()");
+		log.info("authInterceptor()");
 		
 		Cookie cookie = cookieUtil.getCookie(req, "accessToken");
 		
@@ -43,15 +43,18 @@ public class AuthInterceptor2 implements HandlerInterceptor{
 				AuthMemberVO member = service.isRightToken(email, token);
 				
 				if(member != null) {
-					req.setAttribute("member", member);
-					return true;
+					if("강사".equals(member.getMemberAuth())) {
+						req.setAttribute("member", member);
+						return true;
+					}
+					
+					res.sendRedirect("/");
 				}
 			}
 		}
 		
-		AuthMemberVO member= new AuthMemberVO();
-		req.setAttribute("member", member);
+		res.sendRedirect("/login/");
 		
-		return true;
+		return false;
 	}
 }
