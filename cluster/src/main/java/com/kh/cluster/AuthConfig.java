@@ -22,12 +22,12 @@ public class AuthConfig implements WebMvcConfigurer{
  				.addPathPatterns("/login/result","/login/logout", "/signup/welcome", "/class_detail/classQuestion/*/*")
 				.addPathPatterns("/login/result","/login/logout", "/signup/welcome",
 						"/mypage/**", "/creator/**", "/join", "/joinForm")
- 				.excludePathPatterns("/login/", "/signup/", "/mypage/**", "/creator/**");
+ 				.excludePathPatterns("/login/", "/signup/");
 		
  		
 		registry.addInterceptor(authInterceptor2)
-				.addPathPatterns("/", "/class_detail/detail/*", "/class_detail/detail/*", "/class_detail/review/*","/class_order/order/*");
- 		registry.addInterceptor(authInterceptor2)
+				.addPathPatterns("/", "/class_detail/detail/*", "/class_detail/detail/*", "/class_detail/review/*","/class_order/order/*", "/community/**");
+  		registry.addInterceptor(authInterceptor2)
 				.addPathPatterns("/", "/auth/check");
 		
 		//registry.addInterceptor(new PermissionInterceptor())

@@ -204,7 +204,7 @@
             </c:if>
               <c:if test="${!empty review.fullName }">
             	<div>
-               		<img class="reviewImg" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+               		<img class="reviewImg" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
             	</div>  
               </c:if>
              
@@ -272,8 +272,7 @@
 							  reviewDelete.submit();
 						  }  
 						  
-					  })   
-					  
+					  })    
 
 		                $("#updateForm").hide();
 		                $(".reviewForm${review.reviewNo}").hide();
@@ -281,6 +280,16 @@
 		                $("#reviewEdit${review.reviewNo}").on("click", function() {
 		                    $(".reviewForm${review.reviewNo}").show();
 		                    $(".reviewOk${review.reviewNo}").hide();
+		                    
+		                    $.ajax({
+					            type : "post", 
+					            url : "/class_detail/classQuestion/${offClass.classNo}/${member.memberNo}",  
+					            data : form,  
+		 			            success : function(data){
+		 			            	alert("문의 완료! \n문의 내역은 마이페이지에서 확인 가능합니다");
+		 			            	 window.close(); 
+					            }
+					        });
   		                });  
 					});
                 

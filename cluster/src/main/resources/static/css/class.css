@@ -1,4 +1,6 @@
-    padding: 0;
+    html,
+	body {
+		padding: 0;
         margin: 0;
         }
 
@@ -6,19 +8,18 @@
             box-sizing: border-box;
         }
 
-        #left_side {
+        .detail.left_side {
             width: 600px;
             height: 400px;
             float: left;
             margin-right: 20px;
         }
 
-        #right_side {
+        .detail.right_side {
             width: 400px;
             height: 400px;
-            /*            border: 0.5px dotted gray;*/
             display: inline-block;
-            position: fixed;
+            position: absolute;
             margin-left: 100px;
 
         }
@@ -30,7 +31,7 @@
         #classBox,
         #creatorBox {
             border: 0.1px solid lightgray;
-            width: 350px;
+            width: 400px;
             height: auto;
             margin-bottom: 10px;
             padding: 30px;
@@ -43,23 +44,22 @@
             height: auto;
         }
 
-        .link>a {
-            margin-left: 80px;
+        .detail.link>a {
+            margin-left: 65px;
+            font-weight: lighter;
         }
+        .detail.link>a:hover {
+            color: black;
+            font-weight: bold;
+        }
+     
 
         #reviewBox {
             height: auto;
 
         }
 
-        /*   .askBtn {
-        	margin-top : 2rem;
-            width: 600px;
-            height: 50px;
-            background-color: transparent;
-            font-size: 16px;
-            border-color : #ffc107;
-        } */
+ 
         .askBtn:hover {
             background-color: #ffc107;
             color: white;
@@ -86,7 +86,7 @@
 
         }
 
-        .reviewImg {
+        .detail.reviewImg {
             border-radius: 50%;
             width: 30px;
             height: 30px;
@@ -153,7 +153,7 @@
             font-size: 13px;
         }
 
-        .profileImg {
+        .detail.profileImg {
             border-radius: 50%;
             width: 70px;
             height: 70px;
@@ -221,10 +221,7 @@
             font-weight: 300;
         }
 
-        .link>a:hover {
-            color: black;
-            font-weight: 500;
-        }
+
 
         .photo {
             width: 600px;

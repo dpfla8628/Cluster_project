@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.cluster.repository.CommunityRepository">
+	<insert id="qInsert" parameterType="Question">
+		insert into question values(question_seq.nextval, #{memberNo}, #{questionTitle}, #{questionQ}, null, sysdate, '답변 대기')
+	</insert>
+	
+	<update id="qEdit" parameterType="Question">
+		update question set question_q = #{questionQ}, question_ok ='답변 대기'  where question_no=#{questionNo}
+	</update>
+	
+	<update id="aInsert" parameterType="Question">
+		update question set question_a = #{questionA}, question_ok ='답변 완료'  where question_no=#{questionNo}
+	</update>
+	
+	<select id="questionList" resultType="Question">
+		select 
+			* 
+		from 
+			question Q 
+			inner join member M on Q.member_no = M.member_no 
+		where Q.member_no= #{memberNo}
+		order by question_no desc
+		
+	</select>
+	
+	<select id="read" resultType="Question">
+		select 
+			* 
+		from 
+			question Q 
+			inner join member M on Q.member_no = M.member_no 
+		where question_no= #{questionNo}
+	</select>
+	
+	<delete id="deleteQuestion">
+		delete question where question_no = #{questionNo}
+	</delete>
+	
+	<delete id="deleteA">
+		update question set question_a = null ,question_ok ='답변 대기' where question_no=#{questionNo}
+	</delete>
+</mapper>

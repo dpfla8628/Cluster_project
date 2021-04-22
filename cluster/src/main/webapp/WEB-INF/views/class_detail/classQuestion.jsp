@@ -54,7 +54,7 @@
             <div>
                 <textarea class="classQ" name="classQ" placeholder="문의 내용"></textarea>
             </div>
-            <input type="submit" class="sendBtn" value="문의하기">
+            <button type="button" class="sendBtn">문의하기</button>
             </div>
     </form>
  </div>

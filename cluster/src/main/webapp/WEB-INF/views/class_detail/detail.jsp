@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>강의 상세페이지</title>
+     
     <link rel="stylesheet" type="text/css" href="/css/class.css">
      <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
@@ -84,19 +85,20 @@
         <a href="/class_detail/list">리스트</a>
         <a href="/mypage/index">마이페이지</a>
         <a href="/login/">로긘</a> 
+        <a href="/community/question">커뮤니티</a>
         <hr>
     </div>
     <div class="outbox">
-        <div id="left_side">
+        <div class="detail left_side">
             <input type="hidden" class="no" value="${member.memberNo}">
             
             <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="0" end="0">
                 <c:set var="fullname" value="${readImg.fullName}" />
                 <div>
-                    <img class="img" width="600" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                    <img class="img" width="600" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                 </div>
             </c:forEach>
-            <div class="link">
+            <div class="detail link">
                 <a href="#detail">상세정보</a>
                 <a href="#reviewBox">리뷰(${totalReview})</a>
                 <a href="#ask">문의하기</a>
@@ -109,7 +111,7 @@
                     <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="1">
                         <c:set var="fullname" value="${readImg.fullName}" />
                         <div>
-                            <img class="img" width="600" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                            <img class="img" width="600" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                         </div>
                     </c:forEach>
                     <br>
@@ -187,11 +189,11 @@
                                 <div class="reviewImgBox">
                                     <c:set var="fullname" value="${review.fullName}" />
                                     <c:if test="${empty review.fullName }">
-                                        <img src="/image/basic.png" class="reviewImg">
+                                        <img src="/image/basic.png" class="detail reviewImg">
                                     </c:if>
                                     <c:if test="${!empty review.fullName }">
                                         <div>
-                                            <img class="reviewImg" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                                            <img class="detail reviewImg" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                                         </div>
                                     </c:if>
 
@@ -258,13 +260,13 @@
 
         </div>
 
-        <div id="right_side">
+        <div class="detail right_side">
             <div id="classBox">
             <c:set var="totalMember" value="${offClass.classMemberSet}" />
             <c:set var="nowMember" value="${classMemberCount}" />
    				${offClass.classCategory.categoryBig} > ${offClass.classCategory.categorySmall} 
    				<label class="memberSet">${totalMember - nowMember}명 가능</label>
-                <h2 style="text-align: center">${offClass.className}</h2><br>
+                <h2 class="class_name">${offClass.className}</h2><br>
                 <div class="price"><label id="price">${offClass.classPrice}</label>원</div>
                 <div>
                     <div class="iconBox">
@@ -285,10 +287,10 @@
                     <div class=profileBox>
                         <c:set var="fullname" value="${mymember.fullName }"></c:set>
                         <c:if test="${empty mymember.fullName }">
-                            <img src="/image/basic.png" class="profileImg">
+                            <img src="/image/basic.png" class="detail profileImg">
                         </c:if>
                         <c:if test="${!empty mymember.fullName }">
-                            <img class="profileImg" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}" alt="profile image">
+                            <img class="detail profileImg" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}" alt="profile image">
                         </c:if>
 
                     </div>
