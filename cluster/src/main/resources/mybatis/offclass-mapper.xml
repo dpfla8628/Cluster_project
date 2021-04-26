@@ -5,6 +5,42 @@
 	
 <mapper namespace="com.kh.cluster.repository.OffclassRepository">
 
+	<select id="checkReview" resultType="Review" parameterType="int">
+		select * from review where class_no = #{classNo} and review_ok is null
+	</select>
+
+	<select id="checkMember" resultType="ClassOrder" parameterType="int">
+		select * from classorder where class_no = #{classNo} and order_ok = '입금완료'
+	</select>
+
+	<resultMap type="OffClassInfoVo" id="offClassInfoMap">
+		<id property="classNo" column="class_no"/>
+		<result property="className" column="class_name"/>
+		<result property="classInfo" column="class_info"/>
+		<result property="classPrice" column="class_price"/>
+		<result property="classCheck" column="class_check"/>
+		<result property="classEndCheck" column="class_end_check"/>
+		<result property="classStart" column="class_start"/>
+		<result property="classEnd" column="class_end"/>
+		<result property="classRegdate" column="class_regdate"/>
+		<result property="classPlace" column="class_place"/>
+		<result property="classMemberSet" column="class_member_set"/>
+		<result property="classTalk" column="class_talk"/>
+		<result property="classImage" column="class_image"/>
+		<result property="classInfoImg" column="class_info_img"/>
+		<result property="categoryNo" column="categoryNo"/>
+		<result property="creatorNo" column="creatorNo"/>
+		
+		<collection javaType="List" property="review" ofType="Review" column="class_no" select="checkReview">
+		
+		</collection>
+		
+		<collection javaType="List" property="classOrder" ofType="ClassOrder" column="class_no" select="checkMember">
+		
+		</collection>
+	</resultMap>
+
+
 	<insert id="join">
 		insert into creator values(creator_seq.nextval, #{creatorAccount}, #{creatorInfo}, #{memberNo})
 	</insert>
@@ -31,17 +67,28 @@
 	</select>
 
 	<!-- 페이징 처리 후 강의  조회-->
-	<select id="selectClass" resultType="Offclass">
+	<select id="selectClass2" resultType="OffClassInfoVo">
 		select * 
 			from (
 				select rownum rn, a.* 
 					from (
-						select * from offclass where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc 
+						select * from offclass where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc
 					) a
 				)
 		where rn between #{start} and #{end}
 	</select>
 
+	<select id="selectClass" resultMap="offClassInfoMap">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from offclass where class_check = '검수완료' and creator_no = #{creatorNo} order by class_no desc
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+	
 	<!-- 페이징 처리 후 검수 진행 중 강의  조회-->
 	<select id="selectCheck" resultType="Offclass">
 		select * 

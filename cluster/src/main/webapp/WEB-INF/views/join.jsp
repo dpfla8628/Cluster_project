@@ -2,6 +2,7 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -68,14 +69,24 @@
     </nav>
 	
 	<div class="page-body">
-		<div class="sidebar">
-			 <p>memberNo = ${member.memberNo}</p>
-		</div>
+		<div class="sidebar"></div>
 	
 		<div class="page-content-wrapper">
 			<div class="page-content-wrapper-inner">    
 		       <div class="content-viewport">  
 		         
+		         	<div class="row">
+                       <div class="col-6 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                             	<img src="../resources/image/craft.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                       <div class="col-6 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                               	<img src="../resources/image/cook.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                   </div>
 		           <div class="row">
 		               <div class="col-md-7 equel-grid order-md-2">
 		                   <div class="grid d-flex flex-column justify-content-between overflow-hidden">
@@ -90,12 +101,6 @@
 		                       <div class="grid-body">
 		                           <div class="d-flex justify-content-between">
 		                               <p class="card-title">매출 분석</p>
-		                               <div class="chartjs-legend" id="sales-revenue-chart-legend">
-		                                    <ul class="0-legend">
-		                                        <li><span style="background-color:#1A76CA"></span></li>
-		                                        <li><span style="background-color:#2d92fe"></span></li>
-		                                    </ul>
-		                                </div>
 		                           </div>
 		                           <div class="d-flex">
 		                               <p class="d-none d-xl-block"><br><br>2020년 경쟁 A사 대비 크리에이터 평균 수익률 비교</p>
@@ -179,9 +184,32 @@
 		                   </div>
 		               </div>
 		           </div>
-		           <div class="row">
-		           		이미지 추가할 곳
-		           </div>
+		           <!-- 이미지 부분 -->
+	          		
+                   <div class="row">
+                       <div class="col-6 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                           		<img src="../resources/image/draw.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                       <div class="col-6 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                           		<img src="../resources/image/exercise.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col-6 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                           		<img src="../resources/image/music.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                       <div class="col-6 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                           		<img src="../resources/image/study.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                   </div>
 			</div>
 		</div>
 

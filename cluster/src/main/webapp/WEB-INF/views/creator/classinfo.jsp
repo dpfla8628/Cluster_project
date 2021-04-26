@@ -68,13 +68,13 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>번호</th>
-			  <th>강의명</th>
-			  <th>시작일</th>
-			  <th>종료일</th>
-			  <th>리뷰</th>
-			  <th>신청인원</th>
-			  <th>종료일 설정</th>
+              <th width="10%">번호</th>
+			  <th width="40%">강의명</th>
+			  <th width="10%">시작일</th>
+			  <th width="10%">종료일</th>
+			  <th width="10%">리뷰</th>
+			  <th width="10%">신청인원</th>
+			  <th width="10%">종료일 설정</th>
             </tr>
           </thead>
           <tbody>
@@ -87,79 +87,107 @@
 					</tr>
 				</c:when>
 				<c:otherwise>
-					<c:forEach items="${list}" var="offclass">
+					<c:forEach items="${list}" var="OffclassInfoVO">
 						
 						<!-- 시작일, 종료일 설정이 완료 되었다면 날짜 표시 -->
-						<c:if test="${offclass.classStart ne null and offclass.classEnd ne '2099-12-31'}">
+						<c:if test="${OffclassInfoVO.classStart ne null and OffclassInfoVO.classEnd ne '2099-12-31'}">
 						<tr>
-							<td align="center">${offclass.classNo}</td>
+							<td align="center">${OffclassInfoVO.classNo}</td>
 							<td align="left">
-								<a href="/class_detail/detail/${offclass.classNo}">
-									${offclass.className}
+								<a href="/class_detail/detail/${OffclassInfoVO.classNo}">
+									${OffclassInfoVO.className}
 								</a>
 							</td>
-							<td align="center">${offclass.classStart}</td>
-							<td align="center">${offclass.classEnd}</td>
-							<td align="center">리뷰링크</td>
-							<td align="center">결재완료링크</td>
+							<td align="center">${OffclassInfoVO.classStart}</td>
+							<td align="center">${OffclassInfoVO.classEnd}</td>
+							<td align="center">
+								<c:if test="${OffclassInfoVO.review.size() == 0}">
+									<label class="badge badge-success">리뷰없음</label>
+								</c:if>
+								<c:if test="${OffclassInfoVO.review.size() > 0}">
+									<label class="badge badge-warning">리뷰있음</label>
+								</c:if>
+							</td>
+							<td align="center">${OffclassInfoVO.classOrder.size()}명</td>
 							<td align="center"></td>
 						</tr>
 						</c:if>
 						
 						<!-- 시작일, 종료일 설정을 하지 않았다면 설정 버튼 표시 -->
-						<c:if test="${offclass.classStart eq null and offclass.classEnd eq '2099-12-31'}">
+						<c:if test="${OffclassInfoVO.classStart eq null and OffclassInfoVO.classEnd eq '2099-12-31'}">
 							<tr>
-							<td align="center">${offclass.classNo}</td>
+							<td align="center">${OffclassInfoVO.classNo}</td>
 							<td align="left">
-								<a href="/class_detail/detail/${offclass.classNo}">
-									${offclass.className}
+								<a href="/class_detail/detail/${OffclassInfoVO.classNo}">
+									${OffclassInfoVO.className}
 								</a>
 							</td>
-							<td align="center"><button class="btn btn-warning btn-rounded"><a href="/creator/startdate?classNo=${offclass.classNo}">
+							<td align="center"><button class="btn btn-warning btn-rounded"><a href="/creator/startdate?classNo=${OffclassInfoVO.classNo}">
 									시작일 설정
 								</a></button></td>
-							<td align="center">${offclass.classEnd}</td>
-							<td align="center">리뷰링크</td>
-							<td align="center">결재완료링크</td>
-							<td align="center"><button class="btn btn-info btn-rounded"><a href="/creator/enddate?classNo=${offclass.classNo}">
+							<td align="center">${OffclassInfoVO.classEnd}</td>
+							<td align="center">
+								<c:if test="${OffclassInfoVO.review.size() == 0}">
+									<label class="badge badge-success">리뷰없음</label>
+								</c:if>
+								<c:if test="${OffclassInfoVO.review.size() > 0}">
+									<label class="badge badge-warning">리뷰있음</label>
+								</c:if>
+							</td>
+							<td align="center">${OffclassInfoVO.classOrder.size()}명</td>
+							<td align="center"><button class="btn btn-info btn-rounded"><a href="/creator/enddate?classNo=${OffclassInfoVO.classNo}">
 									종료일 설정
 								</a></button></td>
 						</tr>
 						</c:if>
 						
 						<!-- 시작일만 설정을 하지 않았다면 설정 버튼 표시 -->
-						<c:if test="${offclass.classStart eq null and offclass.classEnd ne '2099-12-31'}">
+						<c:if test="${OffclassInfoVO.classStart eq null and OffclassInfoVO.classEnd ne '2099-12-31'}">
 							<tr>
-							<td align="center">${offclass.classNo}</td>
+							<td align="center">${OffclassInfoVO.classNo}</td>
 							<td align="left">
-								<a href="/class_detail/detail/${offclass.classNo}">
-									${offclass.className}
+								<a href="/class_detail/detail/${OffclassInfoVO.classNo}">
+									${OffclassInfoVO.className}
 								</a>
 							</td>
-							<td align="center"><button class="btn btn-warning btn-rounded"><a href="/creator/startdate?classNo=${offclass.classNo}">
+							<td align="center"><button class="btn btn-warning btn-rounded"><a href="/creator/startdate?classNo=${OffclassInfoVO.classNo}">
 									시작일 설정
 								</a></button></td>
-							<td align="center">${offclass.classEnd}</td>
-							<td align="center">리뷰링크</td>
-							<td align="center">결재완료링크</td>
+							<td align="center">${OffclassInfoVO.classEnd}</td>
+							<td align="center">
+								<c:if test="${OffclassInfoVO.review.size() == 0}">
+									<label class="badge badge-success">리뷰없음</label>
+								</c:if>
+								<c:if test="${OffclassInfoVO.review.size() > 0}">
+									<label class="badge badge-warning">리뷰있음</label>
+								</c:if>
+							</td>
+							<td align="center">${OffclassInfoVO.classOrder.size()}명</td>
 							<td align="center"></td>
 						</tr>
 						</c:if>
 						
 						<!-- 종료일만 설정을 하지 않았다면 설정 버튼 표시 -->
-						<c:if test="${offclass.classStart ne null and offclass.classEnd eq '2099-12-31'}">
+						<c:if test="${OffclassInfoVO.classStart ne null and OffclassInfoVO.classEnd eq '2099-12-31'}">
 							<tr>
-							<td align="center">${offclass.classNo}</td>
+							<td align="center">${OffclassInfoVO.classNo}</td>
 							<td align="left">
-								<a href="/class_detail/detail/${offclass.classNo}">
-									${offclass.className}
+								<a href="/class_detail/detail/${OffclassInfoVO.classNo}">
+									${OffclassInfoVO.className}
 								</a>
 							</td>
-							<td align="center">${offclass.classStart}</td>
-							<td align="center">${offclass.classEnd}</td>
-							<td align="center">리뷰링크</td>
-							<td align="center">결재완료링크</td>
-							<td align="center"><button class="btn btn-info btn-rounded"><a href="/creator/enddate?classNo=${offclass.classNo}">
+							<td align="center">${OffclassInfoVO.classStart}</td>
+							<td align="center">${OffclassInfoVO.classEnd}</td>
+							<td align="center">
+								<c:if test="${OffclassInfoVO.review.size() == 0}">
+									<label class="badge badge-success">리뷰없음</label>
+								</c:if>
+								<c:if test="${OffclassInfoVO.review.size() > 0}">
+									<label class="badge badge-warning">리뷰있음</label>
+								</c:if>
+							</td>
+							<td align="center">${OffclassInfoVO.classOrder.size()}명</td>
+							<td align="center"><button class="btn btn-info btn-rounded"><a href="/creator/enddate?classNo=${OffclassInfoVO.classNo}">
 									종료일 설정
 								</a></button></td>
 						</tr>
