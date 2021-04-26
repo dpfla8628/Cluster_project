@@ -96,7 +96,10 @@
 			</div>
 			<div class="title">
 				<a href="/admin/home">클러스터</a>
-				<div>admin님 안녕하세요.</div>
+				<!-- 닉네임 얻기 위해 LoginController에 session.setAttribute("memberNick", member.getMemberNick());
+				추가해달라고 말하기
+				 -->
+				<div>${memberNick}님 안녕하세요.</div>
 				<div>Cluster 관리자 페이지입니다.</div>
 			</div>
 		</header>
