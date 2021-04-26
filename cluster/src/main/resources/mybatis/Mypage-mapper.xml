@@ -35,9 +35,10 @@
 	</select>
 	
 	<select id="orderlist" resultType="MyClassOrder">
-		select * from classorder o 
-		left outer join offclass c on o.class_no=c.class_no 
-		left outer join review r on r.class_no = o.class_no
+		select distinct c.class_no, c.class_name, c.class_end, c.class_talk, o.order_ok, o.order_no, o.order_date
+		from classorder o 
+			left outer join offclass c on o.class_no=c.class_no 
+			left outer join review r on r.class_no = o.class_no
 		where o.member_no=#{memberNo}
 	</select>
 	<select id="orderlisttest" resultType="MyClassOrder">
@@ -49,7 +50,8 @@
 	
 	<!-- 입금완료 된 것만 !!!! -->
 	<select id="reviewlist" resultType="MyReview">
-		select * from offclass oc
+		select distinct review_no, class_name, review_date, review_context, review_ok 
+		from offclass oc
 		left outer join review r on r.class_no=oc.class_no
 		left outer join classorder co on r.class_no=co.class_no
 		where co.order_ok='입금완료'and r.member_no=#{memberNo}

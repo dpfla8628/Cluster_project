@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:import url="/WEB-INF/views/creator/template/header.jsp"></c:import>
 <style>
 	.table:not(.table-bordered) thead tr th{
@@ -49,10 +50,12 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>강의 이미지</th>
-              <th>강의 명</th>
-              <th>진행 상황</th>
-              <th>총매출</th>
+              <th width="10%">번호</th>
+              <th width="40%">강의 명</th>
+              <th width="10%">진행 상황</th>
+              <th width="10%">누적 인원</th>
+              <th width="10%">강의 가격</th>
+              <th width="20%">총매출</th>
             </tr>
           </thead>
           <tbody>
@@ -65,16 +68,18 @@
 					</tr>
 				</c:when>
 				<c:otherwise>
-					<c:forEach items="${list}" var="offclass">
+					<c:forEach items="${list}" var="OffclassInfoVO">
 						<tr>
-							<td align="center"><img src="../resources/image/test.PNG"></td>
+							<td align="center">${OffclassInfoVO.classNo}</td>
 							<td align="left">
-								<a href="/creator/read?classNo=${offclass.classNo}">
-									${offclass.className}
+								<a href="/creator/read?classNo=${OffclassInfoVO.classNo}">
+									${OffclassInfoVO.className}
 								</a>
 							</td>
-							<td align="center">${offclass.classEndCheck}</td>
-							<td align="center">${offclass.classPrice}</td>
+							<td align="center">${OffclassInfoVO.classEndCheck}</td>
+							<td align="center">${OffclassInfoVO.classOrder.size()}명</td>
+							<td align="center">${OffclassInfoVO.classPrice}원</td>
+							<td align="center">${OffclassInfoVO.classOrder.size() * OffclassInfoVO.classPrice}원</td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>
