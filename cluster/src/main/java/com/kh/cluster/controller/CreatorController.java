@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.service.AdminService;
@@ -85,7 +86,10 @@ public class CreatorController {
 		model.addAttribute("TotalEntrant", service.totalEntrant(creatorNo));
 		//총 받은 좋아요 수 전달
 		model.addAttribute("TotalLike", service.totalLike(creatorNo));
-		
+		//총 받은 강의 질문 수 전달
+		model.addAttribute("TotalQuestion", service.countQuestion(creatorNo));
+		//총 받은 강의 질문에 대한 답변 수 전달
+		model.addAttribute("TotalAnswer", service.countAnswer(creatorNo));
 		//매출Top10 강의 정보 전달
 		model.addAttribute("TopTenClass", adminService.getTop10Sales());
 	}
@@ -298,6 +302,57 @@ public class CreatorController {
 		service.registClass(offclass);
 				
 		return "redirect:/creator/classcheck";
+	}
+	
+	// 강의에 대한 문의 정보
+	@GetMapping("inquiry")
+	//@Permission(authority = MemberAuth.강사)
+	public void classQnA(HttpServletRequest req, PagingVO vo, Model model
+					,@RequestParam(value="nowPage", required = false)String nowPage
+					,@RequestParam(value="cntPerPage", required = false)String cntPerPage) throws Exception {
+		log.info("creator classQnA()");
+		
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo = member.getMemberNo();
+		
+		Creator creator = service.setcreator(memberNo);
+		model.addAttribute("Creator", creator);
+		
+		int creatorNo = creator.getCreatorNo();
+		log.info("creatorNo =" + creatorNo );
+		
+		int total = service.countQuestion(creatorNo);
+		if(nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		}else if(nowPage == null) {
+			nowPage = "1";
+		}else if(cntPerPage == null) {
+			cntPerPage = "5";
+		}
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage), creatorNo);
+		model.addAttribute("paging", vo);
+		model.addAttribute("classQnA", service.selectClassQnA(vo));
+	}
+	
+	// 강의에 대한 답변 작성
+	@GetMapping("/answer")
+	//@Permission(authority = MemberAuth.강사)
+	public void getAnswer(Integer classqNo, Model model) throws Exception{
+		log.info("creator getAnswer()");
+		
+		model.addAttribute(service.readQuestion(classqNo));
+	}
+	
+	// 강의에 대한 답변 작성
+	@PostMapping("/answer")
+	//@Permission(authority = MemberAuth.강사)
+	public String postAnswer(ClassQuestion classQuestion, Model model) throws Exception{
+		log.info("creator postAnswer()");
+		
+		service.classAnswer(classQuestion);
+		
+		return "redirect:inquiry";
 	}
 	
 	@PostMapping(value = "/uploadAjax", produces = "text/plain; charset=UTF-8")

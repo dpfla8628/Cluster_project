@@ -9,6 +9,7 @@
 		background-color: orange;
     	color: white;
     	font-weight: bold;
+    	text-align: center;
 	}
 </style>
 
@@ -38,33 +39,31 @@ $(document).ready(function(){
               <th>리뷰번호</th>
               <th>강의명</th>
               <th>작성날짜</th>
-              <th></th>
-              <th></th>
-              <th></th>
+              <th colspan="3">설정</th>
             </tr>
           </thead>
           <tbody>
            <c:forEach items="${reviewList}" var="review">	
            <c:if test="${!empty review.reviewContext }">			
             <tr>
-              <td>${review.reviewNo }
+              <td align="center">${review.reviewNo }
               <td>${review.className}</td>
-              <td>${review.reviewDate }</td>
-              <td>
+              <td align="center">${review.reviewDate }</td>
+              <td align="center">
               
 				 <a href="#r${review.reviewNo}" data-toggle="collapse" aria-expanded="false">
 					<i class="mdi mdi-arrow-bottom-left">리뷰 보기</i>
 				  </a>
 			 
               </td>
-              <td>
+              <td align="center">
               <c:if test="${empty review.reviewOk }">
               	<a href="/mypage/myreview_edit?reviewNo=${review.reviewNo}">
               		<button type="button" class="btn btn-inverse-success btn-xs" id="edit">수정하기</button>
               	</a>
               </c:if>
               </td>
-              <td>
+              <td align="center">
               	<form action="/mypage/review_remove" method="get" id="del">
               		<input type="hidden" name="reviewNo" value="${review.reviewNo }"> 
               	 	<button type="submit" class="btn btn-inverse-dark btn-xs" id="delbtn">삭제하기</button>
