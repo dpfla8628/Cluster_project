@@ -32,9 +32,6 @@ public class AuthConfig implements WebMvcConfigurer{
 		registry.addInterceptor(creatorInterceptor)
         		.addPathPatterns("/creator/**");
 		
-		registry.addInterceptor(authInterceptor3)
-				.addPathPatterns();
-		
 		//registry.addInterceptor(new PermissionInterceptor())
 		//		.addPathPatterns("/creator/**", "/admin/**")
 		//		.excludePathPatterns("/static-resource-root/**");
