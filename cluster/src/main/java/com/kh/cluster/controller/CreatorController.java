@@ -30,9 +30,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassOrder;
 import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassInfoVO;
+import com.kh.cluster.entity.Review;
 import com.kh.cluster.service.AdminService;
 import com.kh.cluster.service.OffclassService;
 import com.kh.cluster.util.MediaUtils;
@@ -69,7 +72,7 @@ public class CreatorController {
 		creator = service.setcreator(memberNo);
 		model.addAttribute("Creator", creator);
 		int creatorNo = creator.getCreatorNo();
-		
+							
 		//현재 날짜
 		Date date = new Date();
 		
@@ -144,6 +147,25 @@ public class CreatorController {
 		}
 		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage), creatorNo);
 		model.addAttribute("paging", vo);
+		
+		// List<OffclassInfoVO> 테스트
+//		List<OffclassInfoVO> infoVO =  service.selectClass(vo);
+//		model.addAttribute("list", infoVO);
+//		
+//		for(OffclassInfoVO testVO : infoVO) {
+//			log.info("--------------------------------------------------");
+//			log.info("강의 이름 = " + testVO.getClassName());
+//			log.info("리뷰 개수 = " + testVO.getReview().size() + "개");
+//			for(Review review : testVO.getReview()) {
+//				log.info("리뷰 내용 = " + review.getReviewContext());
+//			}
+//			
+//			log.info("--------------------------------------------------");
+//			log.info("신청 인원 = " + testVO.getClassOrder().size() + "명");
+//			for(ClassOrder order : testVO.getClassOrder()) {
+//				log.info("신청 번호 = " + order.getMemberNo());
+//			}
+//		}
 		model.addAttribute("list", service.selectClass(vo));
 	}
 	

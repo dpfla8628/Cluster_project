@@ -38,7 +38,7 @@
     
     <nav class="t-header">
       <div class="t-header-brand-wrapper">
-        <a href="/creator/home">
+        <a href="/">
           <h1 style="color: orange;">Cluster</h1>
         </a>
       </div>
@@ -53,7 +53,7 @@
         	</c:choose>
         	
        		<div class="top_btn gomain"><i class="mdi mdi-home"></i>
-       			<a href="/">메인페이지</a>
+       			<a href="/creator/home">관리페이지</a>
        		</div>
        		<div class="top_btn gomypage"><i class="mdi mdi-account-circle"></i>
        			<a href="/mypage/index">마이페이지</a>

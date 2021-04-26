@@ -92,6 +92,13 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script>
+
+	var num = []; 
+	
+	for(var i=0; i<3; i++){
+		num[i] = Math.floor(Math.random()*100) + 1;
+	}
+	
 	$(document).ready(function(){
 		$(".mb-0").on("change",function(){		
 			if($("#option3").prop("checked")){
@@ -99,11 +106,11 @@
 				let barChart = new Chart(yearChart, {
 					type : 'doughnut', //pie, line, doughnut, palarArea
 					data : {
-						labels : [ '2018', '2019', '2020'],
+						labels : [ '2018', '2019', '2020', '2021'],
 						datasets : [ {
-							label : '2018년 ~ 2020년 (단위 : 만원)',
-							data : [ 11, 20, 23],
-							backgroundColor : [ 'yellow', 'blue', 'green']
+							label : '2018년 ~ 2021년 (단위 : 만원)',
+							data : [ num[0], num[1], num[2], 90],
+							backgroundColor : [ 'yellow', 'blue', 'green', 'pink']
 						} ]
 					}
 				})
@@ -117,8 +124,8 @@
 						labels : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월',
 								'9월', '10월', '11월', '12월' ],
 						datasets : [ {
-							label : '2020년 (단위 : 만원)',
-								data : [ 11, 20, 23, 15, 18, 24, 29, 40, 20, 12, 35, 12 ],
+							label : '2021년 (단위 : 만원)',
+								data : [ 10, 20, 25, 15, 20, 0, 0, 0, 0, 0, 0, 0 ],
 							backgroundColor : [ 'red', 'rgba(255,255,0,0.5)',
 								'#990000', 'blue', 'darkgreen', 'black', 'grey', 'green',
 								'yellow', 'pink', 'darkgrey', 'skyblue', ],
@@ -135,8 +142,8 @@
 					data : {
 						labels : [ '일', '월', '화', '수', '목', '금', '토'],
 						datasets : [ {
-							label : '2020년 (단위 : 만원)',
-							data : [ 11, 20, 35, 15, 24, 29, 4],
+							label : '2021년  5월  3째 주(단위 : 만원)',
+							data : [ 5, 10, 5, 0, 0, 0, 0],
 							backgroundColor : [ 'red', 'blue', 'darkgreen', 'black', 'grey', 'yellow', 'pink']
 						} ]
 					}
@@ -153,8 +160,8 @@
 			data : {
 				labels : [ '일', '월', '화', '수', '목', '금', '토'],
 				datasets : [ {
-					label : '2020년 (단위 : 만원)',
-					data : [ 11, 20, 35, 15, 24, 29, 4],
+					label : '2021년  5월  3째 주(단위 : 만원)',
+					data : [ 5, 10, 5, 0, 0, 0, 0],
 					backgroundColor : [ 'red', 'blue', 'darkgreen', 'black', 'grey', 'yellow', 'pink']
 				} ]
 			}
