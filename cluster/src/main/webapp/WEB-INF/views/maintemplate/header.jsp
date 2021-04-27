@@ -96,9 +96,9 @@
 					    </a>
 					</div>
 					<div class="col-md-4">
-						<form class="form-inline" action="#" method="post">
+						<form class="form-inline" action="/search" method="post">
 							<div class="form-group right">    
-								<input type="text" name="keyword" placeholder="검색어 입력" class="form-control">
+								<input type="text" name="keyword" placeholder="검색어 입력" class="form-control" value="${keyword}">
 							    <input type="submit" value="검색" class="btn btn-info" style="margin-left: 1rem">
 							</div>
 						</form>

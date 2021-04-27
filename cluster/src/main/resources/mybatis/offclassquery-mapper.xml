@@ -44,10 +44,33 @@
 		    inner join creator cre on cls.creator_no=cre.creator_no
 		    inner join member m on cre.member_no=m.member_no
 		    inner join classcategory cc on cc.category_no=cls.category_no
-	    where cc.category_big=#{categoryBig}
+	    where cc.category_big=#{categoryBig} and cls.class_end_check='진행'
 	    <if test="categorySmall != null and categorySmall != ''">
 	      and cc.category_small=#{categorySmall}
 	    </if>
+	    <choose>
+	    	<when test="sort=='rprice'.toString()">
+	    		order by cls.class_price
+	    	</when>
+	    	<when test="sort=='hprice'.toString()">
+	    		order by cls.class_price desc
+	    	</when>
+	    	<otherwise>
+	    		order by cls.class_regdate desc
+	    	</otherwise>
+	    </choose>
+	</select>
+	
+	<select id="searchByKeyword" resultType="OffclassQueryVO" parameterType="String">
+	    select 
+	    	cls.class_no, member_nick, class_name, class_price, class_regdate 
+	    from 
+	    	offclass cls
+		    	inner join creator cre on cls.creator_no=cre.creator_no 
+		    	and cls.class_end_check='진행' and instr(cls.class_name, '#{keyword}') > 0
+		    	inner join member m on cre.member_no=m.member_no
+	    group by
+	    	cls.class_no, member_nick, class_name, class_price, class_regdate 
 	    <choose>
 	    	<when test="sort=='rprice'.toString()">
 	    		order by cls.class_price
