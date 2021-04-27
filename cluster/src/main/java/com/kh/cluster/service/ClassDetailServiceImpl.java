@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.cluster.entity.ClassLike;
 import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Criteria;
+import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.OffClassVo;
 import com.kh.cluster.entity.Offclass;
 import com.kh.cluster.repository.ClassDetailRepository;
@@ -23,7 +24,7 @@ public class ClassDetailServiceImpl implements ClassDetailService{
 	private ClassDetailRepository repository;
 	
 	@Override
-	public OffClassVo read(Integer classNo) throws Exception {
+	public OffClassVo read(int classNo) throws Exception {
 		return repository.read(classNo);
 	} 
 	
@@ -41,11 +42,7 @@ public class ClassDetailServiceImpl implements ClassDetailService{
 	public void askClass(ClassQuestion qna) throws Exception {
 		repository.askClass(qna);
 	} 
-
-	@Override
-	public void reviewOk(Integer reviewNo) throws Exception {
-		repository.reviewOk(reviewNo);
-	}
+ 
 
 	@Override
 	public List<Offclass> readImg(Integer classNo) throws Exception {
@@ -57,6 +54,16 @@ public class ClassDetailServiceImpl implements ClassDetailService{
  		return repository.classMemberCount(classNo);
 	}
 
+	@Override
+	public MyClassLike likeForMembers(int memberNo, int classNo) throws Exception {
+ 		return repository.likeForMembers(memberNo, classNo);
+	}
+
+	@Override
+	public int likeCount(int classNo) throws Exception {
+ 		return repository.likeCount(classNo);
+	}
+ 
 	 
 	
  

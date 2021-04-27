@@ -19,8 +19,8 @@
             //천단위 콤마 
             var classPrice = $('label[for=classPrice]').text();
             $('label[for=classPrice]').text(classPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
-            var totalPrice = $('input[name=totalPrice]').val();
-            $('input[name=totalPrice]').val(totalPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            var orderPrice = $('input[name=orderPrice]').val();
+            $('input[name=orderPrice]').val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
             
             var coupon = $('input[name="couponNo"]');
             var totalPrice = $("input[name=totalPrice]").val();
@@ -30,11 +30,11 @@
                     coupon[i].checked = false;
                 }
                 $("label[for='discount']").text("0");
-                $("input[name=totalPrice]").val(classPrice);
+                $("input[name=orderPrice]").val(classPrice);
                 $("label[for='discount']").css("color", "black")
                 
-                var totalPrice = $('input[name=totalPrice]').val();
-                $('input[name=totalPrice]').val(totalPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+                var orderPrice = $('input[name=orderPrice]').val();
+                $('input[name=orderPrice]').val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
                
             })
             $(".checkBtn").click(function() {
@@ -42,13 +42,15 @@
                 if(!discount){
                     return false
                 }
- 
+ 				if(discount>classPrice){
+ 					return false
+ 				}
                 $("label[for='discount']").text(-discount);
                 $("label[for='discount']").css("color", "red")
-                $("input[name=totalPrice]").val(parseInt(classPrice) - parseInt(discount));
+                $("input[name=orderPrice]").val(parseInt(classPrice) - parseInt(discount));
                 
-                 var totalPrice = $('input[name=totalPrice]').val();
-                 $('input[name=totalPrice]').val(totalPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+                 var orderPrice = $('input[name=orderPrice]').val();
+                 $('input[name=orderPrice]').val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
                 
                 var discount = $("label[for='discount']").text();
             	$('label[for=discount]').text(discount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")) 
@@ -71,9 +73,7 @@
 			 // 한마디로 JQuery 0 ~~~ 9 숫자 백스페이스, 탭, Delete 키 넘버패드외에는 입력못함
          	})
 			
-         	if('#couponRadio' == null){
-         		$('.couponBtn').hide();
-         	}
+          
          	
             $('.orderBtn').click(function(){
             	if($('.name').val() == 0|| $('.phone').val() == 0){
@@ -81,8 +81,8 @@
             		return false;
              	}
             	//콤마 제거
-            	var totalPrice =  $("input[name=totalPrice]").val();
-                $("input[name=totalPrice]").val(totalPrice.replace(/[^\d]+/g, ""))
+            	var orderPrice =  $("input[name=orderPrice]").val();
+                $("input[name=orderPrice]").val(orderPrice.replace(/[^\d]+/g, ""))
             
             })
     	 	//엔터쳤을 때 submit 방지
@@ -113,7 +113,7 @@
 
           .classPrice,
           .discount,
-          .totalPrice {
+          .orderPrice {
               float: right;
           }
 
@@ -178,7 +178,7 @@
           .couponBtn{
           	margin-top :0.5rem;
           }
-          input[name=totalPrice]{
+          input[name=orderPrice]{
               border:none;
               text-align: right;
               font-size: 17px;
@@ -224,12 +224,13 @@
                      
                           <label class="text">사용 가능한 쿠폰</label>
                       
-                    <c:choose>
-	                    <c:when test="${!empty couponList}">
+                    
+	                   <%--  <c:when test="${!empty couponList}"> --%> 
 	                    <div class="couponBtn">
 	                    	<button type="button" class="cancelBtn">쿠폰 취소</button>
 			 				<button type="button" class="checkBtn">쿠폰 적용</button>
-			 			</div> 
+			 			</div> <c:choose>
+			 			<c:when test="${!empty couponList}">
 	                        <c:forEach items="${couponList}" var="coupon">	
                     			<fmt:formatDate value="${now}" pattern="yyyy-MM-dd hh:mm:ss" var="today" />  
 				 				<fmt:formatDate value="${coupon.couponEnd }" pattern="yyyy-MM-dd hh:mm:ss" var="myCoupon"/>
@@ -242,11 +243,22 @@
 			 						</div>
 					     		</c:if>
 							</c:forEach>
-	                    </c:when>
+							</c:when>
+							<c:otherwise> 
+							<c:if test="${today >= myCoupon }">
+								<script>
+									 $('.couponBtn').hide()
+								</script>
+								<div class="couponBox">사용가능한 쿠폰이 없습니다</div>
+							</c:if>
+							</c:otherwise>
+			 					</c:choose>
+	                   <%--  </c:when>
                     	<c:otherwise>
+                   
  	                    	<div class="couponBox">사용가능한 쿠폰이 없습니다</div>
-                    	</c:otherwise>
-                	</c:choose>             
+                     	</c:otherwise>  --%> 
+                	           
                 </div>
                 <hr>
                 <div>
@@ -261,7 +273,7 @@
                 <hr>
                 <div>
                     최종 금액
-                    <div class="totalPrice"><input type="text" name="totalPrice" value="${offClass.classPrice}"></div>
+                    <div class="orderPrice"><input type="text" name="orderPrice" value="${offClass.classPrice}"></div>
                 </div>
             </div>
             <input type="submit" class="orderBtn" value="결제하기">

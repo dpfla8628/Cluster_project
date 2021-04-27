@@ -86,6 +86,9 @@
             padding: 5px 10px 5px 10px;
             margin : 0 auto;
         }
+        .title{
+       	text-align: left;
+        }
 
     </style>
 </head>
@@ -117,7 +120,7 @@
                                 </select></th>
                         </tr>
                         <tr>
-                            <th width="500">제목</th>
+                            <th class="title" width="500">제목</th>
                             <th width="100">작성 날짜</th>
                             <th width="100">작성자</th>
                             <th width="100">답변 여부</th>

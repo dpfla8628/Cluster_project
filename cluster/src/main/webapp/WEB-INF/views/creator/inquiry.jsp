@@ -56,9 +56,9 @@
         <table class="table table-striped">
           <thead>
             <tr>
-			  <th>강의명</th>
-			  <th>질문자</th>
-			  <th>진행상황</th>
+			  <th width="45%">강의명</th>
+			  <th width="15%">질문자</th>
+			  <th width="15%">진행상황</th>
 			  <th colspan="2">설정</th>
             </tr>
           </thead>
@@ -75,7 +75,7 @@
 					<c:forEach items="${classQnA}" var="classQnAVO">
 						<tr>
 							<td align="left">${classQnAVO.className}</td>
-							<td align="left">${classQnAVO.memberNick}</td>
+							<td align="center">${classQnAVO.memberNick}</td>
 							<td align="center">
 								<c:if test="${empty classQnAVO.classA}">
 									<label class="badge badge-warning">답변 대기중</label>

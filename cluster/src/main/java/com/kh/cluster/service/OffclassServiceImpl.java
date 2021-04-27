@@ -9,6 +9,7 @@ import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassInfoVO;
 import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.repository.OffclassRepository;
 import com.kh.cluster.util.PagingVO;
@@ -99,7 +100,7 @@ public class OffclassServiceImpl implements OffclassService{
 	}
 
 	@Override
-	public List<Offclass> selectClass(PagingVO vo) throws Exception{
+	public List<OffclassInfoVO> selectClass(PagingVO vo) throws Exception{
 		return repository.selectClass(vo);
 	}
 

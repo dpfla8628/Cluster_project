@@ -19,6 +19,13 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var no = $(".no").val();
+            
+			  var txtArea = $(".reviewOk");
+	            if (txtArea) {
+	                txtArea.each(function() {
+	                    $(this).height(this.scrollHeight);
+	                });
+	            }
 
             $(".orderBtn").click(function() {
                 if (no == '') {
@@ -61,6 +68,54 @@
             //천단위 콤마
             var price = $('#price').text();
             $('#price').text(price.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            
+            
+            
+        $(".heart").css("cursor","pointer").on("click", function(e){
+    	var $thisObj = $(this);
+    	var classNo = $thisObj.attr("classNo");
+    	var isLiked = $thisObj.attr("isLiked");
+    	
+    	var likeCount= $('.likeCount').text();
+		var like = '';
+    	
+    	var method = '';
+    	var updateLiked = '';
+    	var updateSrc = '';
+    	
+    	if(isLiked == "true") {
+    		method = "DELETE";
+    		updateLiked = "false";
+    		updateSrc = "/resources/image/empty-heart.jpeg";
+    		like = parseInt(likeCount)-1;
+    	}
+    	else {
+    		method = "POST";
+    		updateLiked = "true";
+	    	updateSrc = "/resources/image/full-heart.png";
+	    	like = parseInt(likeCount)+1;
+     	}
+    	
+    	$.ajax({
+			url: "/offclass/${offClass.classNo}/like",
+			type: method,
+			success: function (data) {
+				$thisObj.attr("isLiked", updateLiked);
+				$thisObj.attr("src", updateSrc);
+				$('.likeCount').text(like);
+			},
+    		error: function (xhr) {
+    			/* alert("실패!" + xhr.status); */
+    			
+    			if(xhr.status == 401) {
+    				alert("로그인 후 이용가능합니다")
+     				return;
+    			}
+    			alert("오류가 발생하였습니다.");
+    		}
+		})
+    	
+    })
          
         })
         
@@ -75,10 +130,14 @@
 		.text{
 			text-align: center;
 		}
+		.heart{
+			width: 40px;
+		}
     </style>
 </head>
  
 <body>
+	<c:set var="memberNo" value="${member.memberNo}" />
     <c:set var="logInMember" value="${member.memberNick}" />
     <c:set var="classMember" value="${offClass.authMember.memberNick}" />
 
@@ -222,7 +281,7 @@
                                     <c:if test="${not empty review.reviewOk}">
                                         <img src="/image/review.png" width="20px">
                                         <label class="reviewOkNick">크리에이터</label>
-                                        <div class="reviewOk">${review.reviewOk}</div>
+                                        <div><textarea  class="reviewOk">${review.reviewOk}</textarea></div>
                                     </c:if>
                                 </div>
                             </div>
@@ -267,7 +326,8 @@
                 <label>강의 특성상 환불은 불가합니다.</label>
             </div>
             
-            <div style="width: 1000px; margin-top: 2rem;"><c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import></div>
+            <div style="width: 1000px; margin-top: 2rem;">
+            <c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import></div>
         </div>
 
      
@@ -280,10 +340,17 @@
                 <div class="class_name">${offClass.className}</div>
                 <div class="price"><label id="price">${offClass.classPrice}</label>원</div>
                 <div>
-                    <div class="iconBox">
-                        <img src="/image/add.png" width="40px" class="icon">
-                        <img src="/image/heart.jpg" width="40px" class="icon">
-                    </div>
+                <div class="iconBox">
+					<c:choose>
+						<c:when test="${!empty like}">
+							<img class="heart"classNo=${like.classNo} isLiked="true" src="/resources/image/full-heart.png">
+						</c:when>
+						<c:otherwise>
+							<img class="heart" classNo=${like.classNo} isLiked="false" src="/resources/image/empty-heart.jpeg">
+						</c:otherwise>
+					</c:choose>
+					<label class="likeCount">${likeCount}</label>
+                </div>
                     <div class="orderBox">
                         <button class="orderBtn">수강하기</button>
 

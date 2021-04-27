@@ -127,11 +127,19 @@
 		left outer join class_image I on O.class_no = I.class_no
 		where O.class_no=#{classNo}
 	</select>
-	
+	<!-- 수강 인원 조회 -->
 	<select id="classMemberCount" resultType="int">
 		select count(*) from classorder where class_no = #{classNo}
 	</select>
  
-
+	<select id="likeForMembers" resultType="MyClassLike">
+		select class_no from classlike where
+			member_no=#{memberNo} and class_no =#{classNo}
+ 	</select>
+	
+ 
+	<select id="likeCount" resultType="int">
+		select count(*) from classlike where class_no=#{classNo}
+	</select>
 </mapper>
 

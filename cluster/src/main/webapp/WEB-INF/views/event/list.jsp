@@ -1,12 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script type="text/javascript">
-		
-</script>
 <style>
 	.container{
 		padding: 0;
@@ -19,7 +16,7 @@
 	}
 	.card{
 		margin: 0.3rem;
-		width: 17rem;
+		width: 17.5rem;
 		border: none;
 	}
 	.card:hover{
@@ -48,62 +45,147 @@
 		background-color: #ffc107;
 		border-color: #ffc107;
 	}
+	.btn-gap{
+		margin-right: 0.2rem;
+		margin-top: 1rem;
+	}
+	
+	.ableClick:hover{
+		text-decoration: underline;
+		cursor: pointer;
+	}
 </style>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(".addBtn").click(function(){
+			location.href="${ContextPath}/event/write";
+		});
+		
+		//ajax설정
+		$(".ongoing").click(function(){
+			$(this).removeClass("ableClick");
+			$(this).parent().addClass("active");
+			$(".finished").addClass("ableClick");
+			$(".finished").parent().removeClass("active");
+			
+			var formData = new FormData();
+			formData.append("type", "ongoing");
+			formData.append("start", 1);
+			formData.append("end", 12);
+			
+			$.ajax({
+				url:"${ContextPath}/event/getList",
+				type:"post",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function (data, status) {
+					
+					$(".listBox").children().remove();
+					
+					console.log(data);
+					
+					var str = "";
+					$.each(data, function(idx, event){
+						str = "<div class='card'><a href='${ContextPath}/event/detail?no=";
+						str += event.eventNo;
+						str += "'><img width='286' height='180' class='card-img-top' src='${ContextPath}/event/displayFile?fileName=";
+						str += event.eventFileName;
+						str += "' alt='Card image cap'></a><div class='card-body'><h6 class='card-title'>";
+						str += event.eventTitle;
+						str += "</h6><p class='card-text'>";
+						str += event.eventStart + "~" + event.eventEnd;
+						str += "</p></div></div>";
+						
+						$(".listBox").append(str);
+					});
+					
+				}
+				
+			});
+		});
+		
+		$(".finished").click(function(){
+			$(this).removeClass("ableClick");
+			$(this).parent().addClass("active");
+			$(".ongoing").addClass("ableClick");
+			$(".ongoing").parent().removeClass("active");
+			
+			var formData = new FormData();
+			formData.append("type", "finished");
+			formData.append("start", 1);
+			formData.append("end", 12);
+			
+			$.ajax({
+				url:"${ContextPath}/event/getList",
+				type:"post",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function (data, status) {
+					
+					$(".listBox").children().remove();
+					
+					console.log(data);
+					
+					var str = "";
+					$.each(data, function(idx, event){
+						str = "<div class='card'><a href='${ContextPath}/event/detail?no=";
+						str += event.eventNo;
+						str += "'><img width='286' height='180' class='card-img-top' src='${ContextPath}/event/displayFile?fileName=";
+						str += event.eventFileName;
+						str += "' alt='Card image cap'></a><div class='card-body'><h6 class='card-title'>";
+						str += event.eventTitle;
+						str += "</h6><p class='card-text'>";
+						str += event.eventStart + "~" + event.eventEnd;
+						str += "</p></div></div>";
+						
+						$(".listBox").append(str);
+					});
+					
+				}
+				
+			});
+		});
+		
+	});			
+</script>
 
+	<c:set var="e" value="${event}" scope="page"/>
 
 	<section class="container event-body">
 		<article class="row"><h3>이벤트</h3></article>
-		<!-- 목록 필터 -->
+		
+		<!-- 목록 필터 및 이벤트 관리 버튼-->
 		<article class="row">
 			<nav aria-label="breadcrumb">
 			  <ol class="breadcrumb">
-			    <li class="breadcrumb-item"><a href="#">진행중인 이벤트</a></li>
-			    <li class="breadcrumb-item active" aria-current="page">종료된 이벤트</li>
+			    <li class="breadcrumb-item active"><span class="ongoing">진행중인 이벤트</span></li>
+			    <li class="breadcrumb-item" ><span class="finished ableClick">종료된 이벤트</span></li>
 			  </ol>
 			</nav>
-			<div class="col-sm align-items-end justify-content-end">
-				<button type="button" class="btn btn-light">이벤트 관리</button>
-				<button type="button" class="btn btn-light">이벤트 추가</button>
-			</div>
+			<c:if test="${!(empty member) && (member.memberAuth == '관리자')}">
+				<div class="col text-right">
+					<button type="button" class="btn btn-secondary btn-sm btn-gap updateBtn">이벤트 관리</button>
+					<button type="button" class="btn btn-secondary btn-sm btn-gap addBtn">이벤트 추가</button>
+				</div>
+			</c:if>
 		</article>
 		
 		<!-- 본문 -->
-		<article class="row">
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
+		<article class="row listBox">
+			<c:forEach var="e" items="${e}" >
+				<div class="card">
+					<a href="${ContextPath}/event/detail?no=${e.eventNo}">
+					  	<img width="286" height="180" class="card-img-top" src="${ContextPath}/event/displayFile?fileName=${e.eventFileName}" alt="Card image cap">
+					</a>
+				  	<div class="card-body">
+				    	<h6 class="card-title">${e.eventTitle}</h6>
+				    	<p class="card-text">${e.eventStart}~${e.eventEnd }</p>
+				  	</div>
+				</div>
+			</c:forEach>
 		</article>
 
 		<!-- 페이징 -->

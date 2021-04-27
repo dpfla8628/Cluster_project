@@ -30,6 +30,7 @@ import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.OffclassQueryVO;
+import com.kh.cluster.service.ClassDetailService;
 import com.kh.cluster.service.OffclassQueryService;
 import com.kh.cluster.service.OffclassService;
 import com.kh.cluster.util.MediaUtils;
@@ -44,6 +45,7 @@ public class MainController {
 
 	@Autowired
 	private OffclassService offclassService;
+	 
 
 	@Value("${upload.path}")
 	private String uploadPath;
@@ -266,7 +268,7 @@ public class MainController {
 		if (member != null) {
 			memberNo = member.getMemberNo();
 			service.updateOffclassLike(memberNo, classNo, true);
-			return ResponseEntity.ok("Success");
+ 			return ResponseEntity.ok("Success");
 		}
 		// 로그인하지 않은 사용자는 httpstatus코드 401번을 반환한다.
 		return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);

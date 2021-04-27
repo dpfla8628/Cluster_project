@@ -12,18 +12,18 @@
 <script>
 	$(document).ready(function(){ 
 		
-		 $(".faqBtn").on("click", function(){
+		 $(".editBtn").on("click", function(){
  			
 			 if($(".faqTitle").val() == 0 || $(".faqContent").val()==0){
 				 alert("공백없이 입력해주세요");
 				 return false;
 			 }
 			 else if(confirm("수정 완료하시겠습니까?")){
-					var form = $("#faqEdit").serialize();
+					var edit = $("#faqEdit").serialize();
 			        $.ajax({
 			            type : "post", 
 			            url : "/community/faqEdit",  
-			            data : form,  
+			            data : edit,  
  			            success : function(data){
  			            	alert("수정 완료!");
  			            	window.location.href = "/community/faq";
@@ -40,11 +40,11 @@
 		 })
 		 $(".deleteBtn").on("click", function(){
 			 if(confirm("삭제 하시겠습니까?")){
-					var form = $("#faqEdit").serialize();
+					var del = $("#faqEdit").serialize();
 			        $.ajax({
 			            type : "post", 
 			            url : "/community/faqDelete",  
-			            data : form,  
+			            data : del,  
 			            success : function(data){
 			            	window.location.href = "/community/faq";
 			            } 
