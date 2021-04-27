@@ -14,7 +14,7 @@
 		values(#{eventNo}, #{eventTitle}, #{eventContent}, #{eventStart}, #{eventEnd}, #{eventFileName})
 	</insert>
 	
-	<insert id="foreachCoupons" parameterType="java.util.Map">
+	<!-- <insert id="foreachCoupons" parameterType="java.util.Map">
 		<foreach collection="list" item="coupon" open="insert all" separator=" " close="select * from dual">
 			into coupon(coupon_no, coupon_name, coupon_start, coupon_end, coupon_discount, event_no, coupon_file_name)
 			values(coupon_seq.nextval,
@@ -26,6 +26,21 @@
 					#{coupon.couponFileName}
 					)
 		</foreach>
+	</insert> -->
+	
+	<!-- 그냥 seq를 foreach에 넣고 사용하면 한번만 실행되기 때문에 오류발생 -->
+	<insert id="foreachCoupons" parameterType="java.util.Map">
+		insert into coupon(coupon_no, coupon_name, coupon_start, coupon_end, coupon_discount, event_no, coupon_file_name)
+		select coupon_seq.nextval, A.* from(
+		 <foreach item="coupon" collection="list" separator="UNION ALL " >
+		   select #{coupon.couponName} as coupon_name,
+		          #{coupon.couponStart} as coupon_start,
+		          #{coupon.couponEnd} as coupon_end,
+		          #{coupon.couponDiscount} as coupon_discount,
+		          #{coupon.eventNo} as event_no,
+		          #{coupon.couponFileName} as coupon_file_name
+		   from dual
+		 </foreach>) A
 	</insert>
 	
 	<select id="selectOngoingEventList" resultType="EventVO" parameterType="EventInfoforList">
@@ -46,7 +61,7 @@
 			select * from (
 	    		select rownum rn, tmp.* from (
 	        		select * from event 
-	        		where ((to_char(event_start, 'yyyymmdd') > #{sysdate}) or (to_char(event_end, 'yyyymmdd') < #{sysdate}))
+	        		where to_char(event_end, 'yyyymmdd') < #{sysdate}
 	        		order by event_no desc
 	   			)tmp
 			) 
@@ -71,9 +86,35 @@
 		select * from member_coupon where member_no = #{memberNo} and coupon_no = #{couponNo}
 	</select>
 	
-	<update id="updateOne" parameterType="hashmap">
-		update member set ${column} = #{changeVal} where member_id = #{memberId}
+	<update id="updateEvent" parameterType="EventVO">
+		update event 
+		set event_title = #{eventTitle},
+			event_content = #{eventContent},
+			event_start = #{eventStart},
+			event_end = #{eventEnd},
+			event_file_name = #{eventFileName}
+		where event_no = #{eventNo}
 	</update>
+	
+	<update id="foreachUpdateCoupons" parameterType="java.util.List"> 
+		<foreach collection="list" item="coupon" index="index" separator=";" open="DECLARE BEGIN" close="; END;"> 
+			update coupon 
+			set coupon_name = #{couponName},
+				coupon_start = #{couponStart},
+				coupon_end = #{couponEnd},
+				coupon_discount = #{couponDiscount},
+				coupon_file_name = #{couponFileName}
+			where event_no = #{eventNo}
+		</foreach> 
+	</update>
+	
+	<delete id="deleteCoupons" parameterType="int">
+		delete from coupon where event_no = #{eventNo}
+	</delete>
+
+	<delete id="deleteEvent" parameterType="int">
+		delete from event where event_no = #{eventNo}
+	</delete>
 	
 	<update id="updateNull" parameterType="hashmap">
 		update member set ${column} = null where member_id = #{memberId}

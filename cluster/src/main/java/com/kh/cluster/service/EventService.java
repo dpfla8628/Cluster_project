@@ -13,4 +13,6 @@ public interface EventService {
 	public Map<String, Object> eventDetail(Integer eventNo);
 	public void couponDownload(Integer couponNo, Integer memberNo);
 	public boolean checkCoupon(Integer couponNo, Integer memberNo);
+	public void modifyEvent(EventVO event, MultiCouponVO coupons);
+	public void deleteEvent(Integer eventNo);
 }

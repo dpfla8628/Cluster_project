@@ -141,7 +141,8 @@
 						<a id="eventMenu" href="#">이벤트 관리</a>
 						<ul>
 							<li><a href="/admin/event/eventList">이벤트 목록</a></li>
-							<li><a href="/admin/event/registerEvent">이벤트 등록</a></li>
+							<li><a href="/event/write">이벤트 등록</a></li>
+							<li><a href="/event/">이벤트 게시판</a></li>
 						</ul>
 					</li>
 					<li>

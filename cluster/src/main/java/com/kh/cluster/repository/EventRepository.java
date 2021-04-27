@@ -18,4 +18,8 @@ public interface EventRepository {
 	public List<CouponVO> selectCoupons(Integer eventNo);
 	public void insertMemberCoupon(HashMap<String, Integer> number);
 	public MemberCoupon selectMemberCoupon(HashMap<String, Integer> number);
+	public void updateEvent(EventVO event);
+	public void foreachUpdateCoupons(List<CouponVO> coupons);
+	public void deleteCoupons(Integer eventNo);
+	public void deleteEvent(Integer eventNo);
 }
