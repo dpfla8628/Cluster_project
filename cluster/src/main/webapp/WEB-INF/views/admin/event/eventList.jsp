@@ -6,6 +6,37 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
+	a{
+		color:black;
+	}
+	.outbox{
+		width:1200px;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #fccc5b;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #fccc5b;
+	}
+	.searchBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 30%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	#selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+    	margin-bottom: 1rem;
+	}
 </style>
 
 <script>
@@ -54,21 +85,19 @@
 </script>
 
 <div class="outbox">
-	
-	<h2>이벤트 목록</h2>
-	
+	<div class="row">
+		<h2>이벤트 목록</h2>
+	</div>
 	<div class="row">
 		<form action="eventList" method="get">
-			
 			<c:if test="${key != null}">
-				<input type="text" name="key" value="${key}">
+				<input type="text" class="searchBox" name="key" value="${key}">
 			</c:if>
 			<c:if test="${key == null}">
-				<input type="text" name="key" placeholder="이벤트명을 입력하세요.">
+				<input type="text" class="searchBox" name="key" placeholder="이벤트명을 입력하세요.">
 			</c:if>
 			<input type="submit" id="searchBtn" value="검색">
 		</form>
-		
 		<select id="selectBox" style=float:right;>
 			<c:if test="${option == null}">
 				<option value="all">전체</option>
@@ -105,57 +134,51 @@
 				<option value="end" selected>진행종료</option>
 			</c:if>
 		</select>
-	
 	</div>
-	
-	<br>
-	
 	<!-- 오늘 날짜 -->
 	<fmt:formatDate var="today" value="${today}" pattern="yyyy-MM-dd"/>
 	
-	<table class="swTable">
-		<tr>
-			<th>이벤트번호</th>
-			<th>이벤트명</th>
-			<th>이벤트기간</th>
-			<th>상태</th>
-			<th>이벤트정보</th>
-		</tr>
-		<c:choose>
-			<c:when test="${empty list}">
-				<tr>
-					<td colspan="5">검색결과가 존재하지 않습니다.</td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<c:forEach items="${list}" var="event">
-						<tr>
-							<td>${event.eventNo}</td>
-							<td>${event.eventTitle}</td>
-							<td>${event.eventStart} ~ ${event.eventEnd}</td>
-							<td>
-								<fmt:formatDate value="${event.eventEnd}" pattern="yyyy-MM-dd" var="endDate"/>
-								<fmt:formatDate value="${event.eventStart}" pattern="yyyy-MM-dd" var="startDate"/>
-								<c:if test="${today <= endDate && today >= startDate}">
-									진행중
-								</c:if>
-								<c:if test="${today > endDate}">
-									진행종료
-								</c:if>
-								<c:if test="${today < startDate}">
-									진행예정
-								</c:if>
-							</td>
-							<td><a href="#">조회</a></td>
-						</tr>
-				</c:forEach>
-			</c:otherwise>
-		</c:choose>
-	</table>
-
+	<div class="row center">
+		<table class="swTable">
+			<tr>
+				<th>이벤트번호</th>
+				<th>이벤트명</th>
+				<th>이벤트기간</th>
+				<th>상태</th>
+				<th>이벤트정보</th>
+			</tr>
+			<c:choose>
+				<c:when test="${empty list}">
+					<tr>
+						<td colspan="5">검색결과가 존재하지 않습니다.</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${list}" var="event">
+							<tr>
+								<td>${event.eventNo}</td>
+								<td>${event.eventTitle}</td>
+								<td>${event.eventStart} ~ ${event.eventEnd}</td>
+								<td>
+									<fmt:formatDate value="${event.eventEnd}" pattern="yyyy-MM-dd" var="endDate"/>
+									<fmt:formatDate value="${event.eventStart}" pattern="yyyy-MM-dd" var="startDate"/>
+									<c:if test="${today <= endDate && today >= startDate}">
+										진행중
+									</c:if>
+									<c:if test="${today > endDate}">
+										진행종료
+									</c:if>
+									<c:if test="${today < startDate}">
+										진행예정
+									</c:if>
+								</td>
+								<td><a href="#">조회</a></td>
+							</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</table>
+	</div>
 </div>
-
-
-
 
 <jsp:include page="/WEB-INF/views/adminTemplate/footer.jsp"></jsp:include>

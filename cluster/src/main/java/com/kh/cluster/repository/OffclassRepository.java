@@ -3,8 +3,10 @@ package com.kh.cluster.repository;
 import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.util.PagingVO;
 
 public interface OffclassRepository {
@@ -33,9 +35,9 @@ public interface OffclassRepository {
 
 	public String getPicture(Integer classNo) throws Exception;
 
-	public int countClass(Integer creatorNo) throws Exception;
+	public Integer countClass(Integer creatorNo) throws Exception;
 
-	public int countCheck(Integer creatorNo) throws Exception;
+	public Integer countCheck(Integer creatorNo) throws Exception;
 
 	public List<Offclass> selectClass(PagingVO vo) throws Exception;
 
@@ -47,8 +49,27 @@ public interface OffclassRepository {
 
 	public void endDateUpdate(Offclass offclass) throws Exception;
 
-	public Creator setCreator(int memberNo) throws Exception;
+	public Creator setCreator(Integer memberNo) throws Exception;
 
 	public void creatorEdit(Creator creator) throws Exception;
 
+	public Integer totalClass(Integer creatorNo) throws Exception;
+
+	public Integer openClass(Integer creatorNo) throws Exception;
+
+	public Integer totalLike(Integer creatorNo) throws Exception;
+
+	public Integer totalEntrant(Integer creatorNo) throws Exception;
+
+	public List<OffclassQnAVO> selectClassQnA(PagingVO vo) throws Exception;
+
+	public ClassQuestion readQuestion(Integer classqNo) throws Exception;
+
+	public void classAnswer(ClassQuestion classQuestion) throws Exception;
+
+	public Integer countQuestion(Integer creatorNo) throws Exception;
+
+	public Integer countAnswer(Integer creatorNo) throws Exception;
+
+	
 }

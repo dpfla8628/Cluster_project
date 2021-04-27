@@ -5,6 +5,29 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #fccc5b;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #fccc5b;
+	    
+	}
+	
+	.searchBox{
+		width:100%;
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 30%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.outbox{
+		width:1200px;
+	}
 	
 </style>
 
@@ -32,19 +55,24 @@
 	
 </script>
 
-<div class="outbox">
 
-	<h2>크리에이터 명단</h2>
+
+<div class="outbox">
+	<div class="row">
+		<h2>크리에이터 명단</h2>
+	</div>
 	
-	<form action="creatorList" method="get">
-		<c:if test="${key != null}">
-			<input type="text" name="key" value="${key}">
-		</c:if>
-		<c:if test="${key == null}">
-			<input type="text" name="key" placeholder="크리에이터명을 입력하세요.">
-		</c:if>
-		<input type="submit" id="searchBtn" value="검색">
-	</form>
+	<div class="row"> 
+		<form action="creatorList" method="get">
+			<c:if test="${key != null}">
+				<input type="text" class="searchBox" name="key" value="${key}">
+			</c:if>
+			<c:if test="${key == null}">
+				<input type="text" class="searchBox" name="key" placeholder="크리에이터명을 입력하세요.">
+			</c:if>
+			<input type="submit" id="searchBtn" value="검색">
+		</form>
+	</div>	
 	
 	<br>
 	

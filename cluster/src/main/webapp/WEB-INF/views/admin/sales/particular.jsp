@@ -6,6 +6,44 @@
     
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
+<style>
+	a{
+		color:black;
+	}
+	.outbox{
+		width:1200px;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #fccc5b;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #fccc5b;
+	}
+	.yearMonth{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.salesTable{
+		border-collapse: collapse;
+		margin-bottom: 1.5rem;
+		width: 40%;
+	}
+	.salesTable th, .salesTable td {
+		text-align: center;
+	}
+	
+	.swTable{
+		margin-top: 1.5rem;
+	}
+</style>
+
 <script>
 	
 	$(function(){
@@ -38,49 +76,47 @@
 			$("#year").text(year);
 		}
 		
-		
-		
-		
-		
-		
 });
 	
 </script>
 
 <div class="outbox">
-
-	<h2>클래스별 매출현황</h2>
+	<div class="row">
+		<h2>클래스별 매출현황</h2>
+	</div>
 	
-	<br>
-	
-	<table border="1">
-		<tr>
-			<th><span id="year">${yearSales.year}</span>년 매출액</th>
-			<th><span id="yearMonth">${monthSales.yearMonth}</span>월 매출액</th>
-		</tr>
-		<tr>
-			<c:if test="${yearSales.yearsales != null}">
-				<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${yearSales.yearsales}"/></td>
-			</c:if>
-			
-			<c:if test="${yearSales.yearsales == null}">
-				<td>￦0</td>
-			</c:if>
-			
-			<c:if test="${monthSales.salesForMonth != null}">
-				<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${monthSales.salesForMonth}"/></td>
-			</c:if>
-			<c:if test="${monthSales.salesForMonth == null}">
-				<td>￦0</td>
-			</c:if>
-		</tr>
-	</table>
-	
-	<br>
+	<div class="row">
+		<table class="salesTable" border="1">
+			<thead>
+				<tr>
+					<th width="50%"><span id="year">${yearSales.year}</span>년 매출액</th>
+					<th width="50%"><span id="yearMonth">${monthSales.yearMonth}</span>월 매출액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:if test="${yearSales.yearsales != null}">
+						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${yearSales.yearsales}"/></td>
+					</c:if>
+					
+					<c:if test="${yearSales.yearsales == null}">
+						<td>￦0</td>
+					</c:if>
+					
+					<c:if test="${monthSales.salesForMonth != null}">
+						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${monthSales.salesForMonth}"/></td>
+					</c:if>
+					<c:if test="${monthSales.salesForMonth == null}">
+						<td>￦0</td>
+					</c:if>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	
 	<div class="row">
 		<form action="particular" method="get">
-			<select name="classNo">
+			<select name="classNo" id="selectBox">
 				<c:forEach items="${openClassList}" var="offclass">
 					<c:if test="${classNo != null && classNo == offclass.classNo}">
 						<option value="${offclass.classNo}" selected >${offclass.className}</option>
@@ -105,39 +141,38 @@
 		</form>
 	</div>
 	
-	<table class="swTable">
-		<tr>
-			<th>날짜</th>
-			<th>클래스</th>
-			<th>일매출</th>
-			<th>월매출</th>
-		</tr>
-		<c:choose>
-			<c:when test="${empty salesList}">
+	<div class="row center">
+		<table class="swTable">
+			<thead>
 				<tr>
-					<td colspan="4">매출액이 없습니다..</td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<c:forEach items="${salesList}" var="adminClassorderVO">
+					<th>날짜</th>
+					<th>클래스</th>
+					<th>일매출</th>
+					<th>월매출</th>
+				</tr>	
+			</thead>
+			<tbody>
+				<c:choose>
+					<c:when test="${empty salesList}">
 						<tr>
-							<td>${adminClassorderVO.salesdate}</td>
-							<td>${adminClassorderVO.className}</td>
-							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.daysales}"/></td>
-							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.monthsales}"/></td>
+							<td colspan="4">매출액이 없습니다..</td>
 						</tr>
-				</c:forEach>
-			</c:otherwise>
-		</c:choose>
-	
-	</table>
-	
-	
-	
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${salesList}" var="adminClassorderVO">
+								<tr>
+									<td>${adminClassorderVO.salesdate}</td>
+									<td>${adminClassorderVO.className}</td>
+									<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.daysales}"/></td>
+									<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.monthsales}"/></td>
+								</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		</table>
+	</div>
 
 </div>
-
-
-
 
 <jsp:include page="/WEB-INF/views/adminTemplate/footer.jsp"></jsp:include>    

@@ -139,7 +139,7 @@ public class LoginController {
 		//세션 삭제
 		req.getSession().invalidate();
 		
-		return "redirect:/login/";
+		return "redirect:/";
 	}
 	
 	@GetMapping("/resend")

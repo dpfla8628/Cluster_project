@@ -8,43 +8,37 @@
 <title>관리자단 헤더</title>
 <link rel="stylesheet" type="text/css" href="/css/sw.css">
 <style>
-	
-	/* 전체 화면의 폭은 1024px 로 한다 */
 	main {
-		width:1200px;
+		width:100%;
+		height:auto;
 		margin:auto;
+		font-size:18px;
 	}
-	
-	/* 각각의 레이아웃 영역에 여백을 설정한다 */
-	header, footer, nav, section {
-		padding:1rem;
+	header, aside, footer {
+		background-color:#fccc5b;
 	}
-	
 	header {
-		border-bottom: 1px solid black;
+		height:150px;
+		background-color:#fccc5b;
 	}
-	
-	/* 본문에 내용이 없어도 최소높이를 설정하여 일정 크기만큼 표시되도록 한다 */
 	section {
-		min-height:650px;
+		height:calc(100% - 150px);
+		display:flex;
 	}
-	
 	aside {
-		float:left;
-		width:15%;
-		min-height:450px;
-		border-right: 1px solid black;
+		width:200px;
+		height:calc(100% - 150px);
+		background-color:#fccc5b;
 	}
-	
 	article {
-		float:left;
-		width:85%;
-		min-height:450px;
-		
+		width: calc(100% - 200px);
+		height:calc(100% - 150px);
 	}
-	
+	.sideMenu li{
+		font-size:20px;
+	}
 	.sideMenu > li {
-		padding:0.5rem;
+		padding:1rem 0;
 	}
 	.sideMenu, 
 	.sideMenu ul {
@@ -52,22 +46,47 @@
 		padding:0;
 		list-style:none;
 	}
-	
-	
+	.sideMenu{
+		padding:1.5rem;
+		padding-left: 3.5rem;
+	}
 	.sideMenu a {
 		color:black;
 		text-decoration:none;
 	}
-	
 	.sideMenu ul {
 		margin-left:0.3rem;
 		margin-top:0.5rem;
 		display:none;
-		
 	}	
-	
 	.sideMenu ul > li {
 		padding:0.2rem;
+	}
+	.sideMenu label {
+		cursor:pointer;
+	}
+	.headerDiv{
+		position:fixed;
+		width:100%;
+		background-color:#fccc5b;
+	}
+	.asideDiv{
+		height:calc(100% - 150px);
+		width:300px;
+		background-color:#fccc5b;
+		position:fixed;
+	}
+	.title{
+		padding:0 1.5rem;
+		padding-left: 3.5rem;
+	}
+	#logo{
+		margin-bottom:0.5rem;
+	}
+	#logo a{
+		font-size:40px;
+		color:black;
+		text-decoration:none;
 	}
 </style>
 
@@ -78,7 +97,7 @@
 
 <script>
 	$(function(){
-		$(".sideMenu").find("a").click(function(){
+		$(".sideMenu").find("label").click(function(){
 			
 			$(this).next("ul").slideToggle();
 		})
@@ -91,69 +110,67 @@
 <body>
 	<main>
 		<header>
-			<div class="right">
-				<a href="/">나가기</a>		
-			</div>
-			<div class="title">
-				<a href="/admin/home">클러스터</a>
-				<!-- 닉네임 얻기 위해 LoginController에 session.setAttribute("memberNick", member.getMemberNick());
-				추가해달라고 말하기
-				 -->
-				<div>${memberNick}님 안녕하세요.</div>
-				<div>Cluster 관리자 페이지입니다.</div>
+			<div class="headerDiv">
+				<div class="right">
+					<a href="/">나가기</a>		
+				</div>
+				<div class="title">
+					<div id="logo">
+						<a href="/admin/home">Cluster</a>
+					</div>
+					<!-- 닉네임 얻기 위해 LoginController에 session.setAttribute("memberNick", member.getMemberNick());
+					추가해달라고 말하기
+					 -->
+					<div>admin님 안녕하세요.</div>
+					<div>Cluster 관리자 페이지입니다.</div>
+				</div>
 			</div>
 		</header>
 		
 		<section>
 			<aside>
-				<ul class="sideMenu">
-					<li>
-						<a href="/admin/home">대시보드</a>
-					</li>
-					<li>
-						<a id="creatorMenu" href="#">크리에이터 관리</a>
-						<ul>
-							<li><a href="/admin/creator/creatorList">크리에이터 명단</a></li>
-							<li><a href="/admin/creator/income">크리에이터 정산</a></li>
-						</ul>
-					</li>
-					<li>
-						<a id="classMenu" href="#">클래스 관리</a>
-						<ul>
-							<li><a href="/admin/class/checkClassOpen">클래스 오픈 검수</a></li>
-							<li><a href="/admin/class/openClass">진행중인 클래스</a></li>
-							<li><a href="/admin/class/comingSoonClass">오픈 예정 클래스</a></li>
-							<li><a href="/admin/class/closedClass">종료된 클래스</a></li>
-						</ul>
-					</li>
-					<li>
-						<a id="memberMenu" href="#">회원 관리</a>
-						<ul>
-							<li><a href="/admin/member/memberList">전체 회원목록</a></li>
-							<li><a href="/admin/member/memberOrder">주문한 회원목록</a></li>
-						</ul>
-					</li>
-					<li>
-						<a id="salesMenu" href="#">매출 현황</a>
-						<ul>
-							<li><a href="/admin/sales/total">전체 매출현황</a></li>
-							<li><a href="/admin/sales/particular">클래스별 매출현황</a></li>
-						</ul>
-					</li>
-					<li>
-						<a id="eventMenu" href="#">이벤트 관리</a>
-						<ul>
-							<li><a href="/admin/event/eventList">이벤트 목록</a></li>
-							<li><a href="/admin/event/registerEvent">이벤트 등록</a></li>
-						</ul>
-					</li>
-					<li>
-						<a id="categoryMenu" href="#">카테고리 관리</a>
-						<ul>
-							<li><a href="/admin/category/categoryList">카테고리 목록</a></li>
-							<li><a href="/admin/category/addCategory">카테고리 추가</a></li>
-						</ul>
-					</li>
-				</ul>
+				<div class="asideDiv">
+					<ul class="sideMenu">
+						<li>
+							<a href="/admin/home">대시보드</a>
+						</li>
+						<li>
+							<label id="creatorMenu">크리에이터 관리</label>
+							<ul>
+								<li><a href="/admin/creator/creatorList">크리에이터 명단</a></li>
+								<li><a href="/admin/creator/income">크리에이터 정산</a></li>
+							</ul>
+						</li>
+						<li>
+							<label id="classMenu">클래스 관리</label>
+							<ul>
+								<li><a href="/admin/class/checkClassOpen">클래스 오픈 검수</a></li>
+								<li><a href="/admin/class/openClass">진행중인 클래스</a></li>
+								<li><a href="/admin/class/comingSoonClass">오픈 예정 클래스</a></li>
+								<li><a href="/admin/class/closedClass">종료된 클래스</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="/admin/member/memberList">회원 관리</a>
+						</li>
+						<li>
+							<label id="salesMenu">매출 현황</label>
+							<ul>
+								<li><a href="/admin/sales/total">전체 매출현황</a></li>
+								<li><a href="/admin/sales/particular">클래스별 매출현황</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="/admin/event/eventList">이벤트 관리</a>
+						</li>
+						<li>
+							<label id="categoryMenu">카테고리 관리</label>
+							<ul>
+								<li><a href="/admin/category/categoryList">카테고리 목록</a></li>
+								<li><a href="/admin/category/addCategory">카테고리 추가</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
 			</aside>
 			<article>

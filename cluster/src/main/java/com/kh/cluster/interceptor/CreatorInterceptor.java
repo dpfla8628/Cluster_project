@@ -16,7 +16,7 @@ import com.kh.cluster.util.CookieUtil;
 import com.kh.cluster.util.TokenUtil;
 
 @Component
-public class AuthInterceptor2 implements HandlerInterceptor{
+public class CreatorInterceptor implements HandlerInterceptor{
 	
 	@Autowired
 	CookieUtil cookieUtil;
@@ -25,13 +25,13 @@ public class AuthInterceptor2 implements HandlerInterceptor{
 	@Autowired
 	AuthService service;
 	
-	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor2.class);
+	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
 	
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
 			throws Exception {
 		
-		log.info("authInterceptor()");
+		log.info("CreatorInterceptor()");
 		
 		Cookie cookie = cookieUtil.getCookie(req, "accessToken");
 		
@@ -42,16 +42,24 @@ public class AuthInterceptor2 implements HandlerInterceptor{
 			if(email != null) {
 				AuthMemberVO member = service.isRightToken(email, token);
 				
+				log.info("Auth::{}", member.getMemberAuth());
+				String auth = member.getMemberAuth();
+				
 				if(member != null) {
-					req.setAttribute("member", member);
-					return true;
+					if(auth.equals("강사") || auth.equals("관리자")) {
+					//if("강사".equals(member.getMemberAuth()) || "관리자".equals(member.getMemberAuth())) {
+						req.setAttribute("member", member);
+						return true;
+					}else {
+						res.sendRedirect("/");
+						return false;
+					}			
 				}
 			}
 		}
 		
-		AuthMemberVO member= null;
-		req.setAttribute("member", member);
+		res.sendRedirect("/login/");
 		
-		return true;
+		return false;
 	}
 }

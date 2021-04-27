@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -10,6 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/class.css">
  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -39,10 +40,7 @@
             height: auto;
         }
 
-        .link>a {
-            margin-left: 80px;
-        }
-
+     
         #reviewBox {
              height: auto;
 
@@ -178,11 +176,11 @@
     </style>
 </head>
 <body>
- <c:set var="logInMember" value="${nick}"/>
-<c:set var="classMember" value="${offClass.member.memberNick}"/>
+ <c:set var="logInMember" value="${member.memberNick}"/>
+<c:set var="classMember" value="${offClass.authMember.memberNick}"/>
 
 <div class="reviewList">
-  	
+  로그인닉네임 :${member.memberNick}
   <c:choose>
     <c:when test="${empty classReview}">
         <h2 style="text-align: center">등록된 리뷰가 없습니다</h2>

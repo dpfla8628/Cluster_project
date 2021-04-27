@@ -9,6 +9,38 @@
 	a{
 		color:black;
 	}
+	.outbox{
+		width:1200px;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #fccc5b;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #fccc5b;
+	    
+	}
+	
+	.searchBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 30%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	#selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.swTable{
+		margin-top: 2rem;
+	}
 </style>
 
 <script>
@@ -45,11 +77,13 @@
 </script>
 
 <div class="outbox">
-	<h2>크리에이터 클래스 오픈 검수</h2>
+	<div class="row">
+		<h2>크리에이터 클래스 오픈 검수</h2>
+	</div>
 	
 	<div class="row">
 		<form action="checkClassOpen" method="get">
-			<select name="type">
+			<select name="type" id="selectBox">
 				<c:if test="${type != null && type == 'member_id'}">
 					<option value="member_id" selected>아이디</option>
 					<option value="member_nick">크리에이터</option>
@@ -64,19 +98,17 @@
 				</c:if>
 			</select>
 			<c:if test="${key != null}">
-				<input type="text" name="key" value="${key}">
+				<input type="text" class="searchBox" name="key" value="${key}">
 			</c:if>
 			<c:if test="${key == null}">
-				<input type="text" name="key" placeholder="검색어를 입력하세요.">
+				<input type="text" class="searchBox" name="key" placeholder="검색어를 입력하세요.">
 			</c:if>
 			<input type="submit" id="searchBtn" value="검색">
 		</form>
 	</div>
 	
-	<br>
 	
 	<!-- 게시판 페이징 구현 -->
-	
 	<div class="row center">
 		<table class="swTable">
 			<tr>
@@ -175,8 +207,6 @@
 			</c:if>
 		</ul>
 	</div>
-	
-	
 	
 </div>
 

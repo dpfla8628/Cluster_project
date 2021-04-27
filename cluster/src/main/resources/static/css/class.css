@@ -1,0 +1,281 @@
+    padding: 0;
+        margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #left_side {
+            width: 600px;
+            height: 400px;
+            float: left;
+            margin-right: 20px;
+        }
+
+        #right_side {
+            width: 400px;
+            height: 400px;
+            /*            border: 0.5px dotted gray;*/
+            display: inline-block;
+            position: fixed;
+            margin-left: 100px;
+
+        }
+
+        .img {
+            margin: 10px 0;
+        }
+
+        #classBox,
+        #creatorBox {
+            border: 0.1px solid lightgray;
+            width: 350px;
+            height: auto;
+            margin-bottom: 10px;
+            padding: 30px;
+        }
+
+        .outbox {
+            display: block;
+            width: 1000px;
+            margin: 0 auto;
+            height: auto;
+        }
+
+        .link>a {
+            margin-left: 80px;
+        }
+
+        #reviewBox {
+            height: auto;
+
+        }
+
+        /*   .askBtn {
+        	margin-top : 2rem;
+            width: 600px;
+            height: 50px;
+            background-color: transparent;
+            font-size: 16px;
+            border-color : #ffc107;
+        } */
+        .askBtn:hover {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .moreReviewBtn,
+        .askBtn {
+            width: 600px;
+            height: 50px;
+            background-color: transparent;
+            font-size: 16px;
+            border: 1px solid;
+            border-color: #ffc107;
+        }
+
+        .moreReviewBtn:hover {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        #creatorName {
+            font-size: 20px;
+            font-weight: 600;
+
+        }
+
+        .reviewImg {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+
+        }
+
+        .reviewImgBox {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .reviewImgBox::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .reviewNick {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .reviewDate {
+            font-size: 11px;
+            font-weight: 300;
+        }
+
+
+        .review-left {
+            margin-top: 0px;
+            padding: 0px;
+            margin-bottom: -3px;
+        }
+
+        .reviewBtn {
+            float: right;
+            /* width: 100px; */
+            border: none;
+            background-color: transparent;
+            font-weight: 300;
+            text-decoration: none;
+            color: black;
+            font-size: 13px;
+            margin-left: 50px;
+        }
+
+        .reviewBtn>a:hover {
+            font-weight: bold;
+        }
+
+        .reviewOkNick {
+            font-size: 15px;
+        }
+
+        .reviewContext {
+            font-size: 13px;
+            margin: 1rem 0;
+        }
+
+        .reviewOk {
+            margin-top: 0px;
+            margin-left: 1.6rem;
+            font-weight: 300;
+            font-size: 13px;
+        }
+
+        .profileImg {
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+        }
+
+        .profileBox {
+            float: left;
+
+        }
+
+        .creatorInfoBox {
+            float: left;
+            margin: 5px 10px;
+        }
+
+
+        .float-box::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+
+        .creatorInfo {
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+
+
+        .iconBox {
+            float: left;
+        }
+
+        .orderBtn {
+            height: 50px;
+            width: 250px;
+            border: none;
+            font-size: 16px;
+            background-color: #ffc107;
+        }
+
+        .price {
+            font-size: 17px;
+            text-align: right
+        }
+
+        .orderBox {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .reviewA {
+
+            width: 500px;
+            height: 50px;
+            margin-top: 1rem;
+            padding-left: 5px;
+
+        }
+
+        .link>a {
+            text-decoration: none;
+            color: gray;
+            font-weight: 300;
+        }
+
+        .link>a:hover {
+            color: black;
+            font-weight: 500;
+        }
+
+        .photo {
+            width: 600px;
+            height: 130px;
+        }
+
+        .memberSet {
+            font-weight: 300;
+            float: right;
+            -webkit-animation: blink 1.5s ease-in-out infinite alternate;
+            -moz-animation: blink 1.5s ease-in-out infinite alternate;
+            animation: blink 1.5s ease-in-out infinite alternate;
+        }
+		@-webkit-keyframes blink {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        @-moz-keyframes blink {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        @keyframes blink {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        
+        /* ---------문의하기------------ */
+        .qnaOutBox {
+            border: 1px solid #ffc107;
+            width: 400px;
+            height: 500px;
+			margin: auto 0.5rem;
+            
+        }
+
+     
+       .classQ {
+            width: 350px;
+            height: 400px;
+            resize: none;
+            margin: auto 1rem;
+            border : 1px solid lightgray;
+        } 
+
+        .sendBtn {
+            width: 355px;
+            height: 40px;
+            border: none;
+            margin: 0.5rem 1rem;
+
+        }

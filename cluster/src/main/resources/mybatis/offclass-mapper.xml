@@ -54,6 +54,27 @@
 		where rn between #{start} and #{end}
 	</select>
 
+	<!-- 페이징 처리 후 강의에 대한 받은 질문 조회-->
+	<select id="selectClassQnA" resultType="OffclassQnAVO">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select 
+    						Q.classq_no, Q.class_no, O.class_name, M.member_no, M.member_nick, Q.class_q, Q.class_a, O.creator_no
+						from 
+    						classquestion Q 
+        					inner join offclass O on O.class_no = Q.class_no and creator_no = #{creatorNo}
+        					inner join member M on M.member_no = Q.member_no
+						group by 
+    						Q.classq_no, Q.class_no, O.class_name, M.member_no, M.member_nick, Q.class_q, Q.class_a, O.creator_no
+    					order by 
+    						Q.classq_no desc	 
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+
 	<select id="classList" resultType="Offclass">
 		<![CDATA[
 			select * from offclass 
@@ -76,7 +97,7 @@
 		select fullname from class_image where class_no = #{classNo}
 	</select>
 	
-	<select id="getClassNo" resultType="Integer">
+	<select id="getClassNo" resultType="int">
 		select offclass_seq.currval from dual
 	</select>
 	
@@ -86,6 +107,18 @@
 	
 	<select id="countCheck" resultType="int">
 		select count(*) from offclass where (class_check = '검수대기' or class_check = '반려') and creator_no = #{creatorNo}
+	</select>
+	
+	<select id="countQuestion" resultType="int">
+		select count(*) from classquestion Q 
+        	inner join offclass O on O.class_no = Q.class_no and creator_no = #{creatorNo}
+        	inner join member M on M.member_no = Q.member_no
+	</select>
+	
+	<select id="countAnswer" resultType="int">
+		select count(*) from classquestion Q 
+        	inner join offclass O on O.class_no = Q.class_no and creator_no = #{creatorNo} and class_a is not null
+        	inner join member M on M.member_no = Q.member_no
 	</select>
 	
 	<select id="readDate" resultType="Offclass">
@@ -108,5 +141,28 @@
 		update creator set creator_info = #{creatorInfo}, creator_account = #{creatorAccount} where member_no = #{memberNo}
 	</update>
 	
+	<select id="totalClass" resultType="int">
+		select count(*) from offclass where creator_no = #{creatorNo}
+	</select>
+	
+	<select id="openClass" resultType="int">
+		select count(*) from offclass where creator_no = #{creatorNo} and class_end_check = '진행'
+	</select>
+	
+	<select id="totalLike" resultType="int">
+		select count(*) from classlike C inner join offclass O on O.class_no = C.class_no where O.creator_no = #{creatorNo}
+	</select>
+	
+	<select id="totalEntrant" resultType="int">
+		select count(*) from classorder C inner join offclass O on C.class_no = O.class_no where C.order_ok ='입금완료' and O.creator_no = #{creatorNo}
+	</select>
+	
+	<select id="readQuestion" resultType="ClassQuestion">
+		select * from classquestion where classq_no = #{classqNo}
+	</select>
+	
+	<update id="classAnswer">
+		update classquestion set class_a = #{classA} where classq_no = #{classqNo}
+	</update>
 	
 </mapper>	

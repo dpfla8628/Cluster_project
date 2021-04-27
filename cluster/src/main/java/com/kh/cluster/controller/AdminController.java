@@ -1,7 +1,5 @@
 package com.kh.cluster.controller;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,15 +8,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,15 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.service.AdminService;
 import com.kh.cluster.util.DateUtil;
-import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.PagingUtil;
-import com.kh.cluster.util.UploadFileUtils;
 
 @Controller
 @RequestMapping("/admin")
@@ -298,41 +286,41 @@ public class AdminController {
 		
 	}
 	
-	@GetMapping("/member/memberOrder")
-	public String memberOrder(
-			@RequestParam(value="p", required=false) Integer p,
-			@RequestParam(value="type", required=false) String type,
-			@RequestParam(value="key", required=false) String key,
-			@RequestParam(value="startDate", required=false) String startDate,
-			@RequestParam(value="endDate", required=false) String endDate,
-			Model model) throws Exception {
-		
-		log.info("memberOrder()");
-		
-		Map<String, Object> map = PagingUtil.getPaging(p, type, key, startDate, endDate, 15, 5, "memberOrder");
-		
-		model.addAttribute("list", map.get("adminClassorderList"));
-		model.addAttribute("startNum", map.get("startNum"));
-		model.addAttribute("endNum", map.get("endNum"));
-		model.addAttribute("pageSize", map.get("pageSize"));
-		model.addAttribute("p", map.get("p"));
-		model.addAttribute("type", map.get("type"));
-		model.addAttribute("key", map.get("key"));
-		model.addAttribute("startDate", map.get("startDate"));
-		model.addAttribute("endDate", map.get("endDate"));
-		model.addAttribute("isSearch", map.get("isSearch"));
-		
-		return "admin/member/memberOrder";
-	}
-	
-	@GetMapping("/member/confirmPayment")
-	public ResponseEntity<Integer> confirmPayment(@RequestParam(value="orderNo", required=true) int orderNo) throws Exception {
-		
-		service.confirmPayment(orderNo);
-		
-		return new ResponseEntity<Integer>(orderNo, HttpStatus.OK);
-		
-	}
+//	@GetMapping("/member/memberOrder")
+//	public String memberOrder(
+//			@RequestParam(value="p", required=false) Integer p,
+//			@RequestParam(value="type", required=false) String type,
+//			@RequestParam(value="key", required=false) String key,
+//			@RequestParam(value="startDate", required=false) String startDate,
+//			@RequestParam(value="endDate", required=false) String endDate,
+//			Model model) throws Exception {
+//		
+//		log.info("memberOrder()");
+//		
+//		Map<String, Object> map = PagingUtil.getPaging(p, type, key, startDate, endDate, 15, 5, "memberOrder");
+//		
+//		model.addAttribute("list", map.get("adminClassorderList"));
+//		model.addAttribute("startNum", map.get("startNum"));
+//		model.addAttribute("endNum", map.get("endNum"));
+//		model.addAttribute("pageSize", map.get("pageSize"));
+//		model.addAttribute("p", map.get("p"));
+//		model.addAttribute("type", map.get("type"));
+//		model.addAttribute("key", map.get("key"));
+//		model.addAttribute("startDate", map.get("startDate"));
+//		model.addAttribute("endDate", map.get("endDate"));
+//		model.addAttribute("isSearch", map.get("isSearch"));
+//		
+//		return "admin/member/memberOrder";
+//	}
+//	
+//	@GetMapping("/member/confirmPayment")
+//	public ResponseEntity<Integer> confirmPayment(@RequestParam(value="orderNo", required=true) int orderNo) throws Exception {
+//		
+//		service.confirmPayment(orderNo);
+//		
+//		return new ResponseEntity<Integer>(orderNo, HttpStatus.OK);
+//		
+//	}
 	
 	@GetMapping("/sales/total")
 	public String total(@RequestParam(value="yearMonth", required=false) String yearMonth, Model model) throws Exception {
@@ -475,22 +463,22 @@ public class AdminController {
 	}
 	
 	
-	@GetMapping("/event/registerEvent")
-	public String registerEventForm() throws Exception {
-		
-		log.info("registerEventForm()");
-		
-		return "admin/event/registerEvent";
-		
-	}
-	@PostMapping("/event/registerEvent")
-	public String RegisterEvent() throws Exception {
-		
-		//*TODO
-		
-		return "admin/event/registerEvent";
-		
-	}
+//	@GetMapping("/event/registerEvent")
+//	public String registerEventForm() throws Exception {
+//		
+//		log.info("registerEventForm()");
+//		
+//		return "admin/event/registerEvent";
+//		
+//	}
+//	@PostMapping("/event/registerEvent")
+//	public String RegisterEvent() throws Exception {
+//		
+//		//*TODO
+//		
+//		return "admin/event/registerEvent";
+//		
+//	}
 	
 //	@PostMapping(value = "uploadEventImage", produces = "text/plain; charset=UTF-8")
 //	public ResponseEntity<String> uploadEventImage(MultipartFile file) throws Exception {

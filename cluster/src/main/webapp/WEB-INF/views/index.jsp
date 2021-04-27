@@ -25,7 +25,7 @@ $(document).ready(function(){
     $(".detail").css("cursor","pointer").on("click", function(){
     	var classNo = $(this).attr("classNo");
     	
-    	self.location = "/detail/" + classNo;
+    	self.location = "class_detail/detail/" + classNo;
     	
     	/* alert(classNo + "값으로 페이지 이동 예정"); */
     	
@@ -191,7 +191,7 @@ $(document).ready(function(){
 					<table>
 						<tr>
 							<td colspan="2">
-								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+								<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 							</td>
 						</tr>
 						<tr>
@@ -241,7 +241,7 @@ $(document).ready(function(){
 					<table>
 						<tr>
 							<td colspan="2">
-								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+								<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 							</td>
 						</tr>
 						<tr>
@@ -291,7 +291,7 @@ $(document).ready(function(){
 					<table>
 						<tr>
 							<td colspan="2">
-								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+								<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 							</td>
 						</tr>
 						<tr>
@@ -341,7 +341,7 @@ $(document).ready(function(){
 					<table>
 						<tr>
 							<td colspan="2">
-								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+								<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 							</td>
 						</tr>
 						<tr>
@@ -391,7 +391,7 @@ $(document).ready(function(){
 					<table>
 						<tr>
 							<td colspan="2">
-								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+								<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 							</td>
 						</tr>
 						<tr>
@@ -441,7 +441,7 @@ $(document).ready(function(){
 					<table>
 						<tr>
 							<td colspan="2">
-								<img class="img detail" classNo=${a.classNo} src="/mypage/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+								<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 							</td>
 						</tr>
 						<tr>

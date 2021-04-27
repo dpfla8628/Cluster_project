@@ -233,5 +233,14 @@ public class AuthServiceImpl implements AuthService {
 		log.info("isMember()");
 		return repo.selectMember(memberId);
 	}
+	
+	//sns회원가입
+	@Override
+	public AuthMember signUpSNS(Map<String, String> member) {
+		//회원가입 처리
+		repo.insertSNS(member);
+		//회원정보 반환
+		return repo.selectMember(member.get("email"));
+	}
 
 }

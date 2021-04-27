@@ -8,13 +8,22 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
-	.outbox{
-		width:500px;
-		
+	a{
+		color:black;
 	}
-	.input {
-		margin:0.5rem 0;
-	
+	.outbox{
+		width:1200px;
+	}
+	.input{
+		width:50%;
+		margin-bottom:1rem;
+   		height:50px;
+    	font-size:15px;
+	}
+	#editBtn{
+		cursor:pointer;
+		background-color:#fccc5b;
+		border-color: #fccc5b;
 	}
 </style>
 
@@ -45,24 +54,23 @@
 
 </script>
 
-<div class="outbox">
-	<h2>카테고리 수정</h2>
-	
+<div class="outbox center">
+	<div class="row">
+		<h2>카테고리 수정</h2>
+	</div>
 	<div class="row">
 		<form:form modelAttribute="classCategory" action="edit" method="post">
-			
 			<form:hidden path="categoryNo"/>
-			
-			<form:input type="text" class="input" path="categoryBig"/>
-			<form:input type="text" class="input" path="categorySmall"/>
-			
+			<div class="row">
+				<form:input type="text" class="input" path="categoryBig"/>
+			</div>
+			<div class="row">
+				<form:input type="text" class="input" path="categorySmall"/>
+			</div>
 		</form:form>
-		
 		<div class="row">
 			<button type="submit" id="editBtn" class="input">수정하기</button>
 		</div>
-		
-	
 	</div>
 
 </div>

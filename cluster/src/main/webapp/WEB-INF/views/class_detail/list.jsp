@@ -60,7 +60,7 @@
 							</a>
 						</td> 
 						<td align="center">
-							${list.member.memberNick}
+							${list.authMember.memberNick}
 						</td>
 						<td align="center">
 							${list.classPrice}원

@@ -12,7 +12,39 @@
 	a{
 		color:black;
 	}
-	
+	.outbox{
+		width:1200px;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #fccc5b;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #fccc5b;
+	}
+	.editBtn, .deleteBtn{
+		cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	}
+	.searchBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 30%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	#selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+    	margin-bottom: 1rem;
+	}
 </style>
 
 
@@ -83,13 +115,13 @@
 
 </script>
 
-<div>
-
-	<h2>카테고리 목록</h2>
-	
+<div class="outbox">
+	<div class="row">
+		<h2>카테고리 목록</h2>
+	</div>
 	<div class="row">
 		<form action="categoryList" method="get">
-			<select name="type">
+			<select name="type" id="selectBox">
 				<c:if test="${type != null && type == 'category_big'}">
 					<option value="category_big" selected>대분류</option>
 					<option value="category_small">소분류</option>
@@ -104,16 +136,14 @@
 				</c:if>
 			</select>
 			<c:if test="${key != null}">
-				<input type="text" name="key" value="${key}">
+				<input type="text" class="searchBox" name="key" value="${key}">
 			</c:if>
 			<c:if test="${key == null}">
-				<input type="text" name="key" placeholder="검색어를 입력하세요.">
+				<input type="text" class="searchBox" name="key" placeholder="검색어를 입력하세요.">
 			</c:if>
 			<input type="submit" id="searchBtn" value="검색">
 		</form>
 	</div>
-	
-	<br>
 	
 	<!-- 카테고리 목록 -->
 	<div class="row center">
@@ -150,9 +180,7 @@
 	<!--페이지 네비게이션-->
 	<div class="row center">
 		<ul class="paginav center">
-		
 			<c:if test="${not empty list}">
-				
 				<li>
 					<c:if test="${startNum != 1}">
 						<c:if test="${isSearch}">
@@ -163,8 +191,6 @@
 						</c:if>	
 					</c:if>
 				</li>
-					
-				
 				<c:forEach var="i" begin="${startNum}" end="${endNum}" step="1">
 					<c:if test="${p == i}">
 						<li class="active">
@@ -180,8 +206,6 @@
 					</c:if>		
 						</li>	
 				</c:forEach>
-			
-				
 				<li>
 					<c:if test="${pageSize > endNum}">	
 						<c:if test="${isSearch}">
@@ -192,16 +216,10 @@
 						</c:if>
 					</c:if>
 				</li>
-				
 			</c:if>
 		</ul>
 	</div>
-
-
 </div>
-
-
-
 
 
 <jsp:include page="/WEB-INF/views/adminTemplate/footer.jsp"></jsp:include>
