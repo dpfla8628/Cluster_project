@@ -68,7 +68,11 @@ $(document).ready(function(){
               <th>강의 명</th>
               <th>만료일</th>
               <th>강의 연락처</th>
+<<<<<<< HEAD
               <th>리뷰</th>
+=======
+              <th>리뷰 작성</th>
+>>>>>>> refs/remotes/origin/main
             </tr>
           </thead>
           
@@ -87,7 +91,12 @@ $(document).ready(function(){
               <td>~${orderlist.classEnd} </td><!-- 오늘 날짜 기준으로 넘어가면 classend로 ~ !!! -->
               <td>${orderlist.classTalk }</td>
               <td>
+<<<<<<< HEAD
               		<c:if test="${empty orderlist.reviewContext }">
+=======
+              	<!-- 이미 후기를 썼다면 해당 버튼 없애기 !! 후기 안쓴 경우에만 후기 쓸 수 있는 버튼 만들기 -->     
+				<c:if test="${empty orderlist.reviewContext }">
+>>>>>>> refs/remotes/origin/main
               		<a href="/mypage/myreview_write?classNo=${orderlist.classNo}">
 		           		<button type="submit" class="btn btn-secondary btn-xs" id="r_write">후기 작성</button>
               		</a>

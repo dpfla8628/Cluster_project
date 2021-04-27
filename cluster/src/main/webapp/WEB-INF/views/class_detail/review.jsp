@@ -19,6 +19,10 @@
     	 	    if(event.keyCode === 13)
     	 	        event.preventDefault();
     	 	});
+    	 	
+    	 	$('.returnBtn').click(function(){
+    	 		close();
+    	 	})
          })
 
     </script>
@@ -126,53 +130,60 @@
 			color : black;
 			font-weight: 500;
 		}
-          .reviewA {
-             width: 520px;
-             height: 100px;
-             margin-top: 1rem;
+ 
+ 			  
+ 		 .reviewA{
+             width: 600px;
+             height : auto;
              padding-left: 5px;
- 			 
+ 			 resize: none;
+  			 margin-top: 5px;
+  			 border : none;
+  			 margin-left : 20px;
+  			 overflow: hidden;
+  			 
+ 			  }
+ 			  .reviewA2{
+ 			   width: 600px;
+             height: 100px;
+             padding-left: 5px;
+ 			 resize: none;
+  			 margin-top: 5px;
+   			 overflow: hidden;
  			  }
 
-         .reviewInsertBtn {
+         .reviewInsertBtn, .reviewInsertBtn2 {
              width: 65px;
-             height: 106px;
-             background-color: transparent;
-             margin-left: -5px;
-             font-size: 16px;
+             height: 25px;
+              background-color: transparent;
+			float : right;
              font-weight: 300;
-             border-left: none;
-             border : 0.1px solid gray;
-             padding: 0;
-          }
-
+              border : 0.1px solid gray;
+           }
+ 
          .reviewInsertBtn:hover {
              font-weight: 400;
              background-color: #ffc107;
              color: aliceblue;
-/*             border: none;*/
-             border-radius: 0;
-             height: 106px;
-         }
-                  .box {
+          }
+         .box {
              width: 600px;
-             height: 100px;
-             background-color: #ffc107;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-             margin-bottom : 10px;
+             height: 120px;
+              
          }
-
-         .boxText {
-             width: 300px;
-             height: 50px;
-             font-weight: 100;
-             font-size: 50px;
-             display: flex;
-             justify-content: center;
-             align-items: center;
-         }
+		.logImg{
+ 	 	margin: 15px 0 20px 0;
+		}
+     .returnBtn{
+     	border : none;
+     	background-color: transparent;
+     	font-weight: 300;
+     }
+     .returnBtn:hover{
+     	font-weight: 500;
+     }
+     
+     
     </style>
 </head>
 <body>
@@ -180,20 +191,13 @@
 <c:set var="classMember" value="${offClass.authMember.memberNick}"/>
 
 <div class="reviewList">
-  로그인닉네임 :${member.memberNick}
-  <c:choose>
-    <c:when test="${empty classReview}">
-        <h2 style="text-align: center">등록된 리뷰가 없습니다</h2>
-        <script>
-        	$(".reviewList").css("height","100")
-        </script>
-  	</c:when>
-    
-   
-    <c:otherwise>
-       <div class="box">
-                     <div class="boxText">클래스 후기</div>
-                 </div>
+  
+        <div class="box">    
+        <button class="returnBtn"> &lt; 돌아가기 </button>          
+			<div class="logImg">
+				<a href="/"><img src="/image/cluster.jpg" width="200"alt="logo"></a>
+	 		</div>
+		</div>
         <c:forEach items="${classReview}" var="review">
 <div class="reviewMemberInfoBox">
 
@@ -236,30 +240,34 @@
 
                 </div>
                 <div>
+                <!-- 답변 있을 때 또는 답변 수정 눌렀을 때 -->
                     <c:if test="${not empty review.reviewOk}">
                     <img src="/image/review.png" width="20px">
  						<label class="reviewOkNick">크리에이터</label> 
-                        <div class="reviewOk${review.reviewNo}" id="reviewOk">${review.reviewOk}</div>
-                    </c:if>
+ 					<div class="reviewForm${review.reviewNo}" >
+	                    <form:form modelAttribute="review" action="${review.classNo}" method="post" id="updateForm"> 
+	                    <input type="submit" class="reviewInsertBtn" id="reviewInsertBtn${review.reviewNo}" value="등록">
+	                        <input type="hidden" name="reviewNo" id="reviewNo${review.reviewNo}" value="${review.reviewNo}">
+	                         <textarea name="reviewOk" id="reviewA${review.reviewNo}"class="reviewA">${review.reviewOk}</textarea>
+	                    </form:form>
+                	</div>
+                     </c:if>
                 </div>
+                <!-- 답변 새로 등록할 때 -->
                <c:if test="${empty review.reviewOk}">
                 	<c:if test="${logInMember eq classMember}"> 
                 <div class="reviewForm">
-                    <form action="/class_detail/review/${review.classNo}" method="post" id="insertForm" > 
+                    <form action="/class_detail/review/${review.classNo}" method="post" id="insertForm" >
+                    <input type="submit" class="reviewInsertBtn2" value="등록"> 
                         <input type="hidden" id ="reviewNo${review.reviewNo}" name="reviewNo" value="${review.reviewNo}">
-                         <input type="text" name="reviewOk" class="reviewA" value="${review.reviewOk}">
-                        <input type="submit" class="reviewInsertBtn" value="등록">
+                          <textarea name="reviewOk" class="reviewA2"></textarea>
+                        
                     </form>
                 </div>
+                
                 	</c:if>
                 </c:if>
-				<div class="reviewForm${review.reviewNo}">
-                    <form:form modelAttribute="review" action="${review.classNo}" method="post" id="updateForm"> 
-                        <input type="hidden" name="reviewNo" id="reviewNo${review.reviewNo}" value="${review.reviewNo}">
-                         <input type="text" name="reviewOk" class="reviewA" value="${review.reviewOk}">
-                        <input type="submit" class="reviewInsertBtn" value="등록">
-                    </form:form>
-                </div>
+
                 <script>
                 $(document).ready(function(){ 
 					  var reviewDelete = $("#updateForm")
@@ -273,23 +281,30 @@
 						  }  
 						  
 					  })    
-
-		                $("#updateForm").hide();
-		                $(".reviewForm${review.reviewNo}").hide();
+					  
+					  $('.reviewInsertBtn').hide();
+					 
+					  $('.reviewA').attr("readonly", true);
+					  var txtArea = $("#reviewA${review.reviewNo}");
+			            if (txtArea) {
+			                txtArea.each(function() {
+			                    $(this).height(this.scrollHeight);
+			                });
+			            }
+			            
+		               /*  $("#updateForm").hide();
+		                $(".reviewForm${review.reviewNo}").hide(); */
 
 		                $("#reviewEdit${review.reviewNo}").on("click", function() {
-		                    $(".reviewForm${review.reviewNo}").show();
-		                    $(".reviewOk${review.reviewNo}").hide();
-		                    
-		                    $.ajax({
-					            type : "post", 
-					            url : "/class_detail/classQuestion/${offClass.classNo}/${member.memberNo}",  
-					            data : form,  
-		 			            success : function(data){
-		 			            	alert("문의 완료! \n문의 내역은 마이페이지에서 확인 가능합니다");
-		 			            	 window.close(); 
-					            }
-					        });
+ 		                     $(".reviewForm${review.reviewNo}").show();
+		                     $('#reviewInsertBtn${review.reviewNo}').show();
+		                   /* $(".reviewOk${review.reviewNo}").hide(); */
+ 		                    $('#reviewA${review.reviewNo}').attr("readonly", false);
+		                    $('#reviewA${review.reviewNo}').css("border","1px solid gray")
+		                    $('#reviewA${review.reviewNo}').css("height","100px")
+		                    $('#reviewA${review.reviewNo}').css("overflow","auto")
+		                    $('#reviewA${review.reviewNo}').css("margin-left","0")
+		                
   		                });  
 					});
                 
@@ -301,9 +316,7 @@
             </div>
             <hr>
         </c:forEach>  
-    </c:otherwise>
-</c:choose>  
- 
+   
 </div>
  
 </body>

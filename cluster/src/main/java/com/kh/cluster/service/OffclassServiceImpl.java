@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.repository.OffclassRepository;
 import com.kh.cluster.util.PagingVO;
 
@@ -87,12 +89,12 @@ public class OffclassServiceImpl implements OffclassService{
 
 
 	@Override
-	public int countClass(Integer creatorNo) throws Exception{
+	public Integer countClass(Integer creatorNo) throws Exception{
 		return repository.countClass(creatorNo);
 	}
 
 	@Override
-	public int countCheck(Integer creatorNo) throws Exception{
+	public Integer countCheck(Integer creatorNo) throws Exception{
 		return repository.countCheck(creatorNo);
 	}
 
@@ -126,7 +128,7 @@ public class OffclassServiceImpl implements OffclassService{
 	}
 
 	@Override
-	public Creator setcreator(int memberNo) throws Exception{
+	public Creator setcreator(Integer memberNo) throws Exception{
 		return repository.setCreator(memberNo);
 	}
 
@@ -135,5 +137,49 @@ public class OffclassServiceImpl implements OffclassService{
 		repository.creatorEdit(creator);
 	}
 
+	@Override
+	public Integer totalClass(Integer creatorNo) throws Exception {
+		return repository.totalClass(creatorNo);
+	}
+
+	@Override
+	public Integer openClass(Integer creatorNo) throws Exception{
+		return repository.openClass(creatorNo);
+	}
+	
+	@Override
+	public Integer totalLike(Integer creatorNo) throws Exception {
+		return repository.totalLike(creatorNo);
+	}
+	
+	@Override
+	public Integer totalEntrant(Integer creatorNo) throws Exception {
+		return repository.totalEntrant(creatorNo);
+	}
+	
+	@Override
+	public List<OffclassQnAVO> selectClassQnA(PagingVO vo) throws Exception {
+		return repository.selectClassQnA(vo);
+	}
+	
+	@Override
+	public ClassQuestion readQuestion(Integer classqNo) throws Exception {
+		return repository.readQuestion(classqNo);
+	}
+	
+	@Override
+	public void classAnswer(ClassQuestion classQuestion) throws Exception {
+		repository.classAnswer(classQuestion);
+	}
+	
+	@Override
+	public Integer countQuestion(Integer creatorNo) throws Exception{
+		return repository.countQuestion(creatorNo);
+	}
+	
+	@Override
+	public Integer countAnswer(Integer creatorNo) throws Exception {
+		return repository.countAnswer(creatorNo);
+	}
 	
 }

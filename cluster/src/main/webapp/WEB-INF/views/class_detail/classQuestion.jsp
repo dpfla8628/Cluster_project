@@ -40,7 +40,30 @@
 	})
 </script> 
     <style>
+        .qnaOutBox {
+            border: 1px solid #ffc107;
+            width: 400px;
+            height: 500px;
+			margin: 0.5rem auto;
+            
+        }
 
+     
+       .classQ {
+            width: 360px;
+            height: 400px;
+            resize: none;
+            margin: auto 1rem;
+            border : 1px solid lightgray;
+        } 
+
+        .sendBtn {
+            width: 360px;
+            height: 40px;
+            border: none;
+            margin: 0.5rem 1rem;
+
+        }
        
     </style>
 </head>

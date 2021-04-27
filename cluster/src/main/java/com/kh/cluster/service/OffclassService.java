@@ -3,8 +3,10 @@ package com.kh.cluster.service;
 import java.util.List;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.util.PagingVO;
 
 public interface OffclassService {
@@ -28,10 +30,10 @@ public interface OffclassService {
 	public Offclass classDetail(Integer classNo) throws Exception;
 	
 	// 진행 중 강의 총 개수
-	public int countClass(Integer creatorNo) throws Exception;
+	public Integer countClass(Integer creatorNo) throws Exception;
 	
 	// 검수 중 강의 총 개수
-	public int countCheck(Integer creatorNo) throws Exception;
+	public Integer countCheck(Integer creatorNo) throws Exception;
 	
 	// 페이징 처리 후 강의목록 확인
 	public List<Offclass> selectClass(PagingVO vo) throws Exception;
@@ -64,10 +66,37 @@ public interface OffclassService {
 	public void endDateModify(Offclass offclass) throws Exception;
 
 	// 크리에이터 정보 확인
-	public Creator setcreator(int memberNo) throws Exception;
+	public Creator setcreator(Integer memberNo) throws Exception;
 
 	// 크리에이터 정보 수정
 	public void creatorEdit(Creator creator) throws Exception;
+
+	// 크리에이터 총 오픈했던 강의 개수 확인
+	public Integer totalClass(Integer creatorNo) throws Exception;
+
+	// 크리에이터 현재 오픈 중인 강의 개수 확인
+	public Integer openClass(Integer creatorNo) throws Exception;
+
+	// 모든 강의에서 좋아요 받은 개수 확인
+	public Integer totalLike(Integer creatorNo) throws Exception;
+
+	// 모든 강의에 참가했던 인원 수 확인
+	public Integer totalEntrant(Integer creatorNo) throws Exception;
+
+	// 페이징 처리 후 강의에 대한 질문 목록 확인
+	public List<OffclassQnAVO> selectClassQnA(PagingVO vo) throws Exception;
+
+	// 강의에 대한 질문 확인
+	public ClassQuestion readQuestion(Integer classqNo)throws Exception;
+
+	// 강의에 대한 질문 답변 입력
+	public void classAnswer(ClassQuestion classQuestion) throws Exception;
+
+	// 강의에 대한 질문 총 개수
+	public Integer countQuestion(Integer creatorNo) throws Exception;
+
+	// 강의에 대한 질문 답변 총 개수
+	public Integer countAnswer(Integer creatorNo) throws Exception;
 
 	
 	

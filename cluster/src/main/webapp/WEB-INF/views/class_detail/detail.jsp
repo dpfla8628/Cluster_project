@@ -8,6 +8,7 @@
 
 <!DOCTYPE html>
 <html>
+<c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
 <head>
     <meta charset="UTF-8">
@@ -68,8 +69,12 @@
  
     </script> 
     <style>
-
-
+		.infoText{
+			font-weight: 300;
+		}
+		.text{
+			text-align: center;
+		}
     </style>
 </head>
  
@@ -79,8 +84,8 @@
 
     <div>
          <label>번호 : ${member.memberNo}</label>
-        <label>닉네임 : ${nick}</label>
-        <label>권한 : ${auth}</label>
+        <label>닉네임 : ${member.memberNick}</label>
+        <label>권한 : ${member.memberAuth}</label>
 
         <a href="/class_detail/list">리스트</a>
         <a href="/mypage/index">마이페이지</a>
@@ -89,7 +94,7 @@
         <hr>
     </div>
     <div class="outbox">
-        <div class="detail left_side">
+        <div class="left_side">
             <input type="hidden" class="no" value="${member.memberNo}">
             
             <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="0" end="0">
@@ -115,12 +120,13 @@
                         </div>
                     </c:forEach>
                     <br>
-                    <label>${offClass.classInfo}</label>
+                    
+                    <c:out value="${offClass.classInfo}"/>
                 </div>
-
             </div>
+            <br>
             <div class="map">
-                <h2>클래스 장소</h2>
+                <label class="text">클래스 장소</label><br>
                 <label id="class_address">${offClass.classPlace}</label>
                 <div id="map" style="width:auto;height:500px;margin-top:10px;"></div>
                 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -172,12 +178,14 @@
             <hr>
             <div id="reviewBox">
                 <h2>리뷰</h2>
+                <br>
                 <c:choose>
                     <c:when test="${empty classReview}">
-                        <h2 style="text-align: center">등록된 리뷰가 없습니다</h2>
+                    <div  class="text">
+                        <label>등록된 리뷰가 없습니다</label>
+                    </div>
                         <script>
                             $(".reviewList").css("height", "100")
-
                         </script>
                     </c:when>
 
@@ -198,12 +206,12 @@
                                     </c:if>
 
                                 </div>
-                                <div class="review-left">
-                                    <label class="reviewNick"> ${review.memberNick}</label>
+                                <div class="review-left">                     
+                                     <div class="reviewNick"> ${review.memberNick}</div>
+									<div class="reviewDate">${review.reviewDate}</div>
                                 </div>
-                                <div class="reviewDate">
-                                    <label>${review.reviewDate}</label>
-                                </div>
+                                                                         
+                                 
                             </div>
                             <div class="review">
                                 <div class="reviewContext">
@@ -239,12 +247,13 @@
                 <%--     			  <jsp:include page="/WEB-INF/views/class_detail/review.jsp"/> 
  --%>
             </div>
+            <br><hr><br>
             <div id="ask">
                 <h2>문의하기</h2>
-                <h4>유의사항</h4>
+                <label class="text">유의사항</label>
                 <div>
                     - 클래스에 대한 궁금한 점만 문의바랍니다.<br>
-                    - 클래스 외 궁금한 점은 고객센터-1:1문의하기를 이용해주시기 바랍니다.<br>
+                    - 클래스 외 궁금한 점은 <a href="/community/question">고객센터-1:1문의하기</a>를 이용해주시기 바랍니다.<br>
                     - 정확한 일정은 문의하기 또는 구매 후 크리에이터의 연락을 통해 이루어집니다.<br>
                     - 문의답변은 마이페이지에서 확인 가능합니다.<br>
 
@@ -252,27 +261,28 @@
                 <br>
                 <button class="askBtn">${offClass.authMember.memberNick}님에게 문의하기</button>
             </div>
-
+			<br><hr><br>
             <div id="refund">
                 <h2>환불규정</h2>
                 <label>강의 특성상 환불은 불가합니다.</label>
             </div>
-
+            
+            <div style="width: 1000px; margin-top: 2rem;"><c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import></div>
         </div>
 
-        <div class="detail right_side">
+     
+        <div class="right_side">
             <div id="classBox">
             <c:set var="totalMember" value="${offClass.classMemberSet}" />
             <c:set var="nowMember" value="${classMemberCount}" />
    				${offClass.classCategory.categoryBig} > ${offClass.classCategory.categorySmall} 
    				<label class="memberSet">${totalMember - nowMember}명 가능</label>
-                <h2 class="class_name">${offClass.className}</h2><br>
+                <div class="class_name">${offClass.className}</div>
                 <div class="price"><label id="price">${offClass.classPrice}</label>원</div>
                 <div>
                     <div class="iconBox">
                         <img src="/image/add.png" width="40px" class="icon">
                         <img src="/image/heart.jpg" width="40px" class="icon">
-
                     </div>
                     <div class="orderBox">
                         <button class="orderBtn">수강하기</button>
@@ -295,17 +305,18 @@
 
                     </div>
                     <div class="creatorInfoBox">
-                        <div id="creatorName"><label>${offClass.authMember.memberNick}</label></div>
+                        <div id="creatorName"><label style="margin: 0;">${offClass.authMember.memberNick}</label></div>
                         <div id="creatorSNS"><img src="/image/icon.png" width="100"></div>
                     </div>
                 </div>
                 <div class="creatorInfo">
-                    <label>${offClass.creator.creatorInfo}</label>
+                    <p class="infoText"><c:out value="${offClass.creator.creatorInfo}"/></p>
                 </div>
             </div>
 
         </div>
     </div>
+     
 </body>
 
 
