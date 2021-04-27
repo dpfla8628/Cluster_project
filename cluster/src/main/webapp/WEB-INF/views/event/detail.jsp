@@ -144,10 +144,10 @@
 					<c:forEach var="c" items="${coupons}" >
 						<div class="couponBox">
 							<div><h5>${c.couponName }</h5></div>
-							<div><img width="200" height="130" src="${ContextPath}/event/displayFile?fileName=${c.couponFileName}"/></div>
+							<div><img width="200" height="120" src="${ContextPath}/event/displayFile?fileName=${c.couponFileName}"/></div>
 							<div><small>쿠폰사용기간</small></div>
 							<div><small class="align-top">${c.couponStart} ~ ${c.couponEnd}</small></div>
-							<div><span class="text-muted getCoupon">쿠폰 다운로드하기</span></div>
+							<div><span class="text-muted getCoupon">쿠폰 받기</span></div>
 							<input type="hidden" value="${c.couponNo}">
 						</div>
 					</c:forEach>

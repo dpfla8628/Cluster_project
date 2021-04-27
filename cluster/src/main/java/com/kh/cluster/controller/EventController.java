@@ -1,6 +1,7 @@
 package com.kh.cluster.controller;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +112,7 @@ public class EventController {
 	//이벤트 상세보기
 	@GetMapping("/detail")
 	public void getDetail(@RequestParam("no") Integer eventNo, Model model) {
+		log.info("getDetail()");
 		
 		//이벤트와 쿠폰 조회
 		Map<String , Object> detail = service.eventDetail(eventNo);
@@ -171,13 +173,65 @@ public class EventController {
 	}
 	
 	//이벤트 수정
+	@GetMapping("/modify")
+	public void getUpdate(@RequestParam("no") Integer eventNo, Model model) {
+		log.info("getUpdate()");
+		
+		//이벤트와 쿠폰 정보 조회
+		Map<String , Object> detail = service.eventDetail(eventNo);
+
+		if(detail != null) {
+			EventVO event = (EventVO)detail.get("event");
+			@SuppressWarnings("unchecked")
+			List<CouponVO> coupons = (List<CouponVO>)detail.get("coupons");
+			
+			model.addAttribute("event", event);
+			model.addAttribute("coupons", coupons);
+		}
+	}
+	
+	@PostMapping("/modify")
+	public String postModify(EventVO event, MultiCouponVO coupons) throws IOException, Exception {
+		log.info("postModify()");
+		System.out.println("event:"+event.getEventFile().getOriginalFilename());
+		System.out.println("coupon:"+coupons.getCoupons().get(0).getCouponFile().getOriginalFilename());
+		
+		//파일 정보가 넘어온 경우 업로드 처리
+		if(!event.getEventFile().isEmpty()) {
+			String eventFilename = UploadFileUtils.uploadFile(uploadPath, event.getEventFile().getOriginalFilename(), event.getEventFile().getBytes());
+			event.setEventFileName(eventFilename);
+			System.out.println("eventFilename: "+eventFilename);
+		}
+		for(CouponVO coupon : coupons.getCoupons()) {
+			if(!coupon.getCouponFile().isEmpty()) {
+				String couponFilename = UploadFileUtils.uploadFile(uploadPath, coupon.getCouponFile().getOriginalFilename(), coupon.getCouponFile().getBytes());
+				coupon.setCouponFileName(couponFilename);
+				System.out.println("couponFilename: "+ couponFilename);
+			}
+		}
+		
+		//이벤트, 쿠폰 정보 수정
+		service.modifyEvent(event, coupons);
+		
+		return "redirect:/admin/event/eventList";
+	}
 	
 	//이벤트 삭제
+	@GetMapping("/delete")
+	public String getDelte(@RequestParam("no")Integer eventNo) {
+		
+		//이벤트 삭제
+		service.deleteEvent(eventNo);
+		
+		return "redirect:/admin/event/eventList";
+	}
 	
 	//쿠폰 다운로드
 	@PostMapping("/coupon")
 	@ResponseBody
 	public ResponseEntity<String> getCoupon(Integer couponNo, HttpServletRequest req) {
+		log.info("getCoupon()");
+		
 		AuthMemberVO member = (AuthMemberVO)req.getAttribute("member");
 		
 		//회원인경우 쿠폰 다운로드
