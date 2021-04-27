@@ -5,7 +5,7 @@
         <footer class="footer">
           <div class="row">
             <div class="col-sm-6 text-center text-sm-left mt-3 mt-sm-0">
-              <small class="text-muted d-block">Copyright © 2019 <a href="http://www.uxcandy.co" target="_blank">UXCANDY</a>. All rights reserved</small>
+              <small class="text-muted d-block">&copy; 2021 Cluster, Inc. All Rights Reserved</small>
             </div>
           </div>
         </footer>

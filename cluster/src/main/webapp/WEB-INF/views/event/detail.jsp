@@ -3,40 +3,25 @@
 
 <c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script type="text/javascript">
-		
-</script>
 <style>
 	.container{
 		padding: 0;
 	}
+	.eventHeader{
+		min-height: 300px;
+	}
+	.eventInfoBox{
+		height: 200px;
+	}
 	.event-body{
 		min-height: 800px;
 	}
-	.breadcrumb{
-		margin-top: 1rem;
+	.eventBody{
+		width: 700px;
 	}
 	.card{
-		margin: 0.3rem;
-		width: 17rem;
-		border: none;
-	}
-	.card:hover{
-		text-decoration: underline;
-		cursor: pointer;
-	}
-	.pagination{
-		margin: 0.5rem 0;
-	}
-	.card-body{
-		padding: 0.5rem;
-	}
-	.card-title{
-		margin-bottom: 0.2rem;
-	}
-	.card-text{
-		font-size: 0.9rem;
+		width: auto;
+		height: 300px;
 	}
 	.page-link{
 		color: #ffc107;
@@ -48,82 +33,128 @@
 		background-color: #ffc107;
 		border-color: #ffc107;
 	}
+	.fakebox{
+		height: 3rem; 
+	}
+	.couponBox{
+		width: 200px;
+		margin-top: 2rem;
+	}
+	.getCoupon{
+		cursor: pointer;
+	}
+	.myCoupon{
+		cursor: pointer;
+	}
 </style>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$(".getCoupon").click(function(){
+			var today = new Date();
+			
+			var start_val = $(".eventStart").val();
+			var start = new Date(start_val);
+			
+			var end_val= $(".eventEnd").val();
+			var end = new Date(end_val);
+			
+			if((start <= today) && (end >= today)){
+				var couponNo = $(this).parent().next().val();
+				
+				var formData = new FormData();
+				formData.append("couponNo", couponNo);
+				
+				$.ajax({
+					url:"${ContextPath}/event/coupon",
+					type:"post",
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						alert(data);	
+					},
+					error: function(xhr){
+						
+						if(xhr.status == 401) {
+		    				alert("로그인을 해주세요.")
+		    				self.location= "/login/";
+		    				return;
+		    			}
+						else if(xhr.status == 403){
+							alert("이미 다운로드 받은 쿠폰입니다.");
+							return;
+						}
+		    			alert("오류가 발생하였습니다.");
+					}
+					
+				});
+				
+				return;
+			}
+			
+			alert("종료된 이벤트입니다.");
+		});
+		
+		$(".myCoupon").click(function(){
+			location.href="${ContextPath}/mypage/mycoupon";
+		});
+	});	
+</script>
 
 
 	<section class="container event-body">
-		<article class="row"><h3>이벤트</h3></article>
-		<!-- 필터 -->
-		<article class="row">
-			<nav aria-label="breadcrumb">
-			  <ol class="breadcrumb">
-			    <li class="breadcrumb-item"><a href="#">진행중인 이벤트</a></li>
-			    <li class="breadcrumb-item active" aria-current="page">종료된 이벤트</li>
-			  </ol>
-			</nav>
+		<!-- 썸네일 & 제목 -->
+		<article class="row eventHeader">
+			<!-- 썸네일 -->
+			<div class="col">
+				<img width="740" height="300" src="${ContextPath}/event/displayFile?fileName=${event.eventFileName}"/>
+			</div>
+			<!-- 제목 -->
+			<div class="col-4">
+				<div class="card" >
+				  <div class="card-body">
+				  	<div class="eventInfoBox">
+					    <h5 class="card-title">${event.eventTitle}</h5>
+					    <p class="card-text">${event.eventContent }</p>
+					    <hr>
+					    <h6 class="card-subtitle mb-2">이벤트 기간</h6>
+					    <p class="card-text">${event.eventStart} ~ ${event.eventEnd}</p>
+					    <input type="hidden" value="${event.eventStart}" class="eventStart">
+					    <input type="hidden" value="${event.eventEnd}" class="eventEnd">
+				  	</div>
+				  	<c:if test="${!(empty member)}">
+					    <hr>
+					    <span class="card-text text-muted myCoupon">내 쿠폰함으로 이동하기</span>
+				  	</c:if>
+				  </div>
+				</div>
+			</div>
 		</article>
 		
+		<div class="row fakebox"></div>
+		
 		<!-- 본문 -->
-		<article class="row">
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
-			</div>
-			<div class="card">
-			  <img class="card-img-top" src="https://placeimg.com/286/180/tech" alt="Card image cap">
-			  <div class="card-body">
-			    <h6 class="card-title">이벤트 제목</h6>
-			    <p class="card-text">진행기간</p>
-			  </div>
+		<article class="row justify-content-md-center">
+			<div class="eventBody container">
+				<div class="h2 text-center">${event.eventTitle }</div>
+				<hr>
+				<div class="row justify-content-md-center">
+					<c:forEach var="c" items="${coupons}" >
+						<div class="couponBox">
+							<div><h5>${c.couponName }</h5></div>
+							<div><img width="200" height="120" src="${ContextPath}/event/displayFile?fileName=${c.couponFileName}"/></div>
+							<div><small>쿠폰사용기간</small></div>
+							<div><small class="align-top">${c.couponStart} ~ ${c.couponEnd}</small></div>
+							<div><span class="text-muted getCoupon">쿠폰 받기</span></div>
+							<input type="hidden" value="${c.couponNo}">
+						</div>
+					</c:forEach>
+				</div>
 			</div>
 		</article>
 
-		<!-- 페이징 -->
-		<article class="row justify-content-center">
-			<nav aria-label="Page navigation example">
-			  <ul class="pagination ">
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			        <span class="sr-only">Previous</span>
-			      </a>
-			    </li>
-			    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			        <span class="sr-only">Next</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
-		</article>
 	</section>
 	
 <c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import>

@@ -193,8 +193,8 @@
 				labels : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월',
 						'9월', '10월', '11월', '12월' ],
 				datasets : [ {
-					label : '2020년',
-					data : [ 11, 20, 23, 15, 18, 24, 29, 40, 20, 12, 35, 12 ],
+					label : '2021년',
+					data : [ 10, 20, 25, 15, 20, 0, 0, 0, 0, 0, 0, 0 ],
 					backgroundColor : [ 'red', 'rgba(255,255,0,0.5)',
 						'#990000', 'blue', 'darkgreen', 'black', 'grey', 'green',
 						'yellow', 'pink', 'darkgrey', 'skyblue', ]

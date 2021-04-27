@@ -6,6 +6,7 @@ import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassInfoVO;
 import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.util.PagingVO;
 
@@ -36,7 +37,7 @@ public interface OffclassService {
 	public Integer countCheck(Integer creatorNo) throws Exception;
 	
 	// 페이징 처리 후 강의목록 확인
-	public List<Offclass> selectClass(PagingVO vo) throws Exception;
+	public List<OffclassInfoVO> selectClass(PagingVO vo) throws Exception;
 	
 	// 페이징 처리 후 검수 진행 목록 확인
 	public List<Offclass> selectCheck(PagingVO vo) throws Exception;

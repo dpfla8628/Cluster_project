@@ -161,7 +161,12 @@
 							</ul>
 						</li>
 						<li>
-							<a href="/admin/event/eventList">이벤트 관리</a>
+							<label id="eventMenu">이벤트 관리</label>
+							<ul>
+								<li><a href="/admin/event/eventList">이벤트 목록</a></li>
+								<li><a href="/event/write">이벤트 등록</a></li>
+								<li><a href="/event/">이벤트 게시판</a></li>
+							</ul>
 						</li>
 						<li>
 							<label id="categoryMenu">카테고리 관리</label>
