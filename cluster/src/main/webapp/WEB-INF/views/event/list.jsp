@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
@@ -61,6 +62,11 @@
 		$(".addBtn").click(function(){
 			location.href="${ContextPath}/event/write";
 		});
+		
+		$(".updateBtn").click(function(){
+			location.href="${ContextPath}/admin/event/eventList";
+		});
+		
 		
 		//ajax설정
 		$(".ongoing").click(function(){
@@ -189,7 +195,7 @@
 		</article>
 
 		<!-- 페이징 -->
-		<article class="row justify-content-center">
+		<!-- <article class="row justify-content-center">
 			<nav aria-label="Page navigation example">
 			  <ul class="pagination ">
 			    <li class="page-item">
@@ -209,7 +215,7 @@
 			    </li>
 			  </ul>
 			</nav>
-		</article>
+		</article> -->
 	</section>
 	
 <c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import>

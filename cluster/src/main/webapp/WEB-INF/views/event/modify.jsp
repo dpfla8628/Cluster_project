@@ -72,12 +72,22 @@
 					location.href="${contextPath}/";
 				});
 				
-				$("#insertBtn").click(function(){
+				$("#modifyBtn").click(function(){
 					$("#eventForm").submit();
 				});
 				
-				$("#cancleBtn").click(function(){
-					location.href="${contextPath}/event/";
+				$("#cancelBtn").click(function(){
+					location.href="${contextPath}/admin/event/eventList";
+				});
+				
+				$("#deleteBtn").click(function(){
+					if (confirm("정말 삭제하시겠습니까??") == true){
+						var eventNo = ${event.eventNo};
+						location.href="${contextPath}/event/delete?no="+eventNo;
+					}
+					else{
+						return;
+					}
 				});
 				
 				$("#addBtn").click(function(){
@@ -93,6 +103,14 @@
 					$(this).parent().parent().remove();
 				});
 				
+				$("#eventFile").change(function(){
+					$(this).next(".eventImg").remove();
+				});
+				
+				$(document).on("change", ".couponFile", function(){
+					$(this).next(".couponImg").remove();
+				});
+				
 				$("#eventForm").on("submit", function(e){
 					e.preventDefault();
 					
@@ -100,9 +118,10 @@
 						$(this).find(".couponName").attr("name", "coupons["+idx+"].couponName");
 						$(this).find(".couponStart").attr("name", "coupons["+idx+"].couponStart");
 						$(this).find(".couponEnd").attr("name", "coupons["+idx+"].couponEnd");
-						$(this).find(".couponBy").attr("name", "coupons["+idx+"].couponBy");
 						$(this).find(".couponDiscount").attr("name", "coupons["+idx+"].couponDiscount");
 						$(this).find(".couponFile").attr("name", "coupons["+idx+"].couponFile");
+						$(this).find(".couponFileName").attr("name", "coupons["+idx+"].couponFileName");
+						$(this).find(".eventNo").attr("name", "coupons["+idx+"].eventNo");
 					});
 					
 					this.submit();
@@ -122,7 +141,7 @@
 			
 			<div class="row justify-content-md-center">
 				
-				<form class="form-width" id="eventForm" action="/event/write" method="post" enctype="multipart/form-data">
+				<form class="form-width" id="eventForm" action="/event/modify" method="post" enctype="multipart/form-data">
 					<div class="h4 font-weight-bold">
 						이벤트
 					</div><hr>
@@ -130,27 +149,30 @@
 					<!-- 이벤트 폼 -->
 					<div class="form-group">
 					    <label for="eventTitle">이벤트명</label>
-					    <input type="text" class="form-control" id="eventName" name="eventTitle">
+					    <input type="text" class="form-control" id="eventName" name="eventTitle" value="${event.eventTitle}">
 				  	</div>
 					<div class="form-group">
 					    <label for="eventStart">이벤트 기간</label>
 					    <div class="form-row">
 						    <div class="col">
-						      <input type="date" class="form-control" name="eventStart">
+						      <input type="date" class="form-control" name="eventStart" value="${event.eventStart}">
 						    </div>
 						    <span>~</span>
 						    <div class="col">
-						      <input type="date" class="form-control" name="eventEnd">
+						      <input type="date" class="form-control" name="eventEnd" value="${event.eventEnd}">
 						    </div>
 				  		</div>
 				  	</div>
 					<div class="form-group">
 					    <label for="eventContent">이벤트 내용</label>
-    					<textarea class="form-control" id="eventContent" rows="3" name="eventContent"></textarea>
+    					<textarea class="form-control" id="eventContent" rows="3" name="eventContent">${event.eventContent }</textarea>
 				  	</div>
 					<div class="form-group">
 					    <label for="eventFile">이벤트 썸네일</label>
 					    <input type="file" class="form-control-file" id="eventFile" name="eventFile">
+					    <img width="200" height="130" class="eventImg" src="${ContextPath}/event/displayFile?fileName=${event.eventFileName}"/>
+					    <input type="hidden" name="eventFileName" value="${event.eventFileName}">
+					    <input type="hidden" name="eventNo" value="${event.eventNo}">
 				  	</div>
 				  	
 				  	<div class="hiddengap"></div>
@@ -161,44 +183,50 @@
 						<button type="button" id="addBtn" class="btn btn-warning btn-sm">추가</button>
 					</div>
 				  	<div class="couponBox">
-				  		<div class="addedBox">
-				  			<hr>
-					  		<div class="form-group h5">
-					  			쿠폰
-					  			<button type="button" class="close closeBtn" aria-label="Close">
-	  								<span aria-hidden="true">&times;</span>
-								</button>
-					  		</div>
-							<div class="form-group">
-							    <label for="couponName">쿠폰명</label>
-							    <input type="text" class="form-control couponName" id="couponName">
-						  	</div>
-							<div class="form-group">
-							    <label for="couponStart">쿠폰 사용기간</label>
-							    <div class="form-row">
-								    <div class="col">
-								      <input type="date" class="form-control couponStart">
-								    </div>
-								    <span>~</span>
-								    <div class="col">
-								      <input type="date" class="form-control couponEnd">
-								    </div>
+				  		<c:forEach var="c" items="${coupons}">
+					  		<div class="addedBox">
+					  			<hr>
+						  		<div class="form-group h5">
+						  			쿠폰
+						  			<button type="button" class="close closeBtn" aria-label="Close">
+		  								<span aria-hidden="true">&times;</span>
+									</button>
 						  		</div>
-						  	</div>
-						  	<div class="form-group">
-						  		<label for="couponDiscount">할인금액</label>	
-							    <input type="number" class="form-control couponDiscount">
-						  	</div>
-							<div class="form-group">
-							    <label for="couponFile">쿠폰 이미지</label>
-							    <input type="file" class="form-control-file couponFile">
-						  	</div>
-				  		</div>
+								<div class="form-group">
+								    <label for="couponName">쿠폰명</label>
+								    <input type="text" class="form-control couponName" id="couponName" value="${c.couponName }">
+							  	</div>
+								<div class="form-group">
+								    <label for="couponStart">쿠폰 사용기간</label>
+								    <div class="form-row">
+									    <div class="col">
+									      <input type="date" class="form-control couponStart" value="${c.couponStart}">
+									    </div>
+									    <span>~</span>
+									    <div class="col">
+									      <input type="date" class="form-control couponEnd" value="${c.couponEnd}">
+									    </div>
+							  		</div>
+							  	</div>
+							  	<div class="form-group">
+							  		<label for="couponDiscount">할인금액</label>	
+								    <input type="number" class="form-control couponDiscount" value="${c.couponDiscount}">
+							  	</div>
+								<div class="form-group">
+								    <label for="couponFile">쿠폰 이미지</label>
+								    <input type="file" class="form-control-file couponFile">
+								    <img width="200" height="130" class="couponImg" src="${ContextPath}/event/displayFile?fileName=${c.couponFileName}"/>
+								    <input type="hidden" class="couponFileName" value="${c.couponFileName}">
+								    <input type="hidden" class="eventNo" value="${event.eventNo}">
+							  	</div>
+					  		</div>
+				  		</c:forEach>
 				  	</div>
 					
 					<hr>
-					<button type="button" id="insertBtn" class="btn btn-warning">등록</button>
-					<button type="button" id="cancleBtn" class="btn btn-secondary">취소</button>
+					<button type="button" id="modifyBtn" class="btn btn-warning">수정</button>
+					<button type="button" id="deleteBtn" class="btn btn-warning">삭제</button>
+					<button type="button" id="cancelBtn" class="btn btn-secondary">취소</button>
 					
 				</form>
 			</div>

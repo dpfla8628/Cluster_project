@@ -146,7 +146,10 @@
 									진행예정
 								</c:if>
 							</td>
-							<td><a href="#">조회</a></td>
+							<td>
+								<a href="${ContextPath}/event/detail?no=${event.eventNo}">조회</a>
+								<a href="${ContextPath}/event/modify?no=${event.eventNo}">수정</a>
+							</td>
 						</tr>
 				</c:forEach>
 			</c:otherwise>

@@ -13,6 +13,10 @@
 	.eventInfoBox{
 		height: 200px;
 	}
+	.eventContentBox{
+		max-height: 100px;
+		overflow: auto;
+	}
 	.event-body{
 		min-height: 800px;
 	}
@@ -39,12 +43,17 @@
 	.couponBox{
 		width: 200px;
 		margin-top: 2rem;
+		margin-right: 1rem;
+		margin-left: 1rem;
 	}
 	.getCoupon{
 		cursor: pointer;
 	}
 	.myCoupon{
 		cursor: pointer;
+	}
+	.couponBoxes{
+		width: 600px;
 	}
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -117,7 +126,7 @@
 				  <div class="card-body">
 				  	<div class="eventInfoBox">
 					    <h5 class="card-title">${event.eventTitle}</h5>
-					    <p class="card-text">${event.eventContent }</p>
+					    <div class="eventContentBox"><p class="card-text">${event.eventContent }</p></div>
 					    <hr>
 					    <h6 class="card-subtitle mb-2">이벤트 기간</h6>
 					    <p class="card-text">${event.eventStart} ~ ${event.eventEnd}</p>
@@ -140,17 +149,19 @@
 			<div class="eventBody container">
 				<div class="h2 text-center">${event.eventTitle }</div>
 				<hr>
-				<div class="row justify-content-md-center">
-					<c:forEach var="c" items="${coupons}" >
-						<div class="couponBox">
-							<div><h5>${c.couponName }</h5></div>
-							<div><img width="200" height="130" src="${ContextPath}/event/displayFile?fileName=${c.couponFileName}"/></div>
-							<div><small>쿠폰사용기간</small></div>
-							<div><small class="align-top">${c.couponStart} ~ ${c.couponEnd}</small></div>
-							<div><span class="text-muted getCoupon">쿠폰 다운로드하기</span></div>
-							<input type="hidden" value="${c.couponNo}">
-						</div>
-					</c:forEach>
+				<div class="container couponBoxes">
+					<div class="row justify-content-md-center">
+						<c:forEach var="c" items="${coupons}" >
+							<div class="couponBox">
+								<div><h5>${c.couponName }</h5></div>
+								<div><img width="200" height="120" src="${ContextPath}/event/displayFile?fileName=${c.couponFileName}"/></div>
+								<div><small>쿠폰사용기간</small></div>
+								<div><small class="align-top">${c.couponStart} ~ ${c.couponEnd}</small></div>
+								<div><span class="text-muted getCoupon">쿠폰 받기</span></div>
+								<input type="hidden" value="${c.couponNo}">
+							</div>
+						</c:forEach>
+					</div>
 				</div>
 			</div>
 		</article>
