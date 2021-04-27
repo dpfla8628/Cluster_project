@@ -42,7 +42,7 @@
     <!-- partial:partials/_header.html -->
     <nav class="t-header">
       <div class="t-header-brand-wrapper">
-        <a href="index">
+        <a href="/">
           <h1 style="color: orange;">Cluster</h1>
         </a>
       </div>

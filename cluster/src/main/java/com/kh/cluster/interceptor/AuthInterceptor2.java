@@ -31,7 +31,7 @@ public class AuthInterceptor2 implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
 			throws Exception {
 		
-		log.info("authInterceptor()");
+		log.info("authInterceptor2()");
 		
 		Cookie cookie = cookieUtil.getCookie(req, "accessToken");
 		

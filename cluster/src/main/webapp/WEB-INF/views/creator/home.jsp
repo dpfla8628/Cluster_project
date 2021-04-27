@@ -110,7 +110,7 @@
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
                                     <div class="profile-img img-rounded bg-inverse-info no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-keyboard mdi-2x"></i></div>
-                                    <h2 class="font-weight-medium animated-count"><span class="animated-count">100</span>회</h2><small class="text-gray d-block mt-3">총 리뷰</small>
+                                    <h2 class="font-weight-medium animated-count"><span class="animated-count">${TotalQuestion}</span>회</h2><small class="text-gray d-block mt-3">총 질문</small>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                             <div class="grid d-flex flex-column align-items-center justify-content-center">
                                 <div class="grid-body text-center">
                                     <div class="profile-img img-rounded bg-inverse-success no-avatar component-flat mx-auto mb-4"><i class="mdi mdi-lan-connect mdi-2x"></i></div>
-                                    <h2 class="font-weight-medium"><span class="animated-count">60</span>회</h2><small class="text-gray d-block mt-3">총 답변</small>
+                                    <h2 class="font-weight-medium"><span class="animated-count">${TotalAnswer}</span>회</h2><small class="text-gray d-block mt-3">총 답변</small>
                                 </div>
                             </div>
                         </div>
@@ -193,8 +193,8 @@
 				labels : [ '1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월',
 						'9월', '10월', '11월', '12월' ],
 				datasets : [ {
-					label : '2020년',
-					data : [ 11, 20, 23, 15, 18, 24, 29, 40, 20, 12, 35, 12 ],
+					label : '2021년',
+					data : [ 10, 20, 25, 15, 20, 0, 0, 0, 0, 0, 0, 0 ],
 					backgroundColor : [ 'red', 'rgba(255,255,0,0.5)',
 						'#990000', 'blue', 'darkgreen', 'black', 'grey', 'green',
 						'yellow', 'pink', 'darkgrey', 'skyblue', ]

@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.cluster.entity.ClassCategory;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.Offclass;
+import com.kh.cluster.entity.OffclassInfoVO;
+import com.kh.cluster.entity.OffclassQnAVO;
 import com.kh.cluster.repository.OffclassRepository;
 import com.kh.cluster.util.PagingVO;
 
@@ -97,7 +100,7 @@ public class OffclassServiceImpl implements OffclassService{
 	}
 
 	@Override
-	public List<Offclass> selectClass(PagingVO vo) throws Exception{
+	public List<OffclassInfoVO> selectClass(PagingVO vo) throws Exception{
 		return repository.selectClass(vo);
 	}
 
@@ -154,4 +157,30 @@ public class OffclassServiceImpl implements OffclassService{
 	public Integer totalEntrant(Integer creatorNo) throws Exception {
 		return repository.totalEntrant(creatorNo);
 	}
+	
+	@Override
+	public List<OffclassQnAVO> selectClassQnA(PagingVO vo) throws Exception {
+		return repository.selectClassQnA(vo);
+	}
+	
+	@Override
+	public ClassQuestion readQuestion(Integer classqNo) throws Exception {
+		return repository.readQuestion(classqNo);
+	}
+	
+	@Override
+	public void classAnswer(ClassQuestion classQuestion) throws Exception {
+		repository.classAnswer(classQuestion);
+	}
+	
+	@Override
+	public Integer countQuestion(Integer creatorNo) throws Exception{
+		return repository.countQuestion(creatorNo);
+	}
+	
+	@Override
+	public Integer countAnswer(Integer creatorNo) throws Exception {
+		return repository.countAnswer(creatorNo);
+	}
+	
 }
