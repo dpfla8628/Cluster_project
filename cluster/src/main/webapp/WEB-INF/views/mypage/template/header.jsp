@@ -48,9 +48,6 @@
       </div>
       <div class="t-header-content-wrapper">
         <div class="t-header-content">
-       		<div class="top_btn goshop"><i class="mdi mdi-cart-outline"></i>
-       			<a href="#">장바구니</a>
-       		</div>
        		<div class="top_btn gomypage"><i class="mdi mdi-account-circle"></i>
        			<a href="/mypage/index">마이페이지</a>
        		</div>

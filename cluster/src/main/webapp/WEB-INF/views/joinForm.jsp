@@ -69,7 +69,6 @@
 	
 	<div class="page-body">
 		<div class="sidebar">
-			 <p>memberNo = ${member.memberNo}</p>
 		</div>
 		
 			<div class="page-content-wrapper">
@@ -100,9 +99,6 @@
 											<button type="button" class="btn btn-outline-warning" id="btnList">취소 하기</button>      
 										</div>
 					
-										 <h3>번호 : ${member.memberNo}</h3>
-							             <h3>id : ${member.memberId}</h3>
-										 <h3>권한 : ${member.memberAuth}</h3>	
 								</div>
 			                </div>
 			            </div>
