@@ -46,7 +46,7 @@ public class CreatorInterceptor implements HandlerInterceptor{
 				String auth = member.getMemberAuth();
 				
 				if(member != null) {
-					if(auth.equals("강사") /*|| auth.equals("관리자")*/) {
+					if(auth.equals("강사")) {
 					//if("강사".equals(member.getMemberAuth()) || "관리자".equals(member.getMemberAuth())) {
 						req.setAttribute("member", member);
 						return true;
