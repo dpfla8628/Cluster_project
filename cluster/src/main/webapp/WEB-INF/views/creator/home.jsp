@@ -38,16 +38,12 @@
                             <div class="d-flex justify-content-between">
                                 <p class="card-title">매출 분석</p>
                                 <div class="chartjs-legend" id="sales-revenue-chart-legend">
-                                    <ul class="0-legend">
-                                        <li><span style="background-color:#1A76CA"></span>Sales</li>
-                                        <li><span style="background-color:#2d92fe"></span>Marketing</li>
-                                    </ul>
+                                    
                                 </div>
                             </div>
                             <div class="d-flex">
-                                <p class="d-none d-xl-block">12.5% Growth compared to the last week</p>
+                                <p class="d-none d-xl-block">[${serverTime}] 기준</p>
                                 <div class="ml-auto">
-                                    <h2 class="font-weight-medium text-gray"><i class="mdi mdi-menu-up text-success"></i><span class="animated-count">25.04</span>%</h2>
                                 </div>
                             </div>
                         </div><canvas class="mt-4 chartjs-render-monitor" id="myChartOne" height="255" style="display: block; width: 406px; height: 255px;" width="406"></canvas>
@@ -140,7 +136,6 @@
                 		<div class="grid-body">
                 			<div class="d-flex justify-content-between">
                 				<p class="card-title">현재 매출 Top 10</p>
-                				<p> [${serverTime} 기준]</p>
                 			</div>
                 		</div>
                 	</div>

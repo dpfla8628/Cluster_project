@@ -198,6 +198,15 @@
                            </div>
                        </div>
                    </div>
+                   
+                    <div class="row">
+                    	<div class="col-12 equel-grid">
+                           <div class="grid d-flex flex-column align-items-center justify-content-center">
+                           		<img src="../resources/image/join.PNG" width="100%" alt="craft image">
+                           </div>
+                       </div>
+                    </div>
+                   
                    <div class="row">
                        <div class="col-6 equel-grid">
                            <div class="grid d-flex flex-column align-items-center justify-content-center">

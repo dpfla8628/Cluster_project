@@ -173,7 +173,7 @@
 	</select>
 	
 	<update id="startDateUpdate">
-		update offclass set class_start = #{classStart} where class_no = #{classNo}
+		update offclass set class_start = #{classStart}, class_end_check = '진행' where class_no = #{classNo}
 	</update>
 	
 	<update id="endDateUpdate">

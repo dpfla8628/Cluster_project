@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.kh.cluster.controller.CreatorController;
 import com.kh.cluster.entity.AuthMemberVO;
 
-@WebFilter(urlPatterns = "/creator/*")
+//@WebFilter(urlPatterns = "/creator/*")
 public class CreatorFilter implements Filter{
 
 	private static final Logger log = LoggerFactory.getLogger(CreatorController.class);
