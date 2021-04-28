@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.kh.cluster.controller.MainController;
 import com.kh.cluster.entity.OffclassImageVO;
 import com.kh.cluster.entity.OffclassQueryVO;
 import com.kh.cluster.repository.OffclassQueryRepository;
 
 @Service
 public class OffclassQueryServiceImpl implements OffclassQueryService {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(OffclassQueryServiceImpl.class);
+	
 	@Autowired
 	private OffclassQueryRepository repository;
 
@@ -54,6 +59,8 @@ public class OffclassQueryServiceImpl implements OffclassQueryService {
 	@Override
 	public List<OffclassQueryVO> searchByKeyword(Integer memberNo, String keyword, String sort) throws Exception {
 		List<OffclassQueryVO> offClasses = repository.searchByKeyword(keyword, sort);
+		
+		log.info("classSize::{}", offClasses.size());
 		
 		//클래스 번호를 모은다. 이유 : 강의찜을 체크 하기 위해
 		List<Integer> classNumbers = new ArrayList<>();

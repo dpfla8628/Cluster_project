@@ -67,7 +67,7 @@
 	    from 
 	    	offclass cls
 		    	inner join creator cre on cls.creator_no=cre.creator_no 
-		    	and cls.class_end_check='진행' and instr(cls.class_name, '#{keyword}') > 0
+		    	and cls.class_end_check='진행' and instr(cls.class_name, #{keyword}) > 0
 		    	inner join member m on cre.member_no=m.member_no
 	    group by
 	    	cls.class_no, member_nick, class_name, class_price, class_regdate 

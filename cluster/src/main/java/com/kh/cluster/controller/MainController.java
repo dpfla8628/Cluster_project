@@ -2,6 +2,7 @@ package com.kh.cluster.controller;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,9 +87,15 @@ public class MainController {
 //		Integer memberNo = (Integer) session.getAttribute("no");
 
 		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
-		List<OffclassQueryVO> search = service.searchByKeyword(memberNo, keyword, "new");
-
-		model.addAttribute("search", toSubList(search, 16));
+		List<OffclassQueryVO> search = Collections.emptyList();
+		
+		if(keyword != null) {
+			search = service.searchByKeyword(memberNo, keyword, "new");
+		}
+		
+		model.addAttribute("offclasses", toSubList(search, 16));
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("sort", sort);
 
 		return "/search/index";
 	}

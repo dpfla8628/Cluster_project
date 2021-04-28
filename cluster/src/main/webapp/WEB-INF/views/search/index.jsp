@@ -18,7 +18,7 @@
 	    $("#sort").on("change", function(){
 			let queryParams = getUrlParams();
 			
-			if (queryParams.subcategory) {
+			if (queryParams.keyword) {
                 self.location = "/search?keyword=" + queryParams.keyword + "&sort=" + this.value;
                 return;
             }
@@ -149,15 +149,15 @@
 
 <div class="d-flex" id="wrapper">
 
-	<div class="border-right" id="sidebar-wrapper">
+	<!-- <div class="border-right" id="sidebar-wrapper">
 		<div class="sidebar-heading">공예 </div>
 		
 		<div class="list-group list-group-flush">
 			<a href="/crafts?subcategory=도자기" class="list-group-item list-group-item-action bg-light">도자기</a>
 			<a href="/crafts?subcategory=가죽" class="list-group-item list-group-item-action bg-light">가죽</a>
-			<a href="/crafts?subcategory=액세서리" class="list-group-item list-group-item-action bg-light border-bottom">액세서리</a>
+			<a href="/crafts?subcategory=액세서리" class="list- group-item list-group-item-action bg-light border-bottom">액세서리</a>
 		</div>
-	</div>
+	</div> -->
 
 	<div id="page-content-wrapper">
 
