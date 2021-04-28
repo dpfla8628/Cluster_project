@@ -21,9 +21,32 @@
 			self.location = "/signup/"
 		})
 		
+		$("#btn-mypage").on("click", function() {
+			self.location = "/mypage/index"
+		})
+		
+		$("#btn-join-creator").on("click", function() {
+			self.location = "/join"
+		})
+		
+		$("#btn-admin").on("click", function() {
+			self.location = "/admin/home"
+		})
+		
+		$("#btn-service").on("click", function() {
+			self.location = "/community/faq"
+		})
+		
 		$('#btn-logout').on("click", function() {
 			self.location = "/login/logout"
 			alert("로그아웃이 완료되었습니다.");
+		})
+		
+		$('#searchForm').on("submit", function(e) {
+			e.preventDefault();
+			var keyword = $('#keyword').val();
+			/* alert(keyword); */
+			self.location = "/search?keyword=" + keyword
 		})
 	});
 	
@@ -96,9 +119,9 @@
 					    </a>
 					</div>
 					<div class="col-md-4">
-						<form class="form-inline" action="#" method="post">
+						<form class="form-inline" action="/search" method="get" id="searchForm">
 							<div class="form-group right">    
-								<input type="text" name="keyword" placeholder="검색어 입력" class="form-control">
+								<input type="text" id="keyword" name="keyword" placeholder="검색어 입력" class="form-control" value="${keyword}">
 							    <input type="submit" value="검색" class="btn btn-info" style="margin-left: 1rem">
 							</div>
 						</form>
@@ -141,13 +164,13 @@
 			
 			<nav>
 				<ul class="menu center" style="margin-top: 2rem">
-					<li><a href="${pageContext.request.contextPath}/crafts">공예</a></li>
-					<li><a href="${pageContext.request.contextPath}/exercise">운동</a></li>
-					<li><a href="${pageContext.request.contextPath}/drawing">드로잉</a></li>
-					<li><a href="${pageContext.request.contextPath}/music">음악</a></li>
-					<li><a href="${pageContext.request.contextPath}/cooking">요리</a></li>
-					<li><a href="${pageContext.request.contextPath}/study">스터디</a></li>
-					<li><a href="${pageContext.request.contextPath}/event">이벤트</a></li>
+					<li><a href="/crafts">공예</a></li>
+					<li><a href="/exercise">운동</a></li>
+					<li><a href="/drawing">드로잉</a></li>
+					<li><a href="/music">음악</a></li>
+					<li><a href="/cooking">요리</a></li>
+					<li><a href="/study">스터디</a></li>
+					<li><a href="/event/">이벤트</a></li>
 				</ul>
 			</nav>
 			

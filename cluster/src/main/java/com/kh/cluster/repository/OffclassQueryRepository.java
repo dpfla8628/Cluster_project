@@ -10,6 +10,7 @@ public interface OffclassQueryRepository {
 	
 	public List<OffclassQueryVO> searchByCategory(String categoryBig, String categorySmall, String sort) throws Exception;
 	public List<OffclassImageVO> searchTumbnail(int classNo) throws Exception;
+	public List<OffclassQueryVO> searchByKeyword(String keyword, String sort) throws Exception;
 	public Set<Integer> likeForMembers(int memberNo, List<Integer> ids) throws Exception;
 	// 원래 아래 2개 메소드는 offclass repository로 가는것이 적절하다.
 	public void likeOffclass(int memberNo, int classNo) throws Exception;

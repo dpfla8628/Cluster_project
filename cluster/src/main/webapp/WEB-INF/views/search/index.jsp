@@ -18,11 +18,11 @@
 	    $("#sort").on("change", function(){
 			let queryParams = getUrlParams();
 			
-			if (queryParams.subcategory) {
-                self.location = "/drawing?subcategory=" + queryParams.subcategory + "&sort=" + this.value;
+			if (queryParams.keyword) {
+                self.location = "/search?keyword=" + queryParams.keyword + "&sort=" + this.value;
                 return;
             }
-            self.location = "/drawing?sort=" + this.value;
+            self.location = "/search?sort=" + this.value;
 		})
 
       function getUrlParams() {
@@ -32,9 +32,10 @@
       }
 	    
 	    $(".detail").css("cursor","pointer").on("click", function(){
-			var classNo = $(this).attr("classNo");
+	    	alert($(this).attr("classNo") + "값으로 페이지 이동 예정");
 	    	
-	    	self.location = "class_detail/detail/" + classNo;
+	    	/* to-do
+	    	self.location = "/crafts?classNo=" + ${classNo}.value; */
 	    	
 	    })
 	    
@@ -148,15 +149,15 @@
 
 <div class="d-flex" id="wrapper">
 
-	<div class="border-right" id="sidebar-wrapper">
-		<div class="sidebar-heading">드로잉</div>
+	<!-- <div class="border-right" id="sidebar-wrapper">
+		<div class="sidebar-heading">공예 </div>
 		
 		<div class="list-group list-group-flush">
-			<a href="/drawing?subcategory=한국화" class="list-group-item list-group-item-action bg-light">한국화</a>
-			<a href="/drawing?subcategory=서양화" class="list-group-item list-group-item-action bg-light">서양화</a>
-			<a href="/drawing?subcategory=유화" class="list-group-item list-group-item-action bg-light border-bottom">유화</a>
+			<a href="/crafts?subcategory=도자기" class="list-group-item list-group-item-action bg-light">도자기</a>
+			<a href="/crafts?subcategory=가죽" class="list-group-item list-group-item-action bg-light">가죽</a>
+			<a href="/crafts?subcategory=액세서리" class="list- group-item list-group-item-action bg-light border-bottom">액세서리</a>
 		</div>
-	</div>
+	</div> -->
 
 	<div id="page-content-wrapper">
 
@@ -178,7 +179,7 @@
 				<table>
 					<tr>
 						<td colspan="2">
-							<img class="img detail" classNo=${a.classNo} src="displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
+							<img class="img detail" classNo=${a.classNo} src="/displayFile?fileName=${a.thumbnailImage}" alt="${a.thumbnailImage}">
 						</td>
 					</tr>
 					<tr>
