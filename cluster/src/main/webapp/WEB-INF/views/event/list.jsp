@@ -55,6 +55,9 @@
 		text-decoration: underline;
 		cursor: pointer;
 	}
+	.imgOpacity{
+		opacity: 0.5;
+	}
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
@@ -112,7 +115,7 @@
 			});
 		});
 		
-		$(".finished").click(function(){
+		$(document).on("click", ".finished", function(){
 			$(this).removeClass("ableClick");
 			$(this).parent().addClass("active");
 			$(".ongoing").addClass("ableClick");
@@ -139,7 +142,7 @@
 					$.each(data, function(idx, event){
 						str = "<div class='card'><a href='${ContextPath}/event/detail?no=";
 						str += event.eventNo;
-						str += "'><img width='286' height='180' class='card-img-top' src='${ContextPath}/event/displayFile?fileName=";
+						str += "'><img width='286' height='180' class='card-img-top imgOpacity' src='${ContextPath}/event/displayFile?fileName=";
 						str += event.eventFileName;
 						str += "' alt='Card image cap'></a><div class='card-body'><h6 class='card-title'>";
 						str += event.eventTitle;
@@ -153,6 +156,7 @@
 				}
 				
 			});
+			
 		});
 		
 	});			

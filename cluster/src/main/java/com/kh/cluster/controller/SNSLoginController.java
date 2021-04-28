@@ -80,7 +80,7 @@ public class SNSLoginController {
 		
 		//로그인 처리
 		//토큰발급
-		String token = tokenUtil.createToken(authMember.getMemberId());
+		String token = tokenUtil.createToken(authMember.getMemberId(), TokenUtil.TOKEN_EXPIREDTIME);
 		
 		//토큰 Db에 저장
 		service.updateToken(authMember.getMemberId(), token);

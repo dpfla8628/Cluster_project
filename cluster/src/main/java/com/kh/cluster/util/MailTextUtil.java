@@ -20,4 +20,16 @@ public class MailTextUtil {
 	}
 	
 	//비밀번호 변경 링크
+	public static String mkFindPwText(AuthMember authMember) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<html><body><div style='text-align: center;'><h1 style='color: #ffc107;'>CLUSTER</h1>");
+		sb.append("<p><a href='http://localhost:33333/login/reset?auth=");
+		sb.append(authMember.getMemberAuthNum());
+		sb.append("&no=");
+		sb.append(authMember.getMemberNo());
+		sb.append("'>링크</a>를 눌러서 비밀번호를 변경해 주세요!</p><small>*해당 링크는 10분간 유효합니다.</small></div></body></html>");
+		String str = sb.toString();
+		
+		return str;
+	}
 }

@@ -63,7 +63,7 @@
 		<script type="text/javascript">
 			$(function(){
 				$(".title-text").click(function(){
-					location.href="${contextPath}/login/";
+					location.href="${contextPath}/";
 				});
 				
 				$("#loginBtn").click(function(){
@@ -76,20 +76,18 @@
 					var json = JSON.stringify(object);
 
 					$.ajax({
-						type: "post",
-						dataType: "text",
+						type:"post",
+						dataType:"text",
 						async: true,
 						url:"${contextPath}/login/",
-						contentType: "application/json",
+						contentType:"application/json",
 						data: json,
 						success: function(data, textStatus){
 							if(data == "y"){
 								$("#loginForm").submit();
 							}
 							else if(data == "ny"){
-								$("#hiddenSubmit").attr("action", "/login/resend").attr("method", "post");
-								$("#hiddenEmail").val($("#memberId").val());
-								$("#hiddenSubmit").submit();
+								alert("아직 회원가입을 완료하지 않으셨습니다. 인증 링크를 재전송했습니다. 다시 한번 확인해 주세요.");
 							}
 							else{
 								$("#loginResult").text("로그인 정보가 올바르지 않습니다.");
@@ -142,9 +140,9 @@
 				</form>
 			</div>
 		    
-		    <form id="hiddenSubmit">
+		    <!-- <form id="hiddenSubmit">
 		    	<input type="hidden" name="email" id="hiddenEmail">
-		    </form>
+		    </form> -->
 		    
 		</div>
 		

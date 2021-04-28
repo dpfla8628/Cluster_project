@@ -72,7 +72,7 @@ public class SignUpController {
 	
 	//회원가입 완료 처리
 	@GetMapping("/complete")
-	public String getComplete(@RequestParam(value = "auth", required = false) Integer authNum, 
+	public String getComplete(@RequestParam(value = "auth", required = false) String authNum, 
 								@RequestParam(value = "no", required= false) Integer memberNo,
 								HttpServletResponse res) {
 		log.info("getComplete()");
@@ -84,11 +84,13 @@ public class SignUpController {
 		
 		if(result == null) return "redirect:/signup/";
 		
+		if(result.containsKey("resend")) return "redirect:/login/wr";
+		
 		if("y".equals(result.get("memberStatus"))) return "redirect:/login/";
 		
 		//로그인 처리
 		//토큰발급
-		String token = tokenUtil.createToken(result.get("memberId"));
+		String token = tokenUtil.createToken(result.get("memberId"), TokenUtil.TOKEN_EXPIREDTIME);
 		
 		//토큰 Db에 저장
 		service.updateToken(result.get("memberId"), token);
@@ -116,7 +118,7 @@ public class SignUpController {
 		
 		boolean result = service.checkSignUpInfo(signupVo);
 		
-		return result == false ? "y" : "n";
+		return !result ? "y" : "n";
 	}
 	
 	//회원가입 시 데이터 유효성 검사 
@@ -130,7 +132,7 @@ public class SignUpController {
 		//유효성 검사
 		boolean result = service.checkSignup(signupVo);
 		
-		return result == true ? "y" : "n";
+		return result ? "y" : "n";
 	}
 	
 }

@@ -15,43 +15,44 @@ import com.kh.cluster.service.AuthService;
 import com.kh.cluster.util.CookieUtil;
 import com.kh.cluster.util.TokenUtil;
 
+import io.jsonwebtoken.Claims;
+
 @Component
-public class AuthInterceptor2 implements HandlerInterceptor{
-	
+public class AuthInterceptor2 implements HandlerInterceptor {
+
 	@Autowired
 	CookieUtil cookieUtil;
 	@Autowired
 	TokenUtil tokenUtil;
 	@Autowired
 	AuthService service;
-	
+
 	private static final Logger log = LoggerFactory.getLogger(AuthInterceptor2.class);
-	
+
 	@Override
-	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler)
-			throws Exception {
-		
+	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) throws Exception {
+
 		log.info("authInterceptor2()");
-		
+
 		Cookie cookie = cookieUtil.getCookie(req, "accessToken");
 		
-		if(cookie != null) {
-			String token = cookie.getValue();
-			String email = tokenUtil.validateToken(token);
-			
-			if(email != null) {
-				AuthMemberVO member = service.isRightToken(email, token);
-				
-				if(member != null) {
-					req.setAttribute("member", member);
-					return true;
-				}
-			}
-		}
-		
-		AuthMemberVO member= null;
+		  if(cookie != null) { 
+			  String token = cookie.getValue(); 
+			  String memberId = tokenUtil.validateToken(token); 
+			  System.out.println("token:"+token); 
+			  if(memberId != null){ 
+				  AuthMemberVO member = service.isRightToken(memberId, token);
+		 
+				  if(member != null) { 
+					  req.setAttribute("member", member); return true; 
+				  }
+			  }
+		  }
+		 
+
+		AuthMemberVO member = null;
 		req.setAttribute("member", member);
-		
+
 		return true;
 	}
 }

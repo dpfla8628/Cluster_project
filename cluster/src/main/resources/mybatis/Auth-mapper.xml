@@ -27,7 +27,7 @@
 			sysdate, 
 			'일반', 
 			null, 
-			member_auth_num.nextval, 
+			#{memberAuthNum}, 
 			'n',
 			#{memberAgreement1},
 			#{memberAgreement2},
@@ -56,17 +56,33 @@
 	<select id="selectMember" resultType="AuthMember" parameterType="string">
 		select * from member where member_id = #{memberId}
 	</select>
+
+	<select id="selectMember2" resultType="AuthMember" parameterType="int">
+		select * from member where member_no = #{memberNo}
+	</select>
 	
 	<select id="checkMember" resultType="AuthMember" parameterType="int">
 		select member_id, member_status, member_auth_num from member where member_no = #{memberNo}
 	</select>
 	
+	<select id="checkAuthNum" resultType="AuthMember" parameterType="hashmap">
+		select * from member where (member_no = #{memberNo} and member_auth_num = #{memberAuthNum})
+	</select>
+	
 	<update id="updateOne" parameterType="hashmap">
 		update member set ${column} = #{changeVal} where member_id = #{memberId}
+	</update>
+
+	<update id="updateOne2" parameterType="hashmap">
+		update member set ${column} = #{changeVal} where member_no = #{memberNo}
 	</update>
 	
 	<update id="updateNull" parameterType="hashmap">
 		update member set ${column} = null where member_id = #{memberId}
+	</update>
+	
+	<update id="updateNull2" parameterType="hashmap">
+		update member set ${column} = null where member_no = #{memberNo}
 	</update>
 	
 </mapper>

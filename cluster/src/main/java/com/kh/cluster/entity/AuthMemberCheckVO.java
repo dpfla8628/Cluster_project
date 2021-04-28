@@ -8,7 +8,16 @@ public class AuthMemberCheckVO {
 	private String memberPwCheck;
 	private String memberAgreement1;
 	private String memberAgreement2;
+	private Integer memberNo;
 	
+	public Integer getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(Integer memberNo) {
+		this.memberNo = memberNo;
+	}
+
 	@Override
 	public String toString() {
 		return "AuthMemberCheckVO [memberId=" + memberId + ", memberNick=" + memberNick + ", memberPw=" + memberPw

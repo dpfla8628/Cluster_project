@@ -73,6 +73,7 @@
 						data: {id : target},
 						success: function(data, textStatus){
 							if(data == "y"){
+								alert("메일 전송을 완료했습니다!");
 							}
 							else if(data == "s"){
 								$("#findPwHelp").text("sns로그인을 해주세요!");

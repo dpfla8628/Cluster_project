@@ -15,6 +15,8 @@ import com.kh.cluster.service.AuthService;
 import com.kh.cluster.util.CookieUtil;
 import com.kh.cluster.util.TokenUtil;
 
+import io.jsonwebtoken.Claims;
+
 @Component
 public class AuthInterceptor implements HandlerInterceptor{
 	
@@ -37,10 +39,11 @@ public class AuthInterceptor implements HandlerInterceptor{
 		
 		if(cookie != null) {
 			String token = cookie.getValue();
-			String email = tokenUtil.validateToken(token);
-			
-			if(email != null) {
-				AuthMemberVO member = service.isRightToken(email, token);
+			String memberId = tokenUtil.validateToken(token);
+			System.out.println(token);
+			System.out.println(memberId);
+			if(memberId != null) {
+				AuthMemberVO member = service.isRightToken(memberId, token);
 				
 				if(member != null) {
 					req.setAttribute("member", member);

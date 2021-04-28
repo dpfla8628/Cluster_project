@@ -15,7 +15,7 @@ public class AuthMember {
 	private String[] files;
 	private String memberAgreement1;
 	private String memberAgreement2;
-	private Integer memberAuthNum;
+	private String memberAuthNum;
 	private String memberStatus;
 	private String memberBy;
 	
@@ -36,11 +36,11 @@ public class AuthMember {
 		this.memberToken = memberToken;
 	}
 
-	public Integer getMemberAuthNum() {
+	public String getMemberAuthNum() {
 		return memberAuthNum;
 	}
 
-	public void setMemberAuthNum(Integer memberAuthNum) {
+	public void setMemberAuthNum(String memberAuthNum) {
 		this.memberAuthNum = memberAuthNum;
 	}
 

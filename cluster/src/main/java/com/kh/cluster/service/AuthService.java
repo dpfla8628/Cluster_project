@@ -12,7 +12,7 @@ public interface AuthService {
 	public boolean checkSignUpInfo(AuthMemberInfoCheckVO signupVo);
 	public void sendMail(AuthMember authMember, Subject subject);
 	public AuthMember signUpNormal(AuthMember authMember);
-	public Map<String, String> signUpComplete(Integer authNum, Integer memberNo);
+	public Map<String, String> signUpComplete(String authNum, Integer memberNo);
 	public AuthMember loginNormal(AuthMember loginMember);
 	public boolean checkSignup(AuthMemberCheckVO authMember);
 	public AuthMemberVO isRightToken(String memberId, String token);
@@ -21,4 +21,10 @@ public interface AuthService {
 	public void resendMail(String memberId, Subject subject);
 	public AuthMember isMember(String memberId);
 	public AuthMember signUpSNS(Map<String, String> member);
+	public void sendFindPasswordMail(AuthMember authMember);
+	public void resendFindPasswordMail(Integer memberNo);
+	public Map<String , Object> checkResetPasswordURL(Integer memberNo, String authNum);
+	public boolean checkResetPw(AuthMemberCheckVO authMember);
+	public void resetPassword(AuthMemberCheckVO authMember);
+	public void sendSignUpMail(AuthMember authMember);
 }

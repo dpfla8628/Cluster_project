@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
@@ -111,7 +112,9 @@
 		});
 	});	
 </script>
-
+	<!-- 현재날짜 -->
+	<c:set var="today" value="<%=new java.util.Date()%>" />
+	<c:set var="date"><fmt:formatDate value="${today}" pattern="yyyy-MM-dd" /></c:set> 
 
 	<section class="container event-body">
 		<!-- 썸네일 & 제목 -->
@@ -128,8 +131,16 @@
 					    <h5 class="card-title">${event.eventTitle}</h5>
 					    <div class="eventContentBox"><p class="card-text">${event.eventContent }</p></div>
 					    <hr>
-					    <h6 class="card-subtitle mb-2">이벤트 기간</h6>
-					    <p class="card-text">${event.eventStart} ~ ${event.eventEnd}</p>
+					    <c:choose>
+					    	<c:when test="${event.eventEnd < date }">
+							    <h5 class="card-subtitle mb-2">종료된 이벤트입니다.</h5>
+							    <p class="card-text">이벤트 기간 ${event.eventStart} ~ ${event.eventEnd}</p>
+					    	</c:when>
+					    	<c:otherwise>
+							    <h6 class="card-subtitle mb-2">이벤트 기간</h6>
+							    <p class="card-text">${event.eventStart} ~ ${event.eventEnd}</p>
+					    	</c:otherwise>
+					    </c:choose>
 					    <input type="hidden" value="${event.eventStart}" class="eventStart">
 					    <input type="hidden" value="${event.eventEnd}" class="eventEnd">
 				  	</div>

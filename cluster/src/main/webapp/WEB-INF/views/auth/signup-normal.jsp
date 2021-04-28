@@ -68,7 +68,7 @@
 			$(function(){
 				
 				$(".title-text").click(function(){
-					location.href="${contextPath}/login/";
+					location.href="${contextPath}/";
 				});
 				
 				$("#memberNick").change(function(){

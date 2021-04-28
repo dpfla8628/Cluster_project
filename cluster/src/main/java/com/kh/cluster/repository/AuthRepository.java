@@ -15,4 +15,8 @@ public interface AuthRepository {
 	public void updateOne(HashMap<String, String> updateValue);
 	public void updateNull(HashMap<String, String> updateValue);
 	public void insertSNS(Map<String, String> member);
+	public AuthMember selectMember2(Integer memberNo);
+	public AuthMember checkAuthNum(HashMap<String, Object> memberInfo);
+	public void updateOne2(HashMap<String, Object> updateValue);
+	public void updateNull2(HashMap<String, Object> updateValue);
 }

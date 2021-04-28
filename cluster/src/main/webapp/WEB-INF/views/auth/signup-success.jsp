@@ -67,7 +67,7 @@
 		<script type="text/javascript">
 			$(function(){
 				$(".title-text").click(function(){
-					location.href="${contextPath}/login/";
+					location.href="${contextPath}/";
 				});
 			});
 		</script>
@@ -95,7 +95,7 @@
 			
 					<div class="container col-container">
 						<div class="row justify-content-md-center">
-						    <a class="a-col text-muted" href="/login/">로그인하러 가기</a>
+						    <a class="a-col text-muted" href="/">홈페이지로 이동하기</a>
 					    </div>
 					</div>
 					

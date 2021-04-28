@@ -15,6 +15,8 @@ import com.kh.cluster.service.AuthService;
 import com.kh.cluster.util.CookieUtil;
 import com.kh.cluster.util.TokenUtil;
 
+import io.jsonwebtoken.Claims;
+
 @Component
 public class CreatorInterceptor implements HandlerInterceptor{
 	
@@ -37,10 +39,10 @@ public class CreatorInterceptor implements HandlerInterceptor{
 		
 		if(cookie != null) {
 			String token = cookie.getValue();
-			String email = tokenUtil.validateToken(token);
+			String result = tokenUtil.validateToken(token);
 			
-			if(email != null) {
-				AuthMemberVO member = service.isRightToken(email, token);
+			if(result != null) {
+				AuthMemberVO member = service.isRightToken(result, token);
 				
 				log.info("Auth::{}", member.getMemberAuth());
 				String auth = member.getMemberAuth();
