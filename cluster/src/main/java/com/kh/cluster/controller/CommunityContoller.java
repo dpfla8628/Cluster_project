@@ -64,7 +64,7 @@ public class CommunityContoller {
 		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
 		String auth = member.getMemberAuth();
 		int memberNo = member.getMemberNo();
-		
+		vo.setLink("/community/qList");
 		int total;
 		if(auth.equals("관리자")) {
 			total = service.listCount();
@@ -97,6 +97,37 @@ public class CommunityContoller {
 		return view;
 	}
 	
+	//문의 리스트(미답변순으로 정렬)
+	@GetMapping("/qList/sort")
+	public ModelAndView sortList(HttpServletRequest req, PagingVo2 vo, Model model
+			,@RequestParam(value="nowPage", required = false)String nowPage
+			,@RequestParam(value="cntPerPage", required = false)String cntPerPage)throws Exception{
+		log.info("qList");
+		
+		ModelAndView view = new ModelAndView();
+		vo.setLink("/community/qList/sort");
+		
+		int total = service.listCount();
+		
+		if(nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		}else if(nowPage == null) {
+			nowPage = "1";
+		}else if(cntPerPage == null) {
+			cntPerPage = "5";
+		}
+		vo = new PagingVo2(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		List<Question> qList = service.sortList(vo);
+		 
+		view.setViewName("/community/qList");
+		view.addObject("qList", qList);
+		view.addObject("paging", vo);
+		
+		return view;
+	}
+	
+	//문의 상세보기
  	@GetMapping("/qDetail/{questionNo}")
 	public ModelAndView qDetail(Model model, @PathVariable int questionNo)throws Exception{
 		log.info("qDetail");
@@ -174,7 +205,7 @@ public class CommunityContoller {
 		
 		return "/community/faq";
 	}
-	
+
 	//FAQ 등록
 	@GetMapping("/faqRegister")
 	public String faqForm() throws Exception{
@@ -212,6 +243,7 @@ public class CommunityContoller {
 		service.faqEdit(faq);
 	}
 	
+	//FAQ 삭제
 	@ResponseBody
  	@PostMapping("/faqDelete")
 	public void faqDelete(@ModelAttribute FAQ faq) throws Exception{

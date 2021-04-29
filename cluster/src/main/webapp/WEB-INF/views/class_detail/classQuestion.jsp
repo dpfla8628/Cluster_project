@@ -60,9 +60,12 @@
         .sendBtn {
             width: 360px;
             height: 40px;
-            border: none;
+            border: 1px solid lightgray;
             margin: 0.5rem 1rem;
-
+			background-color: transparent;
+         }
+        .sendBtn:hover{
+        	color:  #ffc107;
         }
        
     </style>

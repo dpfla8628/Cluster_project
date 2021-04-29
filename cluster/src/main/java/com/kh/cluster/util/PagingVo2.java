@@ -4,7 +4,15 @@ public class PagingVo2 {
 
 	// 현재페이지, 시작페이지, 끝페이지, 게시글 총 갯수, 페이지당 글 갯수, 마지막페이지, SQL쿼리에 쓸 start, end
 	private Integer nowPage, startPage, endPage, total, cntPerPage, lastPage, start, end, memberNo;
-	
+	private String link;
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
 	private Integer cntPage = 5;
 	
 	public PagingVo2() {

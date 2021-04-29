@@ -89,4 +89,16 @@
 	<select id="faqCount" resultType="int">
 		select count(*) from faq
 	</select>
+	
+	<select id="sortList" resultType="Question">
+			select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from question Q inner join member M on Q.member_no = M.member_no  
+                        order by Q.question_ok asc, Q.question_date asc
+					) a
+				)
+		where rn between #{start} and #{end}
+ 	</select>
 </mapper>

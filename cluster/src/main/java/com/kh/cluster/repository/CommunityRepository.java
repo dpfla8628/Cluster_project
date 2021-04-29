@@ -36,5 +36,6 @@ public interface CommunityRepository {
 	public FAQ faqRead(int faqNo) throws Exception;
 	public List<FAQ> faqList(PagingVo2 vo) throws Exception;
 	public int faqCount() throws Exception;
+	public List<Question> sortList(PagingVo2 vo) throws Exception;
 	
 }

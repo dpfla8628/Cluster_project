@@ -99,6 +99,11 @@ public class CommunityServiceImpl implements CommunityService{
  		return repository.faqCount();
 	}
 
+	@Override
+	public List<Question> sortList(PagingVo2 vo) throws Exception {
+ 		return repository.sortList(vo);
+	}
+
 
 
 

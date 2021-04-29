@@ -105,8 +105,7 @@
 
 <body>
     <div class="outbox">
-    권한 : ${member.memberAuth}
-        <h1>고객센터</h1> 
+         <h1>고객센터</h1> 
         <h4>FAQ 수정</h4>  
         <div class="inBox">
             <br>

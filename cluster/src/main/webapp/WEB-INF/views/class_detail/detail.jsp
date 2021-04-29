@@ -26,7 +26,20 @@
 	                    $(this).height(this.scrollHeight);
 	                });
 	            }
-
+	            
+				  var txtArea = $(".classInfo");
+		            if (txtArea) {
+		                txtArea.each(function() {
+		                    $(this).height(this.scrollHeight);
+		                });
+		            }
+		            var txtArea = $(".creatorText");
+		            if (txtArea) {
+		                txtArea.each(function() {
+		                    $(this).height(this.scrollHeight);
+		                });
+		            }        
+	 
             $(".orderBtn").click(function() {
                 if (no == '') {
                     alert("로그인 후 이용가능합니다");
@@ -124,8 +137,15 @@
  
     </script> 
     <style>
-		.infoText{
-			font-weight: 300;
+		.creatorText{
+			font-weight: 100;
+			width : 338px;
+			resize: none;
+			height:auto;
+			border:none;
+			overflow: hidden;
+			font-size: 13px;
+			
 		}
 		.text{
 			text-align: center;
@@ -133,6 +153,7 @@
 		.heart{
 			width: 40px;
 		}
+		 
     </style>
 </head>
  
@@ -140,18 +161,7 @@
 	<c:set var="memberNo" value="${member.memberNo}" />
     <c:set var="logInMember" value="${member.memberNick}" />
     <c:set var="classMember" value="${offClass.authMember.memberNick}" />
-
-    <div>
-         <label>번호 : ${member.memberNo}</label>
-        <label>닉네임 : ${member.memberNick}</label>
-        <label>권한 : ${member.memberAuth}</label>
-
-        <a href="/class_detail/list">리스트</a>
-        <a href="/mypage/index">마이페이지</a>
-        <a href="/login/">로긘</a> 
-        <a href="/community/question">커뮤니티</a>
-        <hr>
-    </div>
+ 
     <div class="outbox">
         <div class="left_side">
             <input type="hidden" class="no" value="${member.memberNo}">
@@ -180,7 +190,7 @@
                     </c:forEach>
                     <br>
                     
-                    <c:out value="${offClass.classInfo}"/>
+                    <textarea class="classInfo"><c:out value="${offClass.classInfo}"/></textarea>
                 </div>
             </div>
             <br>
@@ -242,6 +252,7 @@
                     <c:when test="${empty classReview}">
                     <div  class="text">
                         <label>등록된 리뷰가 없습니다</label>
+                        <br><br>
                     </div>
                         <script>
                             $(".reviewList").css("height", "100")
@@ -296,11 +307,15 @@
                         <label>+ ${total-5}개 리뷰가 있습니다</label>
                         <button class="moreReviewBtn">리뷰 더보기</button>
                     </c:when>
+                    <c:when test="${total ==0 }">
+                    	
+                    </c:when>
                     <c:otherwise>
                         <c:if test="${logInMember eq classMember}">
                             <button class="moreReviewBtn">리뷰 답변하기</button>
                         </c:if>
                     </c:otherwise>
+                   	
                 </c:choose>
 
                 <%--     			  <jsp:include page="/WEB-INF/views/class_detail/review.jsp"/> 
@@ -377,7 +392,7 @@
                     </div>
                 </div>
                 <div class="creatorInfo">
-                    <p class="infoText"><c:out value="${offClass.creator.creatorInfo}"/></p>
+                    <textarea class="creatorText" readonly><c:out value="${offClass.creator.creatorInfo}"/></textarea>
                 </div>
             </div>
 

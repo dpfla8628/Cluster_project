@@ -186,7 +186,7 @@
 
 <body>
     <div class="outbox">
-        <h1>고객센터</h1> <a href="/login/">로그인</a> <a href="/login/logout">로그아웃</a> 멤버번호 : ${member.memberNo} / 권한 : ${member.memberAuth}
+        <h1>고객센터</h1>  
         <div class="inBox">
             <div class="inBoxA">
                 <a href="/community/question" class="QForm">문의 등록</a>

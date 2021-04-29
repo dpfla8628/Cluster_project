@@ -42,8 +42,9 @@
                 if(!discount){
                     return false
                 }
- 				if(discount>classPrice){
- 					return false
+ 				if(parseInt(discount)>parseInt(classPrice)){
+ 					alert('할인 불가')
+  					return false
  				}
                 $("label[for='discount']").text(-discount);
                 $("label[for='discount']").css("color", "red")
