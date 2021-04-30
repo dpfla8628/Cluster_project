@@ -368,6 +368,6 @@ public class MainController {
 
 		offclassService.join(creator);
 		offclassService.authUpdate(memberNo);
-		return "redirect:/";
+		return "redirect:/login/";
 	}
 }
