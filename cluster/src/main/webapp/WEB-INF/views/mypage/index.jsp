@@ -138,7 +138,7 @@ $(document).ready(function(){
 			    <c:forEach items="${likeList}" var="likelist">
 			    <!-- offclass 메인 이미지 불러오기 (classlike랑 join해서 로그인한 member_no가 찜한걸로) -->
 			      <div class="swiper-slide">
-			      	<div><a href="#"><img class="likeimg" src="../resources/image/test.PNG"></a></div>
+			      	<div><a href="#"><img class="likeimg" src="../resources/image/${likelist.classNo}.png"></a></div>
 			      	<div class="clsname">${likelist.className}</div>
 			      </div>
 			      </c:forEach>
