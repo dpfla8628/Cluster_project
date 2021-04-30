@@ -34,6 +34,22 @@
 	
 	$(function(){
 		
+		//카테고리 글자수 제한
+		$(".category").on("input", function(){
+			
+			var count = $(this).val().length;
+			
+			while(count > 10) {
+				var text = $(this).val();
+				text = text.substring(0, text.length-1);
+				$(this).val(text);
+				
+				count--;
+			}
+			
+			
+		});
+		
 		//수정하기 버튼 클릭시
 		$("#editBtn").click(function(){
 			
@@ -65,10 +81,10 @@
 		<form:form modelAttribute="classCategory" action="edit" method="post">
 			<form:hidden path="categoryNo"/>
 			<div class="row">
-				<form:input type="text" class="input" path="categoryBig"/>
+				<form:input type="text" class="input category" path="categoryBig"/>
 			</div>
 			<div class="row">
-				<form:input type="text" class="input" path="categorySmall"/>
+				<form:input type="text" class="input category" path="categorySmall"/>
 			</div>
 		</form:form>
 		<div class="row">
