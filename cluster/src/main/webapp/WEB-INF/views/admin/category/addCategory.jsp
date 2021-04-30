@@ -10,14 +10,29 @@
 
 
 <style>
+	a{
+		color:black;
+	}
 	.outbox{
-		width:500px;
-		
+		padding: 0 21rem;
+		margin: 0rem 10rem 0 10rem;
 	}
-	.input {
-		margin:0.5rem 0;
+	.input{
+		margin-bottom:1rem;
+   		height:50px;
+    	font-size:18px;
+    	border:none;
+	}
+	#registBtn{
+		cursor:pointer;
+		background-color:#ffc107;
+		border-color: #ffc107;
+	}
 	
+	#addCategory{
+		color:#fff;
 	}
+	
 </style>
 
 
@@ -28,7 +43,6 @@
 		$("#categoryMenu").next("ul").slideDown();
 		
 	
-		
 		
 		//카테고리 대분류, 소분류 입력시 데이터베이스에 있는 목록 나타내주기
 		
@@ -86,36 +100,41 @@
 			
 			var confirm = window.confirm("정말로 등록하시겠습니까?");
 			
+			
 			if(!confirm) {
 				e.preventDefault();
 			}
 			
 			else {
-				$.ajax({
-					url: "/admin/category/addCategory",
-					type: "POST",
-					data: {
-						categoryBig : categoryBig,
-						categorySmall : categorySmall
-					},
-					success: function(resp) {
-						if(resp == 'fail') {
-							alert("이미 존재하는 카테고리입니다.");
-							$("#categoryCheck").text("이미 존재하는 카테고리입니다.");
+				if(!categoryBig || !categorySmall) {
+					alert("카테고리를 입력하세요!");
+				}
+				else{
+					$.ajax({
+						url: "/admin/category/addCategory",
+						type: "POST",
+						data: {
+							categoryBig : categoryBig,
+							categorySmall : categorySmall
+						},
+						success: function(resp) {
+							if(resp == 'fail') {
+								alert("이미 존재하는 카테고리입니다.");
+								$("#categoryCheck").text("이미 존재하는 카테고리입니다.");
+							}
+							else {
+								$("#categoryCheck").text("");
+								$(".category").val("");
+								$(".countBig").text(0);
+								$(".countSmall").text(0);
+								alert("등록에 성공하였습니다.");
+							}
 						}
-						else {
-							$("#categoryCheck").text("");
-							$(".category").val("");
-							$(".countBig").text(0);
-							$(".countSmall").text(0);
-							alert("등록에 성공하였습니다.");
-						}
-					}
-					
-				});
+					});	
+				}
+				
 			}
 			
-		
 		});
 		
 		//카테고리 대분류 글자수 제한
@@ -159,28 +178,29 @@
 </script>
 
 <div class="outbox">
-
-	<h2>카테고리 추가</h2>
-	
 	<div class="row">
-		
+		<h2>카테고리 추가</h2>
+	</div>
+	<div class="row">
 		<label>대분류</label>
 		<span class="countBig">0</span> / 10
-		<input type="text" class="input category" name="categoryBig" placeholder="대분류를 입력하세요." required>
-				
+	</div>
+	<div class="row">
+		<input type="text" class="input category" name="categoryBig" placeholder="대분류를 입력하세요.">
+	</div>
+	<div class="row">
 		<label>소분류</label>
 		<span class="countSmall">0</span> / 10
-		<input type="text" class="input category" name="categorySmall" placeholder="소분류를 입력하세요." required>
-			
+	</div>
+	<div class="row">
+		<input type="text" class="input category" name="categorySmall" placeholder="소분류를 입력하세요.">
+	</div>
+	<div class="row">
 		<span id="categoryCheck" style="color:red;"></span>
-			
+	</div>	
+	<div class="row">
 		<button type="submit" class="input" id="registBtn">등록하기</button>
 	</div>
-	
-
 </div>
 
-
-
 <jsp:include page="/WEB-INF/views/adminTemplate/footer.jsp"></jsp:include>    
-    

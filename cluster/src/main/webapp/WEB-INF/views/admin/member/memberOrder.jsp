@@ -12,6 +12,47 @@
 		color:black;
 	}
 	
+	.outbox{
+		padding: 0 12rem;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #ffc107;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #ffc107;
+	}
+	.searchBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 25%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	#selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 15%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.date{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 15%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.swTable{
+		/*margin-top: 2rem;*/
+	}
+	#memberOrder{
+		color:#fff;
+	}
+	
 </style>
 
 <script>
@@ -69,6 +110,7 @@
 		});
 		
 		
+		/*
 		//'확인완료' 버튼을 클릭하면 비동기로  해당 주문건의 입금상태 '입금완료'로 변경처리 변경 처리
 		$(".confirmBtn").click(function(){
 			
@@ -101,6 +143,7 @@
 			
 			
 		});
+		*/
 		
 });
 </script>
@@ -128,7 +171,7 @@
 				<input type="date" name="endDate" class="date">
 			</c:if>
 			
-			<select name="type">
+			<select name="type" id="selectBox">
 				<c:if test="${type == 'order_name'}">
 					<option value="order_name" selected>입금자</option>
 					<option value="member_no">회원번호</option>
@@ -144,10 +187,10 @@
 			</select>
 			
 			<c:if test="${key != null && key != ''}">
-				<input type="text" name="key" value="${key}">
+				<input type="text" class="searchBox" name="key" value="${key}">
 			</c:if>
 			<c:if test="${key == null || key == ''}">
-				<input type="text" name="key" placeholder="검색어를 입력하세요.">
+				<input type="text" class="searchBox" name="key" placeholder="검색어를 입력하세요.">
 			</c:if>
 			<input type="submit" id="searchBtn" value="검색">
 			
@@ -167,12 +210,11 @@
 				<th>결제금액</th>
 				<th>주문일</th>
 				<th>상태</th>
-				<th>입금확인</th>
 			</tr>
 			<c:choose>
 				<c:when test="${empty list}">
 					<tr>
-						<td colspan="8">검색결과가 존재하지 않습니다.</td>
+						<td colspan="7">검색결과가 존재하지 않습니다.</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
@@ -183,16 +225,8 @@
 							<td>${adminClassorderVO.memberNo}</td>
 							<td>${adminClassorderVO.orderName}</td>
 							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.orderPrice}"/></td>
-							<td>${adminClassorderVO.orderDate}</td>
+							<td><fmt:formatDate value="${adminClassorderVO.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							<td>${adminClassorderVO.orderOk}</td>
-							<td class="${adminClassorderVO.orderNo}">
-								<c:if test="${adminClassorderVO.orderOk == '입금완료'}">
-									입금확인
-								</c:if>
-								<c:if test="${adminClassorderVO.orderOk == '입금대기'}">
-									<button type="submit" class="confirmBtn">확인완료</button>
-								</c:if>
-							</td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>

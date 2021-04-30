@@ -11,6 +11,61 @@
 	a{
 		color:black;
 	}
+	.outbox{
+		padding: 0 12rem;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #ffc107;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #ffc107;
+	    
+	}
+	
+	.searchBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 30%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.date, #selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	
+	#calcBtn{
+		float: right;
+		margin-bottom: 1rem;
+		margin-top: 1.5rem;
+    	font-size: 15px;
+   		height: 40px;
+   		color: black;
+	    cursor: pointer;
+	}
+	#calcBtn:disabled{
+		float: right;
+		margin-bottom: 1rem;
+		margin-top: 1.5rem;
+    	font-size: 15px;
+   		height: 40px;
+	    background-color: #ccc;
+	    color:grey;
+	    cursor: initial;
+	    border-color: #ccc;
+	}
+	#income{
+		color:#fff;
+	}
+	
+	
 </style>
 
 <script>
@@ -78,51 +133,48 @@
 
 </script>
 
-<div>
-
-	<h2>크리에이터 정산</h2>
+<div class="outbox">
+	<div class="row">
+		<h2>크리에이터 정산</h2>
+	</div>
 	
-	<form action="income" method="get">
-		<c:if test="${date != null}">
-			<input type="date" class="date" name="date" value="${date}">
-		</c:if>
-		<c:if test="${date == null}">
-			<input type="date" class="date" name="date" id="defaultDate">
-		</c:if>
-		
-		<br><br>
-		
-		<select name="type">
-			<c:if test="${type == 'member_nick'}">
-				<option value="member_nick" selected>크리에이터</option>
-				<option value="class_name">클래스</option>
+	<div class="row"> 
+		<form action="income" method="get">
+			<c:if test="${date != null}">
+				<input type="date" class="date" name="date" value="${date}">
 			</c:if>
-			<c:if test="${type == 'class_name'}">
-				<option value="member_nick">크리에이터</option>
-				<option value="class_name" selected>클래스</option>
+			<c:if test="${date == null}">
+				<input type="date" class="date" name="date" id="defaultDate">
 			</c:if>
-			<c:if test="${type == null}">
-				<option value="member_nick">크리에이터</option>
-				<option value="class_name">클래스</option>
+			<select name="type" id="selectBox">
+				<c:if test="${type == 'member_nick'}">
+					<option value="member_nick" selected>크리에이터</option>
+					<option value="class_name">클래스</option>
+				</c:if>
+				<c:if test="${type == 'class_name'}">
+					<option value="member_nick">크리에이터</option>
+					<option value="class_name" selected>클래스</option>
+				</c:if>
+				<c:if test="${type == null}">
+					<option value="member_nick">크리에이터</option>
+					<option value="class_name">클래스</option>
+				</c:if>
+			</select>
+			<c:if test="${key != null}">
+				<input type="text" class="searchBox" name="key" placeholder="검색어를 입력하세요." value="${key}">
 			</c:if>
-			
-		</select>
-		
-		<c:if test="${key != null}">
-			<input type="text" name="key" placeholder="검색어를 입력하세요." value="${key}">
-		</c:if>
-		<c:if test="${key == null}">
-			<input type="text" name="key" placeholder="검색어를 입력하세요.">
-		</c:if>
-		
-		<input type="submit" id="searchBtn" value="검색">
-	</form>
+			<c:if test="${key == null}">
+				<input type="text" class="searchBox" name="key" placeholder="검색어를 입력하세요.">
+			</c:if>
+			<input type="submit" id="searchBtn" value="검색">
+		</form>
+	</div>
 	
 	
-	<button type="submit" id="calcBtn" style="float:right;">정산하기</button>
+	<div class="row">
+		<button type="submit" id="calcBtn">정산하기</button>
+	</div>
 	
-	
-	<br><br>
 	
 	<!-- 정산 관련 화면 -->
 	<div class="row center">
@@ -162,9 +214,6 @@
 			</c:choose>
 		</table>
 	</div>
-	
-	
-	
 </div>
 
 <jsp:include page="/WEB-INF/views/adminTemplate/footer.jsp"></jsp:include>

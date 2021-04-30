@@ -18,9 +18,10 @@ import org.slf4j.LoggerFactory;
 @WebFilter(urlPatterns= "/admin/*")
 public class AdminFilter implements Filter {
 	
-	
 	private static final Logger log = LoggerFactory.getLogger(AdminFilter.class);
-
+	
+	
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -28,33 +29,47 @@ public class AdminFilter implements Filter {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse resp = (HttpServletResponse) response;
 			HttpSession session = req.getSession();
+			
 		
-			
 			//관리자 권한 검사
-			
-			
+				
 			String memberAuth = (String)session.getAttribute("memberAuth");
-			
-			boolean isAdmin = memberAuth != null && memberAuth.equals("관리자");
-			
+				
+			//boolean isAdmin = memberAuth.equals("관리자");
+				
 			//관리자라면 통과
-			if(isAdmin) {
-				
+			if(memberAuth != null && memberAuth.equals("관리자")) {
+					
 				log.info("filter ---- before");
-				
+					
 				chain.doFilter(request, response);
 				
 				log.info("filter ---- after");
-			}
-			
-			//관리자가 아니라면 메인페이지로 강제 리다이렉트
-			else {
+					
+				return;
+			} 
+			//로그인 했지만 관리자가 아니라면 메인페이지로 이동
+			else if(memberAuth != null) {
 				
 				resp.sendRedirect("/");
 				//resp.sendError(403);
 			}
-		
+			//로그인을 안했으면 로그인페이지로 이동
+			else {
+				
+				resp.sendRedirect("/login/");
+			}
+			
+			
+					
+				
+				
+					
+			
+			
 		
 	}
+	
+	
 
 }
