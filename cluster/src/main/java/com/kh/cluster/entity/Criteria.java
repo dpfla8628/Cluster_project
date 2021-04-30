@@ -7,7 +7,16 @@ public class Criteria {
 	private int rowStart;
 	private int rowEnd;
 	private int classNo;
+	private int memberNo;
 	
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
 	public int getClassNo() {
 		return classNo;
 	}
@@ -70,8 +79,10 @@ public class Criteria {
 	@Override
 	public String toString() {
 		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + ", rowStart=" + rowStart + ", rowEnd=" + rowEnd
-				+ ", classNo=" + classNo + "]";
+				+ ", classNo=" + classNo + ", memberNo=" + memberNo + "]";
 	}
+
+ 
 
 	 
 	

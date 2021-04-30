@@ -10,19 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
- import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
- import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
- import com.kh.cluster.entity.ClassQuestion;
+import com.kh.cluster.entity.AuthMemberVO;
+import com.kh.cluster.entity.ClassQuestion;
 import com.kh.cluster.entity.Criteria;
+import com.kh.cluster.entity.MyClassLike;
 import com.kh.cluster.entity.MyMember;
 import com.kh.cluster.entity.OffClassVo;
 import com.kh.cluster.entity.Offclass;
@@ -31,6 +36,7 @@ import com.kh.cluster.entity.Review;
 import com.kh.cluster.repository.AuthRepository;
 import com.kh.cluster.service.ClassDetailService;
 import com.kh.cluster.service.MypageService;
+import com.kh.cluster.service.OffclassQueryService;
 import com.kh.cluster.service.ReviewService;
  
 
@@ -55,6 +61,9 @@ public class ClassDetailController {
 	private MypageService mypageService;
 	AuthRepository repo;
 	
+	@Autowired
+	OffclassQueryService offClassService;
+	
 	@Value("${upload.path}")
 	private String uploadPath;
 
@@ -76,7 +85,7 @@ public class ClassDetailController {
  			
  	}
 	
-	//상세페이지(리뷰 답변 목록,등록,수정)
+	//상세페이지
  	@RequestMapping(value = {"/detail/{classNo}"} ,method=RequestMethod.GET )
 	public ModelAndView detail1(HttpServletRequest req,@PathVariable int classNo, Review review) throws Exception{
 		log.info("detail()");
@@ -87,6 +96,8 @@ public class ClassDetailController {
 		List<Review> classReview = reviewService.reviewList(classNo);
 		int totalReview = reviewService.reviewCount(classNo);
  		int classMemberCount = service.classMemberCount(classNo);
+ 		int likeCount = service.likeCount(classNo);
+ 	 
  		
  		//크리에이터 프로필 이미지
 		int memberNo = offClass.getAuthMember().getMemberNo();
@@ -95,6 +106,16 @@ public class ClassDetailController {
 		//클래스 이미지
 		List<Offclass> readImg = service.readImg(classNo); 
 		
+		//좋아요 조회
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		int memberNo2;
+		if(member !=null) {
+			memberNo2 = member.getMemberNo();
+			MyClassLike like = service.likeForMembers(memberNo2, classNo);
+	 		view.addObject("like",like);
+		}
+ 		
+ 		
     	view.setViewName("class_detail/detail");
 		view.addObject("mymember",mymember);
 		view.addObject("offClass", offClass);
@@ -102,6 +123,7 @@ public class ClassDetailController {
       	view.addObject("readImg", readImg);
       	view.addObject("totalReview",totalReview);
       	view.addObject("classMemberCount",classMemberCount);
+      	view.addObject("likeCount",likeCount);
   		return view;
 		
 	} 
@@ -167,4 +189,5 @@ public class ClassDetailController {
  		return new RedirectView("/class_detail/review/"+classNo);
   	}
 	
+ 
 }

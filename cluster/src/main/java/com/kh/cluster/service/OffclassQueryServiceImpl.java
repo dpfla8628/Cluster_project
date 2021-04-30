@@ -45,6 +45,7 @@ public class OffclassQueryServiceImpl implements OffclassQueryService {
 		// 해당 멤버가 강의를 찜한 클래스번호를 조회한다.
 		if(!CollectionUtils.isEmpty(classNumbers) && memberNo != null) {
 			Set<Integer> likeClasses = repository.likeForMembers(memberNo, classNumbers);
+ 
 			
 			for (OffclassQueryVO vo : offClasses) {
 				if (likeClasses.contains(vo.getClassNo())) {
@@ -80,7 +81,7 @@ public class OffclassQueryServiceImpl implements OffclassQueryService {
 		// 해당 멤버가 강의를 찜한 클래스번호를 조회한다.
 		if(!CollectionUtils.isEmpty(classNumbers) && memberNo != null) {
 			Set<Integer> likeClasses = repository.likeForMembers(memberNo, classNumbers);
-			
+ 			
 			for (OffclassQueryVO vo : offClasses) {
 				if (likeClasses.contains(vo.getClassNo())) {
 					vo.setLiked(true);

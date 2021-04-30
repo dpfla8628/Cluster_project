@@ -90,7 +90,7 @@
               <td>${orderlist.className}</td>
               <td>${orderlist.orderDate}</td>
               <td>
-	   	          <label class="badge badge-warning">입금 대기중...</label>
+	   	          <a href="/class_order/kakaopay/${orderlist.orderNo}"><label class="badge badge-warning">입금 대기중...</label></a>
               </td>
               <td>
 				<form action="/mypage/order_remove" method="get" id="del">
