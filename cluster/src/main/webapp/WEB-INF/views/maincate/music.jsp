@@ -32,10 +32,9 @@
       }
 	    
 	    $(".detail").css("cursor","pointer").on("click", function(){
-	    	alert($(this).attr("classNo") + "값으로 페이지 이동 예정");
+			var classNo = $(this).attr("classNo");
 	    	
-	    	/* to-do
-	    	self.location = "/music?classNo=" + ${classNo}.value; */ 
+	    	self.location = "class_detail/detail/" + classNo; 
 	    	
 	    })
 	    

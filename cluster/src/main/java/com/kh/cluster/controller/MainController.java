@@ -2,6 +2,7 @@ package com.kh.cluster.controller;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,6 @@ public class MainController {
 		Integer memberNo = extractMemberNo(member);
 //		HttpSession session = req.getSession();
 //		Integer memberNo = (Integer) session.getAttribute("no");
-		log.info("memberNo()::{}", memberNo);
 
 		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
 		List<OffclassQueryVO> craftClasses = service.searchByCategory(memberNo, "공예", null, "new");
@@ -74,6 +74,30 @@ public class MainController {
 		model.addAttribute("studyClasses", toSubList(studyClasses, 4));
 
 		return "/index";
+	}
+	
+	@GetMapping("/search")
+	public String search(HttpServletRequest req, Model model, 
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "sort", required = false) String sort) throws Exception {
+
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		Integer memberNo = extractMemberNo(member);
+//		HttpSession session = req.getSession();
+//		Integer memberNo = (Integer) session.getAttribute("no");
+
+		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
+		List<OffclassQueryVO> search = Collections.emptyList();
+		
+		if(keyword != null) {
+			search = service.searchByKeyword(memberNo, keyword, "new");
+		}
+		
+		model.addAttribute("offclasses", toSubList(search, 16));
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("sort", sort);
+
+		return "/search/index";
 	}
 
 	@GetMapping("/displayFile")
