@@ -6,26 +6,56 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
+	article{
+		background-color:#000000;
+	}
 	.mychart1, .mychart2, .mychart3, .mychart4, .table1 {
 		display: inline-block;
+		font-size: 15px;
+		color:#E2E2E2;
 	}
 	.table1 {
-		width: 400px;
-		height: 400px;
-		font-size: 13px;
+		width: 600px;
+		height: 500px;
+		font-size: 15px;
+		color:#E2E2E2;
 	}
+	
+	.outbox > .row{
+		margin-left: 2rem;
+	}
+	.outbox{
+		background-color:#000000;
+		margin:0;
+	}
+	
+	#home{
+		color:#fff;
+	}
+	.dashboard{
+		font-weight:bolder;
+		font-size: 1.8em;
+		margin-left:13.8rem;
+	}
+	
 	
 </style>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 
+
+
+
 <!-- 전체 감싸는 div -->
 <div class="outbox center">
 
+	<div class="dashboard left">
+		<p style="color:#E2E2E2">Dashboard</p>
+	</div>
 	<!-- 총 회원수 그래프 -->
 	<div class="row mychart1">
 	
-		<canvas id="myChart1" width="450" height="400"></canvas>
+		<canvas id="myChart1" width="600" height="500"></canvas>
 		<script>
 			
 			var labels = [];
@@ -50,19 +80,11 @@
 					datasets: [{
 						label: '총 회원 수',
 						data: data,
-						backgroundColor: [
-							'rgba(0, 0, 0, 0)'
-						],
-						borderColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
-						],
-						borderWidth: 3
+						fill: false,
+						borderColor: 'rgba(192, 75, 75, 1)',
+						tension: 0.1
+							
+						
 					}]
 				},
 				options: {
@@ -70,7 +92,7 @@
 						display: true,
 						text: '총 회원 수',
 						fontSize: 20,
-						fontColor: 'black',
+						fontColor: '#E2E2E2',
 						fontStyle: 'bold'
 					},
 					legend: {
@@ -87,8 +109,8 @@
 						onComplete: function () {
 							var chartInstance = this.chart,
 								ctx = chartInstance.ctx;
-							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = 'black';
+							ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = '#E2E2E2';
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'bottom';
 	
@@ -105,7 +127,21 @@
 						yAxes: [{
 							ticks: {
 								beginAtZero: true,
+								fontSize: 14,
+								fontColor: '#E2E2E2'
 								
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 14,
+								fontColor: '#E2E2E2'
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
 							}
 						}]
 					}
@@ -118,7 +154,7 @@
 	<!-- 일별 회원가입 수 -->
 	<div class="row mychart2">
 		
-		<canvas id="myChart2" width="500" height="400"></canvas>
+		<canvas id="myChart2" width="600" height="500"></canvas>
 		
 		<script>
 		
@@ -143,22 +179,22 @@
 						label: '일별 회원가입 수',
 						data: data,
 						backgroundColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'hsl(0, 100%, 35%)'
 						],
 						borderColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'hsl(0, 100%, 35%)'
 						],
 						borderWidth: 3
 					}]
@@ -168,7 +204,7 @@
 						display: true,
 						text: '일별 회원가입 수',
 						fontSize: 20,
-						fontColor: 'black',
+						fontColor: '#E2E2E2',
 						fontStyle: 'bold'
 					},
 					legend: {
@@ -185,8 +221,8 @@
 						onComplete: function () {
 							var chartInstance = this.chart,
 								ctx = chartInstance.ctx;
-							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = 'black';
+							ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = '#E2E2E2';
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'bottom';
 	
@@ -203,7 +239,21 @@
 						yAxes: [{
 							ticks: {
 								beginAtZero: true,
+								fontSize: 14,
+								fontColor: '#E2E2E2'
 								
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 14,
+								fontColor: '#E2E2E2'
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
 							}
 						}]
 					}
@@ -217,7 +267,7 @@
 	<!-- 월매출  그래프-->
 	<div class="row mychart3">
 		
-		<canvas id="myChart3" width="450" height="400"></canvas>
+		<canvas id="myChart3" width="600" height="500"></canvas>
 		
 		<script>
 			
@@ -247,22 +297,22 @@
 						label: '월매출',
 						data: data,
 						backgroundColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'hsl(0, 100%, 35%)'
 						],
 						borderColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'hsl(0, 100%, 35%)'
 						],
 						borderWidth: 3
 					}]
@@ -272,7 +322,7 @@
 						display: true,
 						text: '월매출',
 						fontSize: 20,
-						fontColor: 'black',
+						fontColor: '#E2E2E2',
 						fontStyle: 'bold'
 					},
 					legend: {
@@ -289,8 +339,8 @@
 						onComplete: function () {
 							var chartInstance = this.chart,
 								ctx = chartInstance.ctx;
-							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = 'black';
+							ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = '#E2E2E2';
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'bottom';
 	
@@ -307,7 +357,21 @@
 						yAxes: [{
 							ticks: {
 								beginAtZero: true,
+								fontSize: 14,
+								fontColor: '#E2E2E2'
 								
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 14,
+								fontColor: '#E2E2E2'
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
 							}
 						}]
 					}
@@ -321,7 +385,7 @@
 	
 	<div class="row mychart4">
 		
-		<canvas id="myChart4" width="500" height="400"></canvas>
+		<canvas id="myChart4" width="600" height="500"></canvas>
 		
 		<script>
 			
@@ -348,22 +412,22 @@
 						label: '일매출',
 						data: data,
 						backgroundColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'hsl(0, 100%, 35%)'
 						],
 						borderColor: [
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(0, 0, 255, 1)',
-							'rgba(255, 0, 0, 1)'
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'hsl(0, 100%, 35%)'
 						],
 						borderWidth: 3
 					}]
@@ -373,7 +437,7 @@
 						display: true,
 						text: '일매출',
 						fontSize: 20,
-						fontColor: 'black',
+						fontColor: '#E2E2E2',
 						fontStyle: 'bold'
 					},
 					legend: {
@@ -390,8 +454,8 @@
 						onComplete: function () {
 							var chartInstance = this.chart,
 								ctx = chartInstance.ctx;
-							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = 'black';
+							ctx.font = Chart.helpers.fontString(16, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = '#E2E2E2';
 							ctx.textAlign = 'center';
 							ctx.textBaseline = 'bottom';
 	
@@ -408,7 +472,21 @@
 						yAxes: [{
 							ticks: {
 								beginAtZero: true,
+								fontSize: 14,
+								fontColor: '#E2E2E2'
 								
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 14,
+								fontColor: '#E2E2E2'
+							},
+							gridLines: {
+								color:'rgba(255, 255, 255, 0.5)'
 							}
 						}]
 					}
@@ -423,7 +501,7 @@
 	<!-- 매출액 기준 TOP10 클래스-->
 	
 	<div class="row table1">
-		<h2>총 매출액 기준 Top10 클래스</h2>
+		<h3>총 매출액 기준 Top10 클래스</h3>
 		<span>${serverTime} 기준</span>
 		<table class="swTable">
 				<tr>
@@ -456,7 +534,7 @@
 	<!-- 판매수 기준 TOP10 클래스-->
 	
 	<div class="row table1">
-		<h2>판매 수 기준 Top10 클래스</h2>
+		<h3>판매 수 기준 Top10 클래스</h3>
 		<span>${serverTime} 기준</span>
 		<table class="swTable">
 				<tr>

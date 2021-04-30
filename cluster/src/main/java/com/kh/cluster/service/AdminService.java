@@ -82,6 +82,13 @@ public interface AdminService {
 	public Integer countClassList() throws Exception;
 	//클래스 검수페이지 검색시 목록 개수
 	public Integer countSearchClassList(String type, String key) throws Exception;
+	//클래스 오픈 승인시
+	public void yesClassOpen(int classNo) throws Exception;
+	//클래스 오픈 반려시
+	public void noClassOpen(int classNo) throws Exception;
+	//클래스 오픈 대기시
+	public void waitClassOpen(int classNo) throws Exception;
+	
 	
 	
 	//진행중인 클래스 리스트 가져오기
@@ -120,12 +127,16 @@ public interface AdminService {
 	public AdminClassorderVO getThisMonthSales() throws Exception;
 	//올해 연매출
 	public AdminClassorderVO getYearSales() throws Exception;
+	//올해 전체 월매출
+	public List<AdminClassorderVO> getTotalSales() throws Exception;
 	//검색한 해당 년월에 해당하는 일매출+월매출 가져오기
 	public List<AdminClassorderVO> getSearchSalesList(String yearMonth) throws Exception;
 	//검색한 해당 년월의 월매출
 	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception;
 	//검색시 해당년에 해당하는 연매출
 	public AdminClassorderVO getSearchYearSales(String yearMonth) throws Exception;
+	//검색시 올해 전체 월매출
+	public List<AdminClassorderVO> getTotalSales(String yearMonth) throws Exception;
 	
 	//진행중인 클래스 목록 가져오기(셀렉박스에 넣어주기 위함)
 	public List<Offclass> getOpenClassList() throws Exception;
@@ -135,12 +146,17 @@ public interface AdminService {
 	public AdminClassorderVO getParticularYearSales(Map<String, Object> map) throws Exception;
 	//검색시 해당 클래스의 월매출 
 	public AdminClassorderVO getParticularMonthSales(Map<String, Object> map) throws Exception;
+	//검색시 해당 클래스의 해당년도 전체 월매출
+	public List<AdminClassorderVO> getParticularTotalSales(Map<String, Object> map) throws Exception;
+	
 	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 현재년월의 월매출+일매출
 	public List<AdminClassorderVO> getParticularSales() throws Exception;
 	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 연매출
 	public AdminClassorderVO getParticularYearSales() throws Exception;
 	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 월매출
 	public AdminClassorderVO getParticularMonthSales() throws Exception;
+	//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의 올해 전체 월매출
+	public List<AdminClassorderVO> getParticularTotalSales() throws Exception;
 	
 	
 	
