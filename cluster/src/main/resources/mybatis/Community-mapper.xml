@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.cluster.repository.CommunityRepository">
+
+	<!-- 1:1문의 -->
+	<insert id="qInsert" parameterType="Question">
+		insert into question values(question_seq.nextval, #{memberNo}, #{questionTitle}, #{questionQ}, null, sysdate, '답변 대기')
+	</insert>
+	<update id="qEdit" parameterType="Question">
+		update question set question_q = #{questionQ}, question_ok ='답변 대기'  where question_no=#{questionNo}
+	</update>
+	<update id="aInsert" parameterType="Question">
+		update question set question_a = #{questionA}, question_ok ='답변 완료'  where question_no=#{questionNo}
+	</update>
+	<select id="listCount" resultType="int">
+		select count(*) from question
+ 	</select>
+	<select id="questionListCount" resultType="int">
+		select count(*) from question where member_no = #{memberNo}
+	</select>
+	<select id="questionList" resultType="Question">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from question Q inner join member M on Q.member_no = M.member_no  
+                        where Q.member_no = #{memberNo} order by Q.question_no desc 
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+	<select id="adminQuestionList" resultType="Question">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from question Q inner join member M on Q.member_no = M.member_no  
+                        order by Q.question_no desc 
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+	<select id="read" resultType="Question">
+		select 
+			* 
+		from 
+			question Q 
+			inner join member M on Q.member_no = M.member_no 
+		where question_no= #{questionNo}
+	</select>
+	<delete id="deleteQuestion">
+		delete question where question_no = #{questionNo}
+	</delete>
+	<delete id="deleteA">
+		update question set question_a = null ,question_ok ='답변 대기' where question_no=#{questionNo}
+	</delete>
+	
+	<!-- FAQ -->
+	<insert id="faqInsert">
+		insert into faq values(faq_seq.nextval, #{memberNo}, #{faqTitle},#{faqContent}, sysdate)
+	</insert>
+	<update id="faqEdit">
+		update faq set faq_title = #{faqTitle}, faq_content = #{faqContent} where faq_no = #{faqNo}
+	</update>
+	<delete id="faqDelete">
+		delete faq where faq_no = #{faqNo}
+	</delete>
+	<select id="faqRead" resultType="FAQ">
+		select 
+			* 
+		from 
+			faq F 
+			inner join member M on F.member_no = M.member_no 
+		where faq_no= #{faqNo}
+	</select>
+	<select id="faqList" resultType="FAQ">
+		select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from faq 
+                        order by faq_no desc 
+					) a
+				)
+		where rn between #{start} and #{end}
+	</select>
+	<select id="faqCount" resultType="int">
+		select count(*) from faq
+	</select>
+	
+	<select id="sortList" resultType="Question">
+			select * 
+			from (
+				select rownum rn, a.* 
+					from (
+						select * from question Q inner join member M on Q.member_no = M.member_no  
+                        order by Q.question_ok asc, Q.question_date asc
+					) a
+				)
+		where rn between #{start} and #{end}
+ 	</select>
+</mapper>
