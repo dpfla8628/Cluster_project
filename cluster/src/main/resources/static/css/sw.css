@@ -70,14 +70,14 @@ textarea {
  	padding: 0.5rem;
     text-align: center;
  	border-bottom: 1px solid #444444;
- 	background-color:#fccc5b;
+ 	background-color:#ffc107;
  	color:black;
 } 
 
 .swTable td {
  	padding: 0.5rem;
     text-align: center;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #444444;
 } 
  
 .swTable a{

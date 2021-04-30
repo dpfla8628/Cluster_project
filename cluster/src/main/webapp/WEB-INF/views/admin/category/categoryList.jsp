@@ -13,23 +13,10 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
 	}
-	#searchBtn{
-		margin-left: 0.5rem;
-	    height: 40px;
-	    background: #fccc5b;
-	    color: black;
-	    cursor: pointer;
-	    width: 50pt;
-	    font-size: 15px;
-	    border-color: #fccc5b;
-	}
-	.editBtn, .deleteBtn{
-		cursor: pointer;
-	    width: 50pt;
-	    font-size: 15px;
-	}
+	
+	
 	.searchBox{
 		padding: 0.5rem;
     	height: 40px;
@@ -44,6 +31,24 @@
     	border: 0.5px solid lightgray;
     	font-size: 15px;
     	margin-bottom: 1rem;
+	}
+	.editBtn, .deleteBtn{
+		cursor: pointer;
+	    width: 50pt;
+	    font-size: 14px;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #ffc107;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #ffc107;
+	}
+	#categoryList{
+		color:#fff;
 	}
 </style>
 

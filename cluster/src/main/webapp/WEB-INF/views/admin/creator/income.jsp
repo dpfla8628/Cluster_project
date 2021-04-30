@@ -12,17 +12,17 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
 	}
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;
-	    background: #fccc5b;
+	    background: #ffc107;
 	    color: black;
 	    cursor: pointer;
 	    width: 50pt;
 	    font-size: 15px;
-	    border-color: #fccc5b;
+	    border-color: #ffc107;
 	    
 	}
 	
@@ -60,6 +60,9 @@
 	    color:grey;
 	    cursor: initial;
 	    border-color: #ccc;
+	}
+	#income{
+		color:#fff;
 	}
 	
 	

@@ -12,17 +12,17 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
 	}
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;
-	    background: #fccc5b;
+	    background: #ffc107;
 	    color: black;
 	    cursor: pointer;
 	    width: 50pt;
 	    font-size: 15px;
-	    border-color: #fccc5b;
+	    border-color: #ffc107;
 	}
 	.searchBox{
 		padding: 0.5rem;
@@ -41,6 +41,13 @@
 	.swTable{
 		margin-top: 2rem;
 	}
+	.memberPage{
+		cursor:pointer;
+		text-decoration:underline;
+	}
+	#memberList{
+		color:#fff;
+	}
 </style>
 
 
@@ -48,6 +55,7 @@
 	
 	$(function(){
 		
+		$("#memberMenu").next("ul").slideDown();
 		
 		//검색버튼 클릭시 
 		$("#searchBtn").click(function(){
@@ -69,6 +77,20 @@
 				return false;
 			}
 		});	
+		
+		//회원 정보 조회 마이페이지 이동
+		$(".memberPage").click(function(){
+			var memberNo = $(this).parent().parent().find(".memberNo").text();
+			
+			var popupWidth = 600;
+			var popupHeight = 600;
+			var popupX = (window.screen.width / 2) - (popupWidth / 2);
+			var popupY = (window.screen.height / 2) - (popupHeight / 2);
+			window.open("/mypage/index?member_no="+memberNo, "회원 마이페이지", 
+					"width="+popupWidth+", height="+popupHeight+", left="+popupX+", top="+popupY);
+			
+			
+		});
 
 });
 	
@@ -131,7 +153,7 @@
 				<c:otherwise>
 					<c:forEach items="${list}" var="adminMemberVO">
 						<tr>
-							<td>${adminMemberVO.memberNo}</td>
+							<td class="memberNo">${adminMemberVO.memberNo}</td>
 							<td>${adminMemberVO.memberId}</td>
 							<td>${adminMemberVO.memberNick}</td>
 							<td>${adminMemberVO.memberAuth}</td>
@@ -140,12 +162,12 @@
 									${adminMemberVO.orderCount}건
 								</c:if>
 								<c:if test="${adminMemberVO.orderCount != 0}">
-									<a href="/admin/member/memberOrder?startDate=&endDate=&type=member_no&key=${adminMemberVO.memberNo}">
+									<a style="color:red;" href="/admin/member/memberOrder?startDate=&endDate=&type=member_no&key=${adminMemberVO.memberNo}">
 										${adminMemberVO.orderCount}건
 									</a>
 								</c:if>
 							</td>
-							<td><a href="#">조회</a></td>
+							<td><label class="memberPage">조회</label></td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>

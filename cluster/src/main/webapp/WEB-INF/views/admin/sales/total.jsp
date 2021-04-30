@@ -10,17 +10,17 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
 	}
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;
-	    background: #fccc5b;
+	    background: #ffc107;
 	    color: black;
 	    cursor: pointer;
 	    width: 50pt;
 	    font-size: 15px;
-	    border-color: #fccc5b;
+	    border-color: #ffc107;
 	}
 	.yearMonth{
 		padding: 0.5rem;
@@ -31,17 +31,23 @@
 	}
 	.salesTable{
 		border-collapse: collapse;
-		margin-bottom: 1.5rem;
+		/*margin-bottom: 1.5rem;*/
+		margin-top: 1.5rem;
 		width: 40%;
 	}
 	.salesTable th, .salesTable td {
 		text-align: center;
 	}
 	.swTable{
-		margin-top: 1.5rem;
+		/*margin-top: 1.5rem;*/
+	}
+	#total{
+		color:#fff;
 	}
 	
 </style>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 
 <script>
 	$(function(){
@@ -82,7 +88,133 @@
 	<div class="row">
 		<h2>전체 매출현황</h2>
 	</div>
+	<!-- 매출이 있을때만 차트를 그려라 -->
+	<c:if test="${not empty totalSales}">
 	<div class="row">
+		<canvas id="myChart" width="800" height="300"></canvas>
+		<script>
+		
+			var labels = [];
+			var data = [];
+			
+			<c:forEach items="${totalSales}" var="adminClassorderVO">
+				labels.push("${adminClassorderVO.yearMonth}");
+				data.push(${adminClassorderVO.salesForMonth});
+			</c:forEach>
+			
+			
+			var ctx = document.getElementById('myChart');
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: labels,
+					datasets: [{
+						label: '전체매출현황',
+						data: data,
+						backgroundColor: [
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D'
+							
+						],
+						borderColor: [
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D'
+						],
+						borderWidth: 3
+					}]
+				},
+				options: {
+					title: {
+						display: true
+					},
+					legend: {
+						display: false
+					},
+					responsive: false,
+					tooltips: {
+						enabled: true
+					},
+					hover: {
+						animationDuration: 0
+					},
+					animation: {
+						onComplete: function () {
+							var chartInstance = this.chart,
+								ctx = chartInstance.ctx;
+							ctx.font = Chart.helpers.fontString(14, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = 'black';
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+	
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = '￦'+ dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");							
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+						}
+					},
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: true,
+								callback: function(value) {
+									if(0 === value % 1) {
+										return value;
+									}		
+								},
+								fontSize: 12
+								
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 12
+							}
+						}]
+					}
+				}
+				
+			});	
+		</script>
+	</div>
+	</c:if>	
+	
+	<div class="row">
+		<form action="total" method="get">
+			<c:if test="${yearMonth != null}">
+				<input type="month" class="yearMonth" name="yearMonth" value="${yearMonth}">
+			</c:if>
+			<c:if test="${yearMonth == null}">
+				<input type="month" class="yearMonth" id="defaultYearMonth" name="yearMonth">
+			</c:if>
+			
+			<input type="submit" id="searchBtn" value="검색">
+		</form>
+	</div>
+	
+	<div class="row center">
 		<table class="salesTable" border="1">
 			<thead>
 				<tr>
@@ -109,22 +241,6 @@
 				</tr>
 			</tbody>
 		</table>
-	</div>
-	
-	<div class="row">
-		<form action="total" method="get">
-			<c:if test="${yearMonth != null}">
-				<input type="month" class="yearMonth" name="yearMonth" value="${yearMonth}">
-			</c:if>
-			<c:if test="${yearMonth == null}">
-				<input type="month" class="yearMonth" id="defaultYearMonth" name="yearMonth">
-			</c:if>
-			
-			<input type="submit" id="searchBtn" value="검색">
-		</form>
-	</div>
-	
-	<div class="row center">
 		<table class="swTable">
 			<tr>
 				<th>날짜</th>

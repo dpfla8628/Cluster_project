@@ -14,22 +14,25 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 21rem;
+		margin: 0rem 10rem 0 10rem;
 	}
 	.input{
-		width:50%;
 		margin-bottom:1rem;
    		height:50px;
     	font-size:18px;
+    	border:none;
 	}
 	#registBtn{
 		cursor:pointer;
-		background-color:#fccc5b;
-		border-color: #fccc5b;
+		background-color:#ffc107;
+		border-color: #ffc107;
 	}
-	.label{
-		width:60%;
+	
+	#addCategory{
+		color:#fff;
 	}
+	
 </style>
 
 
@@ -174,25 +177,25 @@
 
 </script>
 
-<div class="outbox center">
+<div class="outbox">
 	<div class="row">
 		<h2>카테고리 추가</h2>
 	</div>
-	<div class="row label">
+	<div class="row">
 		<label>대분류</label>
 		<span class="countBig">0</span> / 10
 	</div>
 	<div class="row">
 		<input type="text" class="input category" name="categoryBig" placeholder="대분류를 입력하세요.">
 	</div>
-	<div class="row label">
+	<div class="row">
 		<label>소분류</label>
 		<span class="countSmall">0</span> / 10
 	</div>
 	<div class="row">
 		<input type="text" class="input category" name="categorySmall" placeholder="소분류를 입력하세요.">
 	</div>
-	<div class="row label" style="margin-left:4.5rem;">
+	<div class="row">
 		<span id="categoryCheck" style="color:red;"></span>
 	</div>	
 	<div class="row">

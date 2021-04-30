@@ -11,17 +11,24 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
 	}
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;
-	    background: #fccc5b;
+	    background: #ffc107;
 	    color: black;
 	    cursor: pointer;
 	    width: 50pt;
 	    font-size: 15px;
-	    border-color: #fccc5b;
+	    border-color: #ffc107;
+	}
+	#selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
 	}
 	.yearMonth{
 		padding: 0.5rem;
@@ -32,7 +39,8 @@
 	}
 	.salesTable{
 		border-collapse: collapse;
-		margin-bottom: 1.5rem;
+		/*margin-bottom: 1.5rem;*/
+		margin-top: 1.5rem;
 		width: 40%;
 	}
 	.salesTable th, .salesTable td {
@@ -40,9 +48,14 @@
 	}
 	
 	.swTable{
-		margin-top: 1.5rem;
+		/*margin-top: 1.5rem;*/
+	}
+	#particular{
+		color:#fff;
 	}
 </style>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 
 <script>
 	
@@ -85,34 +98,119 @@
 		<h2>클래스별 매출현황</h2>
 	</div>
 	
+	
+	<!-- 매출이 있을때만 차트를 그려라 -->
+	<c:if test="${not empty totalSales}">
 	<div class="row">
-		<table class="salesTable" border="1">
-			<thead>
-				<tr>
-					<th width="50%"><span id="year">${yearSales.year}</span>년 매출액</th>
-					<th width="50%"><span id="yearMonth">${monthSales.yearMonth}</span>월 매출액</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<c:if test="${yearSales.yearsales != null}">
-						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${yearSales.yearsales}"/></td>
-					</c:if>
-					
-					<c:if test="${yearSales.yearsales == null}">
-						<td>￦0</td>
-					</c:if>
-					
-					<c:if test="${monthSales.salesForMonth != null}">
-						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${monthSales.salesForMonth}"/></td>
-					</c:if>
-					<c:if test="${monthSales.salesForMonth == null}">
-						<td>￦0</td>
-					</c:if>
-				</tr>
-			</tbody>
-		</table>
+		<canvas id="myChart" width="800" height="300"></canvas>
+		<script>
+		
+			var labels = [];
+			var data = [];
+			
+			<c:forEach items="${totalSales}" var="adminClassorderVO">
+				labels.push("${adminClassorderVO.yearMonth}");
+				data.push(${adminClassorderVO.salesForMonth});
+			</c:forEach>
+			
+			
+			var ctx = document.getElementById('myChart');
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: labels,
+					datasets: [{
+						label: '전체매출현황',
+						data: data,
+						backgroundColor: [
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D'
+							
+						],
+						borderColor: [
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D'
+						],
+						borderWidth: 3
+					}]
+				},
+				options: {
+					title: {
+						display: true
+					},
+					legend: {
+						display: false
+					},
+					responsive: false,
+					tooltips: {
+						enabled: true
+					},
+					hover: {
+						animationDuration: 0
+					},
+					animation: {
+						onComplete: function () {
+							var chartInstance = this.chart,
+								ctx = chartInstance.ctx;
+							ctx.font = Chart.helpers.fontString(14, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = 'black';
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+	
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = '￦'+ dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");							
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+						}
+					},
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: true,
+								callback: function(value) {
+									if(0 === value % 1) {
+										return value;
+									}		
+								},
+								fontSize: 12
+								
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 12
+							}
+						}]
+					}
+				}
+				
+			});	
+		</script>
 	</div>
+	</c:if>
 	
 	<div class="row">
 		<form action="particular" method="get">
@@ -141,7 +239,35 @@
 		</form>
 	</div>
 	
+	
 	<div class="row center">
+		<table class="salesTable" border="1">
+			<thead>
+				<tr>
+					<th width="50%"><span id="year">${yearSales.year}</span>년 매출액</th>
+					<th width="50%"><span id="yearMonth">${monthSales.yearMonth}</span>월 매출액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<c:if test="${yearSales.yearsales != null}">
+						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${yearSales.yearsales}"/></td>
+					</c:if>
+					
+					<c:if test="${yearSales.yearsales == null}">
+						<td>￦0</td>
+					</c:if>
+					
+					<c:if test="${monthSales.salesForMonth != null}">
+						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${monthSales.salesForMonth}"/></td>
+					</c:if>
+					<c:if test="${monthSales.salesForMonth == null}">
+						<td>￦0</td>
+					</c:if>
+				</tr>
+			</tbody>
+		</table>
+		
 		<table class="swTable">
 			<thead>
 				<tr>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
     
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
@@ -10,17 +10,17 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
 	}
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;
-	    background: #fccc5b;
+	    background: #ffc107;
 	    color: black;
 	    cursor: pointer;
 	    width: 50pt;
 	    font-size: 15px;
-	    border-color: #fccc5b;
+	    border-color: #ffc107;
 	}
 	.searchBox{
 		padding: 0.5rem;
@@ -36,6 +36,16 @@
     	border: 0.5px solid lightgray;
     	font-size: 15px;
 	}
+	.classDetail{
+		cursor:pointer;
+	}
+	#openClass{
+		color:#fff;
+	}
+	.swTable{
+		margin-top: 1.5rem;
+	}
+	
 </style>
 
 <script>
@@ -56,9 +66,22 @@
 			}
 		});
 		
+		//클래스 이미지 영역 클릭시 새창으로 클래스 상세페이지 열기
+		$(".classDetail").click(function(){
+			
+			var classNo = $(this).parent().prev().text();
+			var popupWidth = 600;
+			var popupHeight = 600;
+			var popupX = (window.screen.width / 2) - (popupWidth / 2);
+			var popupY = (window.screen.height / 2) - (popupHeight / 2);
+			
+			window.open("/class_detail/detail/"+classNo, "강의번호 "+classNo+" 상세페이지", 
+					"width="+popupWidth+", height="+popupHeight+", left="+popupX+", top="+popupY);
+			
+		});
+		
 	});
 </script>
-
 
 <div class="outbox">
 	<div class="row">
@@ -90,17 +113,11 @@
 		</form>
 	</div>
 	
-	<select style=float:right;>
-		<option>최신순</option>
-		<option>판매순</option>
-		<option>오래된순</option>
-	</select>
-	
 	<div class="row center">
 		<table class="swTable">
 		<tr>
 			<th>No.</th>
-			<th>클래스명</th>
+			<th>클래스</th>
 			<th>크리에이터</th>
 			<th>오픈일</th>
 			<th>종료일</th>
@@ -116,7 +133,14 @@
 				<c:forEach items="${list}" var="adminOffclassVO">
 					<tr>
 						<td>${adminOffclassVO.classNo}</td>
-						<td>${adminOffclassVO.className}</td>
+						<td>
+							<div class="classDetail">
+								<img src="/admin/class/displayFile?fileName=${adminOffclassVO.fullname}" width="100" height="100">
+							</div>
+							<div class="classDetail">
+								${adminOffclassVO.className}
+							</div>
+						</td>
 						<td>${adminOffclassVO.memberNick}</td>
 						<td>${adminOffclassVO.classStart}</td>
 						<td>${adminOffclassVO.classEnd}</td>

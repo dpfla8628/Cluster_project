@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,7 +54,7 @@ public class MypageController {
 	   HttpSession session;
 	   
 	   @GetMapping("/index")
-	   public String index(HttpServletRequest req, Model model, MyClassLike like) throws Exception {
+	   public String index(HttpServletRequest req, Model model, MyClassLike like, @RequestParam(value="member_no", required=false)String member_no) throws Exception {
 	      log.info("index()");
 	      
 	      AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
@@ -61,13 +62,28 @@ public class MypageController {
 	      //session = req.getSession();
 	      //int memberNo = (int) session.getAttribute("no");
 	      
-	      log.info("creator = " + service.setcreator(memberNo));
-	      MyMember mymember = service.read(memberNo);
-	      model.addAttribute("mymember",mymember);
-	      model.addAttribute("likeList",service.classlike(memberNo));
-	      model.addAttribute("ordercount",service.count(mymember));
-	      model.addAttribute("couponcount", service.couponcount(memberNo));
-	      model.addAttribute("Creator", service.setcreator(memberNo));
+	      boolean isAdmin = member.getMemberAuth().equals("관리자");
+	      
+	      if(member_no != null && isAdmin) {
+	    	  int memNo = Integer.parseInt(member_no);
+	    	  MyMember mymember = service.read(memNo);
+		      model.addAttribute("mymember",mymember);
+		      model.addAttribute("likeList",service.classlike(memNo));
+		      model.addAttribute("ordercount",service.count(mymember));
+		      model.addAttribute("couponcount", service.couponcount(memNo));
+		      model.addAttribute("Creator", service.setcreator(memNo));
+	      }
+	      else {
+	    	  log.info("creator = " + service.setcreator(memberNo));
+		      MyMember mymember = service.read(memberNo);
+		      model.addAttribute("mymember",mymember);
+		      model.addAttribute("likeList",service.classlike(memberNo));
+		      model.addAttribute("ordercount",service.count(mymember));
+		      model.addAttribute("couponcount", service.couponcount(memberNo));
+		      model.addAttribute("Creator", service.setcreator(memberNo));
+	      }
+	      
+	      
 	      return "/mypage/index";
 	   }
 	   

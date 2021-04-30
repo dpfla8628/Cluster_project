@@ -8,15 +8,13 @@
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;
-	    background: #fccc5b;
+	    background: #ffc107;
 	    color: black;
 	    cursor: pointer;
 	    width: 50pt;
 	    font-size: 15px;
-	    border-color: #fccc5b;
-	    
+	    border-color: #ffc107; 
 	}
-	
 	.searchBox{
 		width:100%;
 		padding: 0.5rem;
@@ -26,7 +24,14 @@
     	font-size: 15px;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 12rem;
+	}
+	.creatorPage{
+		cursor:pointer;
+		text-decoration:underline;
+	}
+	#creatorList{
+		color:#fff;
 	}
 	
 </style>
@@ -36,6 +41,8 @@
 	$(function(){
 		
 		$("#creatorMenu").next("ul").slideDown();
+		
+	
 		
 		
 		//검색버튼 클릭시 값이 key값이 없으면 전송x
@@ -49,6 +56,21 @@
 				return false;
 			}
 		});
+		
+		//크리에이터 페이지 이동
+		$(".creatorPage").click(function(){
+			
+			var creatorNo = $(this).parent().parent().find(".creatorNo").text(); 
+			
+			var popupWidth = 600;
+			var popupHeight = 600;
+			var popupX = (window.screen.width / 2) - (popupWidth / 2);
+			var popupY = (window.screen.height / 2) - (popupHeight / 2);
+			window.open("/creator/home?creNo="+creatorNo, "크리에이터 페이지", 
+					"width="+popupWidth+", height="+popupHeight+", left="+popupX+", top="+popupY);
+		
+		});
+
 		
 	});
 
@@ -95,14 +117,14 @@
 				<c:otherwise>
 					<c:forEach items="${list}" var="adminCreatorVO">
 						<tr>
-							<td>${adminCreatorVO.creatorNo}</td>
+							<td class="creatorNo">${adminCreatorVO.creatorNo}</td>
 							<td>${adminCreatorVO.creatorNick}</td>
 							<td>
 								<c:if test="${adminCreatorVO.countIng == 0}">
 									${adminCreatorVO.countIng}건
 								</c:if>
 								<c:if test="${adminCreatorVO.countIng != 0}">
-									<a href="/admin/class/openClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
+									<a style="color:red;" href="/admin/class/openClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
 										${adminCreatorVO.countIng}건
 									</a>
 								</c:if>
@@ -112,7 +134,7 @@
 									${adminCreatorVO.countComingSoon}건
 								</c:if>
 								<c:if test="${adminCreatorVO.countComingSoon != 0}">
-									<a href="/admin/class/comingSoonClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
+									<a style="color:red;" href="/admin/class/comingSoonClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
 										${adminCreatorVO.countComingSoon}건
 									</a>
 								</c:if>
@@ -122,12 +144,12 @@
 									${adminCreatorVO.countEnd}건
 								</c:if>
 								<c:if test="${adminCreatorVO.countEnd != 0}">
-									<a href="/admin/class/closedClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
+									<a style="color:red;" href="/admin/class/closedClass?type=member_nick&key=${adminCreatorVO.creatorNick}">
 										${adminCreatorVO.countEnd}건
 									</a>
 								</c:if>	
 							</td>
-							<td><a href="#">조회</a></td>
+							<td><label class="creatorPage">조회</label></td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>

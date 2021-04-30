@@ -12,18 +12,21 @@
 		color:black;
 	}
 	.outbox{
-		width:1200px;
+		padding: 0 21rem;
+		margin: 0rem 10rem 0 10rem;
 	}
 	.input{
-		width:50%;
 		margin-bottom:1rem;
    		height:50px;
-    	font-size:15px;
+    	font-size:18px;
 	}
 	#editBtn{
 		cursor:pointer;
-		background-color:#fccc5b;
-		border-color: #fccc5b;
+		background-color:#ffc107;
+		border-color: #ffc107;
+	}
+	#edit{
+		color:#fff;
 	}
 </style>
 
@@ -54,7 +57,7 @@
 
 </script>
 
-<div class="outbox center">
+<div class="outbox">
 	<div class="row">
 		<h2>카테고리 수정</h2>
 	</div>

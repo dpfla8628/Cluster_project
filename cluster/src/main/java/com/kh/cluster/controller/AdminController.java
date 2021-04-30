@@ -1,5 +1,7 @@
 package com.kh.cluster.controller;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,9 +10,15 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.service.AdminService;
 import com.kh.cluster.util.DateUtil;
+import com.kh.cluster.util.MediaUtils;
 import com.kh.cluster.util.PagingUtil;
 
 @Controller
@@ -33,8 +42,8 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
-//	@Value("${upload.path}")
-//	private String uploadPath;
+	@Value("${upload.path}")
+	private String uploadPath;
 	
 	@GetMapping("/home")
 	public String adminHome(HttpServletRequest req, Locale locale, Model model) throws Exception {
@@ -191,17 +200,27 @@ public class AdminController {
 		return "admin/class/checkClassOpen";
 	}
 	
-	@GetMapping("/class/checkClassOpenDetail")
-	public String checkClassOpenDetail(@RequestParam(value="classNo", required = true) int classNo, Model model) {
+	@PostMapping("/class/checkClassOpen")
+	@ResponseBody
+	public int postCheckClassOpen(@RequestParam(value="classNo", required = true) int classNo, @RequestParam(value="classCheck", required=true) String classCheck, Model model) throws Exception {
 		
-		log.info("checkClassOpenDetail()");
+		log.info("postCheckClassOpen()");
 		
-		//파라미터로 classNo 받아서 검수 클래스 상세페이지보여주기
-		model.addAttribute("classNo",classNo);
+		//승인시
+		if(classCheck.equals("승인")) {
+			service.yesClassOpen(classNo);
+		}
+		//반려시
+		else if(classCheck.equals("반려")) {
+			service.noClassOpen(classNo);
+		}
+		//대기시
+		else {
+			service.waitClassOpen(classNo);
+		}
 		
-		model.addAttribute("list");
 		
-		return "admin/class/checkClassOpenDetail";
+		return classNo;
 	}
 	
 	@GetMapping("/class/openClass")
@@ -263,6 +282,52 @@ public class AdminController {
 		
 	}
 	
+	@GetMapping("/class/displayFile")
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
+		
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		
+		//DB에 파일 이름 앞에 'me=' 붙은거 때문에 해줘야함 
+		fileName = fileName.substring(fileName.indexOf("=") + 1);
+		log.info("파일명 : " + fileName);
+		
+		try {
+			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+			
+			MediaType mediaType = MediaUtils.getMediaType(formatName);
+			
+			HttpHeaders headers = new HttpHeaders();
+
+			in = new FileInputStream(uploadPath + fileName);
+			
+			if(mediaType != null) {
+				headers.setContentType(mediaType);
+			}
+			else {
+				fileName = fileName.substring(fileName.indexOf("_") + 1);
+				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				headers.add("Content-Disposition", "attachment; filename=\"" +
+							new String(fileName.getBytes("UTF-8"),
+							"ISO-8859-1") + "\"");
+			}
+			
+			entity = new ResponseEntity<byte[]>(
+					IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+		
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		}
+		finally {
+			in.close();
+		}
+		
+		return entity;
+		
+	}
+	
 	
 	@GetMapping("/member/memberList")
 	public String memberList(@RequestParam(value="p", required=false) Integer p, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
@@ -286,41 +351,41 @@ public class AdminController {
 		
 	}
 	
-//	@GetMapping("/member/memberOrder")
-//	public String memberOrder(
-//			@RequestParam(value="p", required=false) Integer p,
-//			@RequestParam(value="type", required=false) String type,
-//			@RequestParam(value="key", required=false) String key,
-//			@RequestParam(value="startDate", required=false) String startDate,
-//			@RequestParam(value="endDate", required=false) String endDate,
-//			Model model) throws Exception {
-//		
-//		log.info("memberOrder()");
-//		
-//		Map<String, Object> map = PagingUtil.getPaging(p, type, key, startDate, endDate, 15, 5, "memberOrder");
-//		
-//		model.addAttribute("list", map.get("adminClassorderList"));
-//		model.addAttribute("startNum", map.get("startNum"));
-//		model.addAttribute("endNum", map.get("endNum"));
-//		model.addAttribute("pageSize", map.get("pageSize"));
-//		model.addAttribute("p", map.get("p"));
-//		model.addAttribute("type", map.get("type"));
-//		model.addAttribute("key", map.get("key"));
-//		model.addAttribute("startDate", map.get("startDate"));
-//		model.addAttribute("endDate", map.get("endDate"));
-//		model.addAttribute("isSearch", map.get("isSearch"));
-//		
-//		return "admin/member/memberOrder";
-//	}
-//	
-//	@GetMapping("/member/confirmPayment")
-//	public ResponseEntity<Integer> confirmPayment(@RequestParam(value="orderNo", required=true) int orderNo) throws Exception {
-//		
-//		service.confirmPayment(orderNo);
-//		
-//		return new ResponseEntity<Integer>(orderNo, HttpStatus.OK);
-//		
-//	}
+	@GetMapping("/member/memberOrder")
+	public String memberOrder(
+			@RequestParam(value="p", required=false) Integer p,
+			@RequestParam(value="type", required=false) String type,
+			@RequestParam(value="key", required=false) String key,
+			@RequestParam(value="startDate", required=false) String startDate,
+			@RequestParam(value="endDate", required=false) String endDate,
+			Model model) throws Exception {
+		
+		log.info("memberOrder()");
+		
+		Map<String, Object> map = PagingUtil.getPaging(p, type, key, startDate, endDate, 15, 5, "memberOrder");
+		
+		model.addAttribute("list", map.get("adminClassorderList"));
+		model.addAttribute("startNum", map.get("startNum"));
+		model.addAttribute("endNum", map.get("endNum"));
+		model.addAttribute("pageSize", map.get("pageSize"));
+		model.addAttribute("p", map.get("p"));
+		model.addAttribute("type", map.get("type"));
+		model.addAttribute("key", map.get("key"));
+		model.addAttribute("startDate", map.get("startDate"));
+		model.addAttribute("endDate", map.get("endDate"));
+		model.addAttribute("isSearch", map.get("isSearch"));
+		
+		return "admin/member/memberOrder";
+	}
+	
+	@GetMapping("/member/confirmPayment")
+	public ResponseEntity<Integer> confirmPayment(@RequestParam(value="orderNo", required=true) int orderNo) throws Exception {
+		
+		service.confirmPayment(orderNo);
+		
+		return new ResponseEntity<Integer>(orderNo, HttpStatus.OK);
+		
+	}
 	
 	@GetMapping("/sales/total")
 	public String total(@RequestParam(value="yearMonth", required=false) String yearMonth, Model model) throws Exception {
@@ -339,6 +404,8 @@ public class AdminController {
 			model.addAttribute("yearSales", service.getSearchYearSales(yearMonth));
 			//검색시 해당년월의 일매출+월매출
 			model.addAttribute("list", service.getSearchSalesList(yearMonth));
+			//검색시 올해 전체 월매출
+			model.addAttribute("totalSales", service.getTotalSales(yearMonth));
 			
 		}
 		
@@ -349,9 +416,10 @@ public class AdminController {
 			model.addAttribute("yearSales", service.getYearSales());
 			//검색이 아닐때 올해 이번달 일매출+월매출
 			model.addAttribute("list", service.getSalesList());
+			//검색이 아닐때 올해 전체 월매출
+			model.addAttribute("totalSales", service.getTotalSales());
 			
 		}
-		
 		
 		
 		return "admin/sales/total";
@@ -379,6 +447,8 @@ public class AdminController {
 			model.addAttribute("yearSales", service.getParticularYearSales(map));
 			//검색시 해당 클래스의 월매출 
 			model.addAttribute("monthSales", service.getParticularMonthSales(map));
+			//검색시 해당 클래스의 해당년도 전체 월매출
+			model.addAttribute("totalSales", service.getParticularTotalSales(map));
 		}
 		else {
 			//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 현재년월의 월매출+일매출
@@ -387,6 +457,8 @@ public class AdminController {
 			model.addAttribute("yearSales", service.getParticularYearSales());
 			//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의의 올해 월매출
 			model.addAttribute("monthSales", service.getParticularMonthSales());
+			//검색이 아닐때(맨처음 페이지 들어올시) 셀렉박스의 첫번째 강의 올해 전체 월매출
+			model.addAttribute("totalSales", service.getParticularTotalSales());
 		}
 		
 		
@@ -463,77 +535,6 @@ public class AdminController {
 	}
 	
 	
-//	@GetMapping("/event/registerEvent")
-//	public String registerEventForm() throws Exception {
-//		
-//		log.info("registerEventForm()");
-//		
-//		return "admin/event/registerEvent";
-//		
-//	}
-//	@PostMapping("/event/registerEvent")
-//	public String RegisterEvent() throws Exception {
-//		
-//		//*TODO
-//		
-//		return "admin/event/registerEvent";
-//		
-//	}
-	
-//	@PostMapping(value = "uploadEventImage", produces = "text/plain; charset=UTF-8")
-//	public ResponseEntity<String> uploadEventImage(MultipartFile file) throws Exception {
-//		
-//		log.info("원본 파일명 : " + file.getOriginalFilename());
-//		
-//		String savedName = UploadFileUtils.uploadFile(
-//				uploadPath, file.getOriginalFilename(), file.getBytes());
-//		
-//		return new ResponseEntity<String>(savedName, HttpStatus.CREATED);
-//	
-//	}
-//	
-//	@GetMapping("/displayFile")
-//	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception {
-//		
-//		InputStream in = null;
-//		ResponseEntity<byte[]> entity = null;
-//		
-//		log.info("파일명 : " + fileName);
-//		
-//		try {
-//			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-//			
-//			MediaType mediaType = MediaUtils.getMediaType(formatName);
-//			
-//			HttpHeaders headers = new HttpHeaders();
-//
-//			in = new FileInputStream(uploadPath + fileName);
-//			
-//			if(mediaType != null) {
-//				headers.setContentType(mediaType);
-//			}
-//			else {
-//				fileName = fileName.substring(fileName.indexOf("_") + 1);
-//				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-//				headers.add("Content-Disposition", "attachment; filename=\"" +
-//							new String(fileName.getBytes("UTF-8"),
-//							"ISO-8859-1") + "\"");
-//			}
-//			
-//			entity = new ResponseEntity<byte[]>(
-//					IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
-//		
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-//		}
-//		finally {
-//			in.close();
-//		}
-//		
-//		return entity;
-//	}
 	
 	@GetMapping("/category/categoryList")
 	public String categoryList(@RequestParam(value="p", required=false) Integer p, @RequestParam(value="type", required=false) String type, @RequestParam(value="key", required=false) String key, Model model) throws Exception {
