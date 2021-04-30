@@ -62,17 +62,39 @@ public class CreatorController {
 	// 크리에이터 페이지 메인
 	@GetMapping("/home")
 	//@Permission(authority = MemberAuth.강사)
-	public void home(HttpServletRequest req, Creator creator, Locale locale, Model model) throws Exception{
+	public String home(HttpServletRequest req, Creator creator, Locale locale, Model model//) throws Exception{
+						,@RequestParam(value="creNo", required = false)String creNo) throws Exception{
 		log.info("creator home()");
 		
-		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
-		int memberNo = member.getMemberNo();
+		//관리자 접속 시 - 크리에이터 정보 조회용
+		session = req.getSession();
+	    String Auth = (String) session.getAttribute("memberAuth");
+	    log.info("Auth ::{}", Auth);
+		int creatorNo = 0;
+
+		// 크리에이터 접속 시
+		if((Auth == null || Auth.equals("강사")) && creNo == null){
+			AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+			int memberNo = member.getMemberNo();
+			
+			//멤버 정보 전달
+			creator = service.setcreator(memberNo);
+			model.addAttribute("Creator", creator);
+			creatorNo = creator.getCreatorNo();
+		}
+		// 세션 끊어졌을 시
+		else if(Auth == null && creNo != null) {
+			return "redirect:/login/";
+		}
+		// 관리자 접속 시
+		else if(creNo != null && Auth.equals("관리자")) {
+			creatorNo = Integer.parseInt(creNo);
+		}
+		// 일반 접속 시 
+		else {
+			return "redirect:/";
+		}
 		
-		//멤버 정보 전달
-		creator = service.setcreator(memberNo);
-		model.addAttribute("Creator", creator);
-		int creatorNo = creator.getCreatorNo();
-							
 		//현재 날짜
 		Date date = new Date();
 		
@@ -95,6 +117,8 @@ public class CreatorController {
 		model.addAttribute("TotalAnswer", service.countAnswer(creatorNo));
 		//매출Top10 강의 정보 전달
 		model.addAttribute("TopTenClass", adminService.getTop10Sales());
+		
+		return "/creator/home";
 	}
 	
 	// 크리에이터 정보 수정

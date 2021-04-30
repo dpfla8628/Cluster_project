@@ -68,12 +68,8 @@ $(document).ready(function(){
               <th>강의 명</th>
               <th>만료일</th>
               <th>강의 연락처</th>
-<<<<<<< HEAD
-              <th>리뷰</th>
-=======
-              <th>리뷰 작성</th>
->>>>>>> refs/remotes/origin/main
-            </tr>
+                <th>리뷰 작성</th>
+             </tr>
           </thead>
           
           <tbody id="show1">
@@ -83,20 +79,17 @@ $(document).ready(function(){
           <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />  
 		  <fmt:formatDate value="${orderlist.classEnd }" pattern="yyyy-MM-dd" var="write_dt"/>
 		  
+		  
           <c:if test="${today <= write_dt}" >
            <c:if test="${orderlist.orderOk eq '입금완료'}" >
             <tr>       
               <td><img src="../resources/image/test.PNG"></td><!-- 강의 이미지 넣기 !! -->
-              <td><a href="/class_detail/detail/${orderlist.classNo}">${orderlist.className}</a></td><!-- 클릭하면 강의 상세페이지로 이동 -->
+              <td><a href="#">${orderlist.className}</a></td><!-- 클릭하면 강의 상세페이지로 이동 -->
               <td>~${orderlist.classEnd} </td><!-- 오늘 날짜 기준으로 넘어가면 classend로 ~ !!! -->
               <td>${orderlist.classTalk }</td>
               <td>
-<<<<<<< HEAD
-              		<c:if test="${empty orderlist.reviewContext }">
-=======
               	<!-- 이미 후기를 썼다면 해당 버튼 없애기 !! 후기 안쓴 경우에만 후기 쓸 수 있는 버튼 만들기 -->     
 				<c:if test="${empty orderlist.reviewContext }">
->>>>>>> refs/remotes/origin/main
               		<a href="/mypage/myreview_write?classNo=${orderlist.classNo}">
 		           		<button type="submit" class="btn btn-secondary btn-xs" id="r_write">후기 작성</button>
               		</a>

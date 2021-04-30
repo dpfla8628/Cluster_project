@@ -100,6 +100,10 @@
 <body>
     <div class="outbox">
         <h1>고객센터</h1>  
+  		<div style="text-align: center;">
+  			<a href="/community/question">1:1 문의</a> /
+  			<a href="/community/faq">자주 묻는 질문</a>
+  		</div>
         <div class="inBox">
             <div class="inBoxA">
                 <a href="/community/question" class="QForm">문의 등록</a>

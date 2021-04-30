@@ -92,14 +92,17 @@
              overflow: hidden;
             border: none;
          }
-
+       
     </style>
 </head>
 <c:set var="auth" value="${member.memberAuth}"/>
 <body>
     <div class="faqBox">
         <h1>고객센터</h1>
-  
+  		<div style="text-align: center;">
+  			<a href="/community/question">1:1 문의</a> /
+  			<a href="/community/faq">자주 묻는 질문</a>
+  		</div>
         <span id="faq-title">자주 묻는 질문(FAQ)</span>
          
         <c:forEach items="${list}" var="faq">

@@ -162,7 +162,7 @@
 							<div class="form-group row showcase_row_area">
 			                    <div class="col-md-3 showcase_text_area"><label>강의 설명 사진</label></div>
 			                    <div class="col-md-9 showcase_content_area">
-			                        <div class="custom-file"><input type="file" class="custom-file-input" id="inputFile"> <label class="custom-file-label" for="customFile">첫번째 사진은 강의 메인입니다.</label></div>
+			                        <div class="custom-file"><input type="file" class="custom-file-input" id="inputFile"> <label class="custom-file-label" for="customFile">[필수]첫번째 사진은 강의 메인입니다.</label></div>
 			                    	<div class="uploadedList"></div>
 			                    </div>
 		                    </div>
@@ -176,7 +176,7 @@
 			                    <div class="col-md-3 showcase_text_area"><label for="inputType1">연락처</label></div>
 			                    <div class="col-md-9 showcase_content_area"><form:input type="text" class="form-control" id="inputType1" path="classTalk"/></div>
 		                    </div>
-						
+		                    
 						</form:form>
 						
 						<div class="btnSet">
