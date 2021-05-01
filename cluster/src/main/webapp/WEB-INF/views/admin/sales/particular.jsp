@@ -64,8 +64,9 @@
 		$("#salesMenu").next("ul").slideDown();
 		
 		
-		//선택할 수 있는 년월의 최대값을 현재년월로 지정
-		var now = new Date().toISOString().substring(0, 7);
+		//한국시간으로 반환해주기 위한 작업
+		var offset = new Date().getTimezoneOffset() * 60000;
+		var now = new Date(Date.now() - offset).toISOString().substring(0, 7);
 		
 		//yearMonth 클래스를 갖고 있는 input[type=month] 의 최대값을 현재년월로 지정
 		$(".yearMonth").attr("max", now);

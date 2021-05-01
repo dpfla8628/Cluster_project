@@ -5,6 +5,9 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
+	a{
+		color:black;
+	}
 	#searchBtn{
 		margin-left: 0.5rem;
 	    height: 40px;

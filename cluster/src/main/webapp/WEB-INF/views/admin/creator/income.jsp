@@ -74,10 +74,11 @@
 		
 		$("#creatorMenu").next("ul").slideDown();
 		
-		//선택할 수 있는 날짜의 최대값을 현재날짜로 지정
-		var now = new Date().toISOString().substring(0, 10);
+		//한국시간으로 반환해주기 위한 작업
+		var offset = new Date().getTimezoneOffset() * 60000;
+		var now = new Date(Date.now() - offset).toISOString().substring(0, 10);
 		
-		//date 클래스를 갖고 있는 input[type=date]의 최대값을 현재날짜로 지정
+		//date 클래스를 갖고 있는 input[type=date]가 선택할 수 있는 최대값을 현재날짜로 지정
 		$(".date").attr("max", now);
 		
 		//검색안한 default 상태일때 보여지는 날짜를 오늘 날짜로 지정
