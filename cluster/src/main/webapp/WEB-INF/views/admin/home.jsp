@@ -36,6 +36,7 @@
 		font-weight:bolder;
 		font-size: 1.8em;
 		margin-left:13.8rem;
+		margin-top:2rem;
 	}
 	
 	
@@ -50,7 +51,7 @@
 <div class="outbox center">
 
 	<div class="dashboard left">
-		<p style="color:#E2E2E2">Dashboard</p>
+		<span style="color:#E2E2E2">Dashboard</span>
 	</div>
 	<!-- 총 회원수 그래프 -->
 	<div class="row mychart1">

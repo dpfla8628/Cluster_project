@@ -962,7 +962,9 @@
 		    order_ok = '입금완료'
 		    and order_date >= trunc(sysdate, 'mm')
 		    and order_date < trunc(add_months(sysdate, 1), 'mm')
-		    and C.class_no = (select min(class_no) from offclass)
+		    and C.class_no = (select min(class_no) from offclass where class_check = '검수완료' and class_end_check = '진행' 
+    		and class_start is not null and to_char(class_start, 'YYYY-MM-DD') <= to_char(sysdate, 'YYYY-MM-DD')
+    		and to_char(class_end, 'YYYY-MM') >= to_char(sysdate, 'YYYY-MM'))
 		group by 
 		    to_char(order_date, 'YYYY-MM-DD'), O.class_name, to_char(order_date, 'YYYY-MM')
 		order by 
@@ -970,6 +972,7 @@
 		]]>
 	</select>
 	<select id="getParticularThisYearSales" resultType="AdminClassorderVO">
+		<![CDATA[
 		select 
 		    to_char(order_date, 'YYYY') "year", sum(order_price) "yearsales" 
 		from 
@@ -977,11 +980,15 @@
 		where 
 		    order_ok = '입금완료' 
 		    and extract(year from order_date) = to_char(sysdate, 'YYYY')
-		    and class_no = (select min(class_no) from offclass)
+		    and class_no = (select min(class_no) from offclass where class_check = '검수완료' and class_end_check = '진행' 
+    		and class_start is not null and to_char(class_start, 'YYYY-MM-DD') <= to_char(sysdate, 'YYYY-MM-DD')
+    		and to_char(class_end, 'YYYY-MM') >= to_char(sysdate, 'YYYY-MM'))
 		group by 
 		    to_char(order_date, 'YYYY')
+		]]>
 	</select>
 	<select id="getParticularThisMonthSales" resultType="AdminClassorderVO">
+		<![CDATA[
 		select 
 		    to_char(order_date, 'YYYY-MM') "year_month", sum(order_price) "sales_for_month" 
 		from 
@@ -989,9 +996,12 @@
 		where 
 		    order_ok = '입금완료' 
 		    and to_char(order_date, 'YYYY-MM') = to_char(sysdate, 'YYYY-MM')
-		    and class_no = (select min(class_no) from offclass)
+		    and class_no = (select min(class_no) from offclass where class_check = '검수완료' and class_end_check = '진행' 
+    		and class_start is not null and to_char(class_start, 'YYYY-MM-DD') <= to_char(sysdate, 'YYYY-MM-DD')
+    		and to_char(class_end, 'YYYY-MM') >= to_char(sysdate, 'YYYY-MM'))
 		group by 
 		    to_char(order_date, 'YYYY-MM')
+		]]>    
 	</select>
 	
 	<select id="getSearchParticularSales" resultType="AdminClassorderVO" parameterType="map">
