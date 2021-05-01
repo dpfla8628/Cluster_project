@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <title>강의 상세페이지</title>
      
-    <link rel="stylesheet" type="text/css" href="/css/class.css">
+     <link rel="stylesheet" type="text/css" href="/css/class.css">
      <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
