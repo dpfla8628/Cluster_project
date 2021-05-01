@@ -10,12 +10,12 @@
 		<style>
 			
 			.title{
-				font-size: 6.5rem;
+				font-size: 4rem;
 				margin-bottom: 2.5rem;
 			}
 			
 			.fakebox{
-				height: 200px; 
+				height: 250px; 
 			}
 			
 		</style>

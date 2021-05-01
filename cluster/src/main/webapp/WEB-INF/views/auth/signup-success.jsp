@@ -31,7 +31,7 @@
 			}
 			
 			.fakebox{
-				height: 5rem; 
+				height: 13rem; 
 			}
 			
 			.btn-outline-warning:hover{
@@ -87,9 +87,8 @@
 					
 					<div class="text-center text">
 						<c:if test="${!empty member.memberNick }">
-							<p>${member.memberNick }<span class="text-muted">님</span></p>
+							<p>${member.memberNick }<span class="text-muted">님 환영합니다!</span></p>
 						</c:if>
-						<p class="text-muted">환영합니다!</p>
 						<p class="text-muted">CLUSTER에서 다양한 경험을 해보세요!</p>
 					</div>
 			

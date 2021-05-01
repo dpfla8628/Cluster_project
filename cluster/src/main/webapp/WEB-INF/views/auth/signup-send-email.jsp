@@ -31,7 +31,7 @@
 			}
 			
 			.fakebox{
-				height: 5rem; 
+				height: 10rem; 
 			}
 			
 			.btn-outline-warning:hover{
@@ -87,11 +87,10 @@
 					<div class="text-center text">
 						<p>
 							<c:choose>
-							<c:when test="${empty email }">가입하신 이메일<span class="text-muted">로</span></c:when>
-							<c:otherwise>${email }<span class="text-muted">으로</span></c:otherwise>
+							<c:when test="${empty email }">가입하신 이메일<span class="text-muted">로 인증 링크를 보냈습니다.</span></c:when>
+							<c:otherwise>${email }<span class="text-muted">으로 인증 링크를 보냈습니다.</span></c:otherwise>
 							</c:choose>
 						</p>
-						<p class="text-muted">인증 링크를 보냈습니다.</p>
 						<p class="text-muted">링크를 눌러서 회원가입을 완료해 주세요!</p>
 					</div>
 					

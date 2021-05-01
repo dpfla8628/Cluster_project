@@ -121,13 +121,10 @@ public class LoginController {
 			if("n".equals(member.getMemberBy())) {
 				//토큰 생성 + 이메일 발송
 				service.sendFindPasswordMail(member);
-				
 				return "y";
 			}
-			
 			return "s";
 		}
-		
 		return "n";
 	}
 	
@@ -213,5 +210,10 @@ public class LoginController {
 		redirect.addFlashAttribute("email", email);
 		
 		return "redirect:/login/resend";
+	}
+	
+	@GetMapping("/test")
+	public String test() {
+		return "/auth/wrong-request";
 	}
 }
