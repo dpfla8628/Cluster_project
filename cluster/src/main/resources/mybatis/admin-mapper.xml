@@ -460,7 +460,7 @@
 	
 	<select id="getCreatorIncomeList" resultType="AdminCreatorVO">
 		select 
-		    C.creator_no, M.member_nick creator_nick, OC.class_name, CO.order_date, 
+		    C.creator_no, M.member_nick creator_nick, OC.class_name, to_char(CO.order_date, 'YYYY-MM-DD') order_date, 
 		    sum(order_price) class_sales, sum(order_price) * 0.9 creator_income,
 		    CO.order_calc
 		from 
@@ -469,13 +469,13 @@
 		        inner join creator C on OC.creator_no = C.creator_no
 		        inner join member M on C.member_no = M.member_no
 		where to_char(CO.order_date, 'YYYY-MM-DD') = to_char(sysdate, 'YYYY-MM-DD')  
-		group by C.creator_no, M.member_nick, OC.class_name, CO.order_date, CO.order_calc
-		order by C.creator_no, CO.order_date desc, sum(order_price) desc
+		group by C.creator_no, M.member_nick, OC.class_name, to_char(CO.order_date, 'YYYY-MM-DD'), CO.order_calc
+		order by C.creator_no, to_char(CO.order_date, 'YYYY-MM-DD') desc, sum(order_price) desc
 	</select>
 	
 	<select id="getSearchCreatorIncomeList" resultType="AdminCreatorVO" parameterType="map">
 		select 
-		    C.creator_no, M.member_nick creator_nick, OC.class_name, CO.order_date, 
+		    C.creator_no, M.member_nick creator_nick, OC.class_name, to_char(CO.order_date, 'YYYY-MM-DD') order_date, 
 		    sum(order_price) class_sales, sum(order_price) * 0.9 creator_income,
 		    CO.order_calc
 		from 
@@ -494,8 +494,8 @@
 				]]>
 			</if>
 		</where>        
-		group by C.creator_no, M.member_nick, OC.class_name, CO.order_date, CO.order_calc
-		order by C.creator_no, CO.order_date desc, sum(order_price) desc
+		group by C.creator_no, M.member_nick, OC.class_name, to_char(CO.order_date, 'YYYY-MM-DD'), CO.order_calc
+		order by C.creator_no, to_char(CO.order_date, 'YYYY-MM-DD') desc, sum(order_price) desc
 	</select>
 	
 	<update id="calcCreatorIncome" parameterType="string">
