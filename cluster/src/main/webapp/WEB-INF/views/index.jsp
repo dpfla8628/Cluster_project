@@ -26,12 +26,6 @@ $(document).ready(function(){
     	var classNo = $(this).attr("classNo");
     	
     	self.location = "class_detail/detail/" + classNo;
-    	
-    	/* alert(classNo + "값으로 페이지 이동 예정"); */
-    	
-    	/* to-do */
-    	/* self.location = "/detail?classNo=" + classNo; */
-    	
     })
     
     $(".heart").css("cursor","pointer").on("click", function(e){
@@ -436,7 +430,7 @@ $(document).ready(function(){
 			</div>
 			
 			<div class="bestlist" style="padding-left: 5rem">
-				<c:forEach items="${sutudyClasses}" var="a">
+				<c:forEach items="${studyClasses}" var="a">
 				<div class="item">
 					<table>
 						<tr>

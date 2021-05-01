@@ -2,6 +2,7 @@ package com.kh.cluster.controller;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import com.kh.cluster.entity.AuthMemberVO;
 import com.kh.cluster.entity.ClassCategory;
 import com.kh.cluster.entity.Creator;
 import com.kh.cluster.entity.OffclassQueryVO;
+import com.kh.cluster.service.ClassDetailService;
 import com.kh.cluster.service.OffclassQueryService;
 import com.kh.cluster.service.OffclassService;
 import com.kh.cluster.util.MediaUtils;
@@ -44,6 +46,7 @@ public class MainController {
 
 	@Autowired
 	private OffclassService offclassService;
+	 
 
 	@Value("${upload.path}")
 	private String uploadPath;
@@ -56,7 +59,6 @@ public class MainController {
 		Integer memberNo = extractMemberNo(member);
 //		HttpSession session = req.getSession();
 //		Integer memberNo = (Integer) session.getAttribute("no");
-		log.info("memberNo()::{}", memberNo);
 
 		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
 		List<OffclassQueryVO> craftClasses = service.searchByCategory(memberNo, "공예", null, "new");
@@ -74,6 +76,30 @@ public class MainController {
 		model.addAttribute("studyClasses", toSubList(studyClasses, 4));
 
 		return "/index";
+	}
+	
+	@GetMapping("/search")
+	public String search(HttpServletRequest req, Model model, 
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "sort", required = false) String sort) throws Exception {
+
+		AuthMemberVO member = (AuthMemberVO) req.getAttribute("member");
+		Integer memberNo = extractMemberNo(member);
+//		HttpSession session = req.getSession();
+//		Integer memberNo = (Integer) session.getAttribute("no");
+
+		// 구현의 편의를 위해 전체 카테고리별로 조회한다.
+		List<OffclassQueryVO> search = Collections.emptyList();
+		
+		if(keyword != null) {
+			search = service.searchByKeyword(memberNo, keyword, "new");
+		}
+		
+		model.addAttribute("offclasses", toSubList(search, 16));
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("sort", sort);
+
+		return "/search/index";
 	}
 
 	@GetMapping("/displayFile")
@@ -266,7 +292,7 @@ public class MainController {
 		if (member != null) {
 			memberNo = member.getMemberNo();
 			service.updateOffclassLike(memberNo, classNo, true);
-			return ResponseEntity.ok("Success");
+ 			return ResponseEntity.ok("Success");
 		}
 		// 로그인하지 않은 사용자는 httpstatus코드 401번을 반환한다.
 		return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);

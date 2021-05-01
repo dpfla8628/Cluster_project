@@ -80,6 +80,9 @@ public interface AdminRepository {
 	public List<AdminOffclassVO> getSearchClassList(Map<String, Object> map) throws Exception;
 	public Integer countClassList() throws Exception;
 	public Integer countSearchClassList(String type, String key) throws Exception;
+	public void yesClassOpen(int classNo) throws Exception;
+	public void noClassOpen(int classNo) throws Exception;
+	public void waitClassOpen(int classNo) throws Exception;
 	
 	public List<AdminOffclassVO> getOpenClassList(Map<String, Object> map) throws Exception;
 	public List<AdminOffclassVO> getSearchOpenClassList(Map<String, Object> map) throws Exception;
@@ -104,6 +107,8 @@ public interface AdminRepository {
 	public AdminClassorderVO getSearchYearSales(String yearMonth) throws Exception;
 	public AdminClassorderVO getThisMonthSales2() throws Exception;
 	public AdminClassorderVO getSearchMonthSales(String yearMonth) throws Exception;
+	public List<AdminClassorderVO> getTotalSales() throws Exception;
+	public List<AdminClassorderVO> getSearchTotalSales(String yearMonth) throws Exception;
 	
 	public List<Offclass> getOpenClass() throws Exception;
 	public List<AdminClassorderVO> getSearchParticularSales(Map<String, Object> map) throws Exception;
@@ -112,6 +117,8 @@ public interface AdminRepository {
 	public List<AdminClassorderVO> getNoSearchParticularSales() throws Exception;
 	public AdminClassorderVO getParticularThisYearSales() throws Exception;
 	public AdminClassorderVO getParticularThisMonthSales() throws Exception;
+	public List<AdminClassorderVO> getParticularTotalSales() throws Exception;
+	public List<AdminClassorderVO> getSearchParticularTotalSales(Map<String, Object> map) throws Exception;
 	
 	
 	public void addCategory(String categoryBig, String categorySmall) throws Exception;

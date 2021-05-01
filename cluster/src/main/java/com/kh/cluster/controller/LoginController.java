@@ -74,6 +74,7 @@ public class LoginController {
 			//세션에 권한 저장
 			session.setAttribute("memberAuth", member.getMemberAuth());
 			
+			
 			return "y";
 		}
 		

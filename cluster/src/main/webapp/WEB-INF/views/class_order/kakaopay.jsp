@@ -78,11 +78,12 @@
                   });
 
              } else {
-                msg = '결제에 실패하였습니다.';
-                msg += '에러내용 : ' + rsp.error_msg;
+                msg = '결제에 실패하였습니다.'+ rsp.error_msg;
+                msg +='\n 입금대기 상태입니다 마이페이지에서 확인 가능합니다';
                 //실패시 이동할 페이지
-                location.href="/class_order/pay_fail";
                 alert(msg);
+                location.href="/class_detail/detail/${kakaopay.classNo}"; 
+                
             }
         });
         

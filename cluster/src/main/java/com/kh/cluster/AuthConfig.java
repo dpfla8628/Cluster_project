@@ -22,21 +22,21 @@ public class AuthConfig implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authInterceptor2)
-				.addPathPatterns("/**");
+				.addPathPatterns("/**", "/search/**");
 
 		registry.addInterceptor(authInterceptor)
  				.addPathPatterns("/login/result","/login/logout", "/signup/welcome", 
- 						"/class_detail/classQuestion/*/*", "/mypage/**", "/creator/**", 
+ 						"/class_detail/classQuestion/*/*", "/mypage/**", "/creator/**","/community/**",
  						"/join", "/joinForm")
- 				.excludePathPatterns("/login/", "/signup/", "/mypage/**", "/creator/**");
+ 				.excludePathPatterns("/login/", "/signup/", "/mypage/**", "/creator/**","/community/faq");
 		
 		registry.addInterceptor(creatorInterceptor)
-        		.addPathPatterns("/creator/**");
-		
+        		.addPathPatterns("/creator/**")
+				.excludePathPatterns("/creator/home");
+		//주석 test
 		//registry.addInterceptor(new PermissionInterceptor())
 		//		.addPathPatterns("/creator/**", "/admin/**")
 		//		.excludePathPatterns("/static-resource-root/**");
  
 	}
 }
- 

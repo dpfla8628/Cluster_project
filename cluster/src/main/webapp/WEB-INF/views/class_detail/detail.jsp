@@ -8,16 +8,38 @@
 
 <!DOCTYPE html>
 <html>
+<c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
 <head>
     <meta charset="UTF-8">
     <title>강의 상세페이지</title>
-    <link rel="stylesheet" type="text/css" href="/css/class.css">
+     
+     <link rel="stylesheet" type="text/css" href="/css/class.css">
      <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             var no = $(".no").val();
-
+            
+			  var txtArea = $(".reviewOk");
+	            if (txtArea) {
+	                txtArea.each(function() {
+	                    $(this).height(this.scrollHeight);
+	                });
+	            }
+	            
+				  var txtArea = $(".classInfo");
+		            if (txtArea) {
+		                txtArea.each(function() {
+		                    $(this).height(this.scrollHeight);
+		                });
+		            }
+		            var txtArea = $(".creatorText");
+		            if (txtArea) {
+		                txtArea.each(function() {
+		                    $(this).height(this.scrollHeight);
+		                });
+		            }        
+	 
             $(".orderBtn").click(function() {
                 if (no == '') {
                     alert("로그인 후 이용가능합니다");
@@ -59,6 +81,54 @@
             //천단위 콤마
             var price = $('#price').text();
             $('#price').text(price.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            
+            
+            
+        $(".heart").css("cursor","pointer").on("click", function(e){
+    	var $thisObj = $(this);
+    	var classNo = $thisObj.attr("classNo");
+    	var isLiked = $thisObj.attr("isLiked");
+    	
+    	var likeCount= $('.likeCount').text();
+		var like = '';
+    	
+    	var method = '';
+    	var updateLiked = '';
+    	var updateSrc = '';
+    	
+    	if(isLiked == "true") {
+    		method = "DELETE";
+    		updateLiked = "false";
+    		updateSrc = "/resources/image/empty-heart.jpeg";
+    		like = parseInt(likeCount)-1;
+    	}
+    	else {
+    		method = "POST";
+    		updateLiked = "true";
+	    	updateSrc = "/resources/image/full-heart.png";
+	    	like = parseInt(likeCount)+1;
+     	}
+    	
+    	$.ajax({
+			url: "/offclass/${offClass.classNo}/like",
+			type: method,
+			success: function (data) {
+				$thisObj.attr("isLiked", updateLiked);
+				$thisObj.attr("src", updateSrc);
+				$('.likeCount').text(like);
+			},
+    		error: function (xhr) {
+    			/* alert("실패!" + xhr.status); */
+    			
+    			if(xhr.status == 401) {
+    				alert("로그인 후 이용가능합니다")
+     				return;
+    			}
+    			alert("오류가 발생하였습니다.");
+    		}
+		})
+    	
+    })
          
         })
         
@@ -67,36 +137,42 @@
  
     </script> 
     <style>
-
-
+		.creatorText{
+			font-weight: 100;
+			width : 338px;
+			resize: none;
+			height:auto;
+			border:none;
+			overflow: hidden;
+			font-size: 13px;
+			
+		}
+		.text{
+			text-align: center;
+		}
+		.heart{
+			width: 40px;
+		}
+		 
     </style>
 </head>
  
 <body>
+	<c:set var="memberNo" value="${member.memberNo}" />
     <c:set var="logInMember" value="${member.memberNick}" />
     <c:set var="classMember" value="${offClass.authMember.memberNick}" />
-
-    <div>
-         <label>번호 : ${member.memberNo}</label>
-        <label>닉네임 : ${nick}</label>
-        <label>권한 : ${auth}</label>
-
-        <a href="/class_detail/list">리스트</a>
-        <a href="/mypage/index">마이페이지</a>
-        <a href="/login/">로긘</a> 
-        <hr>
-    </div>
+ 
     <div class="outbox">
-        <div id="left_side">
+        <div class="left_side">
             <input type="hidden" class="no" value="${member.memberNo}">
             
             <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="0" end="0">
                 <c:set var="fullname" value="${readImg.fullName}" />
                 <div>
-                    <img class="img" width="600" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                    <img class="img" width="600" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                 </div>
             </c:forEach>
-            <div class="link">
+            <div class="detail link">
                 <a href="#detail">상세정보</a>
                 <a href="#reviewBox">리뷰(${totalReview})</a>
                 <a href="#ask">문의하기</a>
@@ -109,16 +185,17 @@
                     <c:forEach items="${readImg}" var="readImg" varStatus="st" begin="1">
                         <c:set var="fullname" value="${readImg.fullName}" />
                         <div>
-                            <img class="img" width="600" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                            <img class="img" width="600" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                         </div>
                     </c:forEach>
                     <br>
-                    <label>${offClass.classInfo}</label>
+                    
+                    <textarea class="classInfo"><c:out value="${offClass.classInfo}"/></textarea>
                 </div>
-
             </div>
+            <br>
             <div class="map">
-                <h2>클래스 장소</h2>
+                <label class="text">클래스 장소</label><br>
                 <label id="class_address">${offClass.classPlace}</label>
                 <div id="map" style="width:auto;height:500px;margin-top:10px;"></div>
                 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -170,12 +247,15 @@
             <hr>
             <div id="reviewBox">
                 <h2>리뷰</h2>
+                <br>
                 <c:choose>
                     <c:when test="${empty classReview}">
-                        <h2 style="text-align: center">등록된 리뷰가 없습니다</h2>
+                    <div  class="text">
+                        <label>등록된 리뷰가 없습니다</label>
+                        <br><br>
+                    </div>
                         <script>
                             $(".reviewList").css("height", "100")
-
                         </script>
                     </c:when>
 
@@ -187,21 +267,21 @@
                                 <div class="reviewImgBox">
                                     <c:set var="fullname" value="${review.fullName}" />
                                     <c:if test="${empty review.fullName }">
-                                        <img src="/image/basic.png" class="reviewImg">
+                                        <img src="/image/basic.png" class="detail reviewImg">
                                     </c:if>
                                     <c:if test="${!empty review.fullName }">
                                         <div>
-                                            <img class="reviewImg" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
+                                            <img class="detail reviewImg" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
                                         </div>
                                     </c:if>
 
                                 </div>
-                                <div class="review-left">
-                                    <label class="reviewNick"> ${review.memberNick}</label>
+                                <div class="review-left">                     
+                                     <div class="reviewNick"> ${review.memberNick}</div>
+									<div class="reviewDate">${review.reviewDate}</div>
                                 </div>
-                                <div class="reviewDate">
-                                    <label>${review.reviewDate}</label>
-                                </div>
+                                                                         
+                                 
                             </div>
                             <div class="review">
                                 <div class="reviewContext">
@@ -212,7 +292,7 @@
                                     <c:if test="${not empty review.reviewOk}">
                                         <img src="/image/review.png" width="20px">
                                         <label class="reviewOkNick">크리에이터</label>
-                                        <div class="reviewOk">${review.reviewOk}</div>
+                                        <div><textarea  class="reviewOk">${review.reviewOk}</textarea></div>
                                     </c:if>
                                 </div>
                             </div>
@@ -227,22 +307,27 @@
                         <label>+ ${total-5}개 리뷰가 있습니다</label>
                         <button class="moreReviewBtn">리뷰 더보기</button>
                     </c:when>
+                    <c:when test="${total ==0 }">
+                    	
+                    </c:when>
                     <c:otherwise>
                         <c:if test="${logInMember eq classMember}">
                             <button class="moreReviewBtn">리뷰 답변하기</button>
                         </c:if>
                     </c:otherwise>
+                   	
                 </c:choose>
 
                 <%--     			  <jsp:include page="/WEB-INF/views/class_detail/review.jsp"/> 
  --%>
             </div>
+            <br><hr><br>
             <div id="ask">
                 <h2>문의하기</h2>
-                <h4>유의사항</h4>
+                <label class="text">유의사항</label>
                 <div>
                     - 클래스에 대한 궁금한 점만 문의바랍니다.<br>
-                    - 클래스 외 궁금한 점은 고객센터-1:1문의하기를 이용해주시기 바랍니다.<br>
+                    - 클래스 외 궁금한 점은 <a href="/community/question">고객센터-1:1문의하기</a>를 이용해주시기 바랍니다.<br>
                     - 정확한 일정은 문의하기 또는 구매 후 크리에이터의 연락을 통해 이루어집니다.<br>
                     - 문의답변은 마이페이지에서 확인 가능합니다.<br>
 
@@ -250,28 +335,37 @@
                 <br>
                 <button class="askBtn">${offClass.authMember.memberNick}님에게 문의하기</button>
             </div>
-
+			<br><hr><br>
             <div id="refund">
                 <h2>환불규정</h2>
                 <label>강의 특성상 환불은 불가합니다.</label>
             </div>
-
+            
+            <div style="width: 1000px; margin-top: 2rem;">
+            <c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import></div>
         </div>
 
-        <div id="right_side">
+     
+        <div class="right_side">
             <div id="classBox">
             <c:set var="totalMember" value="${offClass.classMemberSet}" />
             <c:set var="nowMember" value="${classMemberCount}" />
    				${offClass.classCategory.categoryBig} > ${offClass.classCategory.categorySmall} 
    				<label class="memberSet">${totalMember - nowMember}명 가능</label>
-                <h2 style="text-align: center">${offClass.className}</h2><br>
+                <div class="class_name">${offClass.className}</div>
                 <div class="price"><label id="price">${offClass.classPrice}</label>원</div>
                 <div>
-                    <div class="iconBox">
-                        <img src="/image/add.png" width="40px" class="icon">
-                        <img src="/image/heart.jpg" width="40px" class="icon">
-
-                    </div>
+                <div class="iconBox">
+					<c:choose>
+						<c:when test="${!empty like}">
+							<img class="heart"classNo=${like.classNo} isLiked="true" src="/resources/image/full-heart.png">
+						</c:when>
+						<c:otherwise>
+							<img class="heart" classNo=${like.classNo} isLiked="false" src="/resources/image/empty-heart.jpeg">
+						</c:otherwise>
+					</c:choose>
+					<label class="likeCount">${likeCount}</label>
+                </div>
                     <div class="orderBox">
                         <button class="orderBtn">수강하기</button>
 
@@ -285,25 +379,26 @@
                     <div class=profileBox>
                         <c:set var="fullname" value="${mymember.fullName }"></c:set>
                         <c:if test="${empty mymember.fullName }">
-                            <img src="/image/basic.png" class="profileImg">
+                            <img src="/image/basic.png" class="detail profileImg">
                         </c:if>
                         <c:if test="${!empty mymember.fullName }">
-                            <img class="profileImg" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}" alt="profile image">
+                            <img class="detail profileImg" src="/displayFile?fileName=${fn:substringAfter(fullname,'=')}" alt="profile image">
                         </c:if>
 
                     </div>
                     <div class="creatorInfoBox">
-                        <div id="creatorName"><label>${offClass.authMember.memberNick}</label></div>
+                        <div id="creatorName"><label style="margin: 0;">${offClass.authMember.memberNick}</label></div>
                         <div id="creatorSNS"><img src="/image/icon.png" width="100"></div>
                     </div>
                 </div>
                 <div class="creatorInfo">
-                    <label>${offClass.creator.creatorInfo}</label>
+                    <textarea class="creatorText" readonly><c:out value="${offClass.creator.creatorInfo}"/></textarea>
                 </div>
             </div>
 
         </div>
     </div>
+     
 </body>
 
 

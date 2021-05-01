@@ -1,4 +1,6 @@
-    padding: 0;
+    html,
+	body {
+		padding: 0;
         margin: 0;
         }
 
@@ -6,21 +8,20 @@
             box-sizing: border-box;
         }
 
-        #left_side {
+        .left_side {
             width: 600px;
             height: 400px;
             float: left;
             margin-right: 20px;
         }
 
-        #right_side {
+        .right_side {
             width: 400px;
             height: 400px;
-            /*            border: 0.5px dotted gray;*/
             display: inline-block;
-            position: fixed;
+            position: absolute; 
             margin-left: 100px;
-
+ 	 
         }
 
         .img {
@@ -30,11 +31,13 @@
         #classBox,
         #creatorBox {
             border: 0.1px solid lightgray;
-            width: 350px;
+            width: 400px;
             height: auto;
             margin-bottom: 10px;
             padding: 30px;
+             
         }
+        
 
         .outbox {
             display: block;
@@ -43,23 +46,22 @@
             height: auto;
         }
 
-        .link>a {
-            margin-left: 80px;
+        .detail.link>a {
+            margin-left: 65px;
+            font-weight: lighter;
         }
+        .detail.link>a:hover {
+            color: black;
+            font-weight: bold;
+        }
+     
 
         #reviewBox {
             height: auto;
 
         }
 
-        /*   .askBtn {
-        	margin-top : 2rem;
-            width: 600px;
-            height: 50px;
-            background-color: transparent;
-            font-size: 16px;
-            border-color : #ffc107;
-        } */
+ 
         .askBtn:hover {
             background-color: #ffc107;
             color: white;
@@ -83,13 +85,13 @@
         #creatorName {
             font-size: 20px;
             font-weight: 600;
-
+ 
         }
 
-        .reviewImg {
+        .detail.reviewImg {
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
 
         }
 
@@ -107,19 +109,15 @@
         .reviewNick {
             font-size: 14px;
             font-weight: 600;
-        }
+            margin : 0;
+         }
 
         .reviewDate {
-            font-size: 11px;
+               font-size: 11px;
             font-weight: 300;
         }
 
-
-        .review-left {
-            margin-top: 0px;
-            padding: 0px;
-            margin-bottom: -3px;
-        }
+ 
 
         .reviewBtn {
             float: right;
@@ -151,14 +149,27 @@
             margin-left: 1.6rem;
             font-weight: 300;
             font-size: 13px;
+              height : auto;
+             padding-left: 5px;
+ 			 resize: none;
+ 			 overflow: hidden;
+ 			 border : none;
         }
 
-        .profileImg {
+        .detail.profileImg {
             border-radius: 50%;
             width: 70px;
             height: 70px;
         }
 
+		.class_name{
+			text-align: center;
+			font-size: 20px;
+			font-weight: bold;
+			height : auto;
+			padding : 20px;
+		}
+		
         .profileBox {
             float: left;
 
@@ -167,9 +178,9 @@
         .creatorInfoBox {
             float: left;
             margin: 5px 10px;
+            
         }
-
-
+ 
         .float-box::after {
             content: "";
             display: block;
@@ -180,6 +191,7 @@
         .creatorInfo {
             margin-top: 10px;
             font-weight: 300;
+            font-weight: 100 !important; 
         }
 
 
@@ -193,9 +205,14 @@
             width: 250px;
             border: none;
             font-size: 16px;
-            background-color: #ffc107;
+             background-color: transparent;
+            border: 1px solid #ffc107;
+             
         }
-
+        .orderBtn:hover {
+            background-color: #ffc107;
+            color: white;
+        }
         .price {
             font-size: 17px;
             text-align: right
@@ -221,10 +238,7 @@
             font-weight: 300;
         }
 
-        .link>a:hover {
-            color: black;
-            font-weight: 500;
-        }
+
 
         .photo {
             width: 600px;
@@ -253,29 +267,17 @@
             100% {opacity: 1;}
         }
 
+        .text {
+              font-weight: bold;
+              font-size: 20px;
+              margin : 0;
+           }
+        .classInfo{
+        	width: 600px;
+             height : auto;
+  			 resize: none;
+  			 margin-top: 5px;
+  			 border : none;
+   			 overflow: hidden;
+        }
         
-        /* ---------문의하기------------ */
-        .qnaOutBox {
-            border: 1px solid #ffc107;
-            width: 400px;
-            height: 500px;
-			margin: auto 0.5rem;
-            
-        }
-
-     
-       .classQ {
-            width: 350px;
-            height: 400px;
-            resize: none;
-            margin: auto 1rem;
-            border : 1px solid lightgray;
-        } 
-
-        .sendBtn {
-            width: 355px;
-            height: 40px;
-            border: none;
-            margin: 0.5rem 1rem;
-
-        }

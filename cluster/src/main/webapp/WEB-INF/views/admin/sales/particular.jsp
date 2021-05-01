@@ -6,6 +6,57 @@
     
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
+<style>
+	a{
+		color:black;
+	}
+	.outbox{
+		padding: 0 12rem;
+	}
+	#searchBtn{
+		margin-left: 0.5rem;
+	    height: 40px;
+	    background: #ffc107;
+	    color: black;
+	    cursor: pointer;
+	    width: 50pt;
+	    font-size: 15px;
+	    border-color: #ffc107;
+	}
+	#selectBox{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.yearMonth{
+		padding: 0.5rem;
+    	height: 40px;
+    	width: 20%;
+    	border: 0.5px solid lightgray;
+    	font-size: 15px;
+	}
+	.salesTable{
+		border-collapse: collapse;
+		/*margin-bottom: 1.5rem;*/
+		margin-top: 1.5rem;
+		width: 40%;
+	}
+	.salesTable th, .salesTable td {
+		text-align: center;
+	}
+	
+	.swTable{
+		/*margin-top: 1.5rem;*/
+	}
+	#particular{
+		color:#fff;
+	}
+</style>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
 <script>
 	
 	$(function(){
@@ -38,49 +89,132 @@
 			$("#year").text(year);
 		}
 		
-		
-		
-		
-		
-		
 });
 	
 </script>
 
 <div class="outbox">
-
-	<h2>클래스별 매출현황</h2>
+	<div class="row">
+		<h2>클래스별 매출현황</h2>
+	</div>
 	
-	<br>
 	
-	<table border="1">
-		<tr>
-			<th><span id="year">${yearSales.year}</span>년 매출액</th>
-			<th><span id="yearMonth">${monthSales.yearMonth}</span>월 매출액</th>
-		</tr>
-		<tr>
-			<c:if test="${yearSales.yearsales != null}">
-				<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${yearSales.yearsales}"/></td>
-			</c:if>
+	<!-- 매출이 있을때만 차트를 그려라 -->
+	<c:if test="${not empty totalSales}">
+	<div class="row">
+		<canvas id="myChart" width="800" height="300"></canvas>
+		<script>
+		
+			var labels = [];
+			var data = [];
 			
-			<c:if test="${yearSales.yearsales == null}">
-				<td>￦0</td>
-			</c:if>
+			<c:forEach items="${totalSales}" var="adminClassorderVO">
+				labels.push("${adminClassorderVO.yearMonth}");
+				data.push(${adminClassorderVO.salesForMonth});
+			</c:forEach>
 			
-			<c:if test="${monthSales.salesForMonth != null}">
-				<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${monthSales.salesForMonth}"/></td>
-			</c:if>
-			<c:if test="${monthSales.salesForMonth == null}">
-				<td>￦0</td>
-			</c:if>
-		</tr>
-	</table>
+			
+			var ctx = document.getElementById('myChart');
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: labels,
+					datasets: [{
+						label: '전체매출현황',
+						data: data,
+						backgroundColor: [
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D'
+							
+						],
+						borderColor: [
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D',
+							'#1F618D'
+						],
+						borderWidth: 3
+					}]
+				},
+				options: {
+					title: {
+						display: true
+					},
+					legend: {
+						display: false
+					},
+					responsive: false,
+					tooltips: {
+						enabled: true
+					},
+					hover: {
+						animationDuration: 0
+					},
+					animation: {
+						onComplete: function () {
+							var chartInstance = this.chart,
+								ctx = chartInstance.ctx;
+							ctx.font = Chart.helpers.fontString(14, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = 'black';
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
 	
-	<br>
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = '￦'+ dataset.data[index].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");							
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+						}
+					},
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: true,
+								callback: function(value) {
+									if(0 === value % 1) {
+										return value;
+									}		
+								},
+								fontSize: 12
+								
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: 12
+							}
+						}]
+					}
+				}
+				
+			});	
+		</script>
+	</div>
+	</c:if>
 	
 	<div class="row">
 		<form action="particular" method="get">
-			<select name="classNo">
+			<select name="classNo" id="selectBox">
 				<c:forEach items="${openClassList}" var="offclass">
 					<c:if test="${classNo != null && classNo == offclass.classNo}">
 						<option value="${offclass.classNo}" selected >${offclass.className}</option>
@@ -105,39 +239,66 @@
 		</form>
 	</div>
 	
-	<table class="swTable">
-		<tr>
-			<th>날짜</th>
-			<th>클래스</th>
-			<th>일매출</th>
-			<th>월매출</th>
-		</tr>
-		<c:choose>
-			<c:when test="${empty salesList}">
+	
+	<div class="row center">
+		<table class="salesTable" border="1">
+			<thead>
 				<tr>
-					<td colspan="4">매출액이 없습니다..</td>
+					<th width="50%"><span id="year">${yearSales.year}</span>년 매출액</th>
+					<th width="50%"><span id="yearMonth">${monthSales.yearMonth}</span>월 매출액</th>
 				</tr>
-			</c:when>
-			<c:otherwise>
-				<c:forEach items="${salesList}" var="adminClassorderVO">
+			</thead>
+			<tbody>
+				<tr>
+					<c:if test="${yearSales.yearsales != null}">
+						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${yearSales.yearsales}"/></td>
+					</c:if>
+					
+					<c:if test="${yearSales.yearsales == null}">
+						<td>￦0</td>
+					</c:if>
+					
+					<c:if test="${monthSales.salesForMonth != null}">
+						<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${monthSales.salesForMonth}"/></td>
+					</c:if>
+					<c:if test="${monthSales.salesForMonth == null}">
+						<td>￦0</td>
+					</c:if>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class="swTable">
+			<thead>
+				<tr>
+					<th>날짜</th>
+					<th>클래스</th>
+					<th>일매출</th>
+					<th>월매출</th>
+				</tr>	
+			</thead>
+			<tbody>
+				<c:choose>
+					<c:when test="${empty salesList}">
 						<tr>
-							<td>${adminClassorderVO.salesdate}</td>
-							<td>${adminClassorderVO.className}</td>
-							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.daysales}"/></td>
-							<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.monthsales}"/></td>
+							<td colspan="4">매출액이 없습니다..</td>
 						</tr>
-				</c:forEach>
-			</c:otherwise>
-		</c:choose>
-	
-	</table>
-	
-	
-	
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${salesList}" var="adminClassorderVO">
+								<tr>
+									<td>${adminClassorderVO.salesdate}</td>
+									<td>${adminClassorderVO.className}</td>
+									<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.daysales}"/></td>
+									<td><fmt:setLocale value="ko_KR"/><fmt:formatNumber type="currency" value="${adminClassorderVO.monthsales}"/></td>
+								</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		</table>
+	</div>
 
 </div>
-
-
-
 
 <jsp:include page="/WEB-INF/views/adminTemplate/footer.jsp"></jsp:include>    
