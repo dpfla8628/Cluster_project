@@ -83,12 +83,12 @@ $(document).ready(function(){
           <c:if test="${today <= write_dt}" >
            <c:if test="${orderlist.orderOk eq '입금완료'}" >
             <tr>       
-              <td><img src="../resources/image/test.PNG"></td><!-- 강의 이미지 넣기 !! -->
+              <td><img class="likeimg" src="../resources/image/${orderlist.classNo}.png"></td><!-- 강의 이미지 넣기 !! -->
               <td><a href="#">${orderlist.className}</a></td><!-- 클릭하면 강의 상세페이지로 이동 -->
               <td>~${orderlist.classEnd} </td><!-- 오늘 날짜 기준으로 넘어가면 classend로 ~ !!! -->
               <td>${orderlist.classTalk }</td>
               <td>
-              	<!-- 이미 후기를 썼다면 해당 버튼 없애기 !! 후기 안쓴 경우에만 후기 쓸 수 있는 버튼 만들기 -->     
+              	<!-- 이미 후기를 썼다면 해당 버튼 없애기 !! 후기 안쓴 경우에만 후기 쓸 수 있는 버튼 만들기 -->
 				<c:if test="${empty orderlist.reviewContext }">
               		<a href="/mypage/myreview_write?classNo=${orderlist.classNo}">
 		           		<button type="submit" class="btn btn-secondary btn-xs" id="r_write">후기 작성</button>
@@ -113,7 +113,7 @@ $(document).ready(function(){
           <c:if test="${today > write_dt}" >
            <c:if test="${orderlist.orderOk eq '입금완료'}" >
             <tr>
-              <td><img src="../resources/image/test.PNG"></td><!-- 강의 이미지 넣기 !! -->
+              <td><img class="likeimg" src="../resources/image/${orderlist.classNo}.png"></td><!-- 강의 이미지 넣기 !! -->
               <td><a href="#">${orderlist.className}</a></td><!-- 클릭하면 강의 상세페이지로 이동 -->
               <td>~${orderlist.classEnd} </td><!-- 오늘 날짜 기준으로 넘어가면 안보이게하기 !!! -->
               <td>${orderlist.classTalk }</td>
