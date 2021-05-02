@@ -6,6 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:useBean id="now" class="java.util.Date"/>
+<c:import url="/WEB-INF/views/maintemplate/header.jsp"></c:import>
 
 <!DOCTYPE html>
 <html>
@@ -22,33 +23,38 @@
             $('input[name=orderPrice]').val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
             
             var coupon = $('input[name="couponNo"]');
-            var totalPrice = $("input[name=orderPrice]").val();
+            var totalPrice = $("input[name=totalPrice]").val();
 
             $(".cancelBtn").click(function() {
                 for (var i = 0; i < coupon.length; i++) {
                     coupon[i].checked = false;
                 }
                 $("label[for='discount']").text("0");
-                $("input[name=orderPrice]").val(totalPrice);
+                $("input[name=orderPrice]").val(classPrice);
                 $("label[for='discount']").css("color", "black")
                 
- 				var orderPrice =  $("input[name=orderPrice]").val();
-                $("input[name=orderPrice]").val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+                var orderPrice = $('input[name=orderPrice]').val();
+                $('input[name=orderPrice]').val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+               
             })
             $(".checkBtn").click(function() {
                 var discount = $("input[type='radio']:checked:last").next().text()
                 if(!discount){
                     return false
                 }
+ 				if(parseInt(discount)>parseInt(classPrice)){
+ 					alert('할인 불가')
+  					return false
+ 				}
                 $("label[for='discount']").text(-discount);
                 $("label[for='discount']").css("color", "red")
-                $("input[name=orderPrice]").val(parseInt(totalPrice) - parseInt(discount));
+                $("input[name=orderPrice]").val(parseInt(classPrice) - parseInt(discount));
                 
-                var orderPrice =  $("input[name=orderPrice]").val();
-                $("input[name=orderPrice]").val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+                 var orderPrice = $('input[name=orderPrice]').val();
+                 $('input[name=orderPrice]').val(orderPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
                 
                 var discount = $("label[for='discount']").text();
-            	$('label[for=discount]').text(discount.replace(/\B(?=(\d{3})+(?!\d))/g, ","))
+            	$('label[for=discount]').text(discount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")) 
             })
             
              $('.phone').keydown(function (event) {
@@ -68,9 +74,7 @@
 			 // 한마디로 JQuery 0 ~~~ 9 숫자 백스페이스, 탭, Delete 키 넘버패드외에는 입력못함
          	})
 			
-         	if('#couponRadio' == null){
-         		$('.couponBtn').hide();
-         	}
+          
          	
             $('.orderBtn').click(function(){
             	if($('.name').val() == 0|| $('.phone').val() == 0){
@@ -106,12 +110,11 @@
           .outbox {
               width: 600px;
               margin: 0 auto;
-              border: 1px dotted gray;
-          }
+            }
 
           .classPrice,
           .discount,
-          .totalPrice {
+          .orderPrice {
               float: right;
           }
 
@@ -121,20 +124,21 @@
 
           .name,
           .phone {
-              width: 590px;
-              height: 30px;
+              width: 600px;
+              height: 35px;
               margin-bottom: 15px;
               border: 0.5px solid lightgray;
+              padding-left : 0.5rem;
           }
 
           .cancelBtn,
           .checkBtn {
               width: 100px;
-              height: 25px;
-              border: 0.5px solid lightgray;
+              height: 30px;
+               border: 0.5px solid lightgray;
               background-color: transparent;
               border-radius: 50px;
-              font-weight: 300;
+              font-size :13px;
           }
 
           .cancelBtn:hover,
@@ -163,14 +167,14 @@
           }
 
           .text {
-              font-weight: 500;
+              font-weight: bold;
               font-size: 20px;
+              margin : 0;
            }
 
           .couponBox {
               margin-top: 0.5rem;
-              font-weight: 300;
-          }
+           }
           
           .couponBtn{
           	margin-top :0.5rem;
@@ -179,29 +183,30 @@
               border:none;
               text-align: right;
               font-size: 17px;
-              font-weight: 500;
+              font-weight: bold;
           }
- 
+ 		
       </style>
 </head>
 <body>
+
     <div class="outbox">
         <form:form modelAttribute="myClassOrder" action="${offClass.classNo}" method="post">
-            <div class="orderTitle">
-                <h1>결제하기</h1>
-            </div>
+             	<label class="text">결제하기</label>   
+        	<br>
             <div>
-                <h2>수강 신청 클래스</h2>
-                <label>${offClass.className}</label><br>
+                <h3>수강 신청 클래스</h3>
+                <label><a href="/class_detail/detail/${offClass.classNo}">${offClass.className}</a></label><br>
            		 <c:forEach items="${readImg}" var="readImg" varStatus="st"  begin="0" end="0">
                  <c:set var="fullname" value="${readImg.fullName}"/>
             	<div>
                		<img class="img" width="200" src="/mypage/displayFile?fileName=${fn:substringAfter(fullname,'=')}">
-            	</div>  
+            	</div> 
+            	<br> 
          </c:forEach>
             </div>
-            <div>
-                <h2>주문자 정보</h2>
+             <div>
+                <h3>주문자 정보</h3>
                 <input type="hidden" name="classNo" value="${offClass.classNo}">
                 <input type="hidden" name="memberNo" value="${member.memberNo}">
                 <div>
@@ -213,20 +218,20 @@
                     <input type="text" class="phone" name="memberPhone" maxlength="13" value="${member.memberPhone}">
                 </div>
             </div>
-
+			<hr>
             <div class="priceBox">
-                <h2>결제 금액</h2>
+                <h3>결제 금액</h3>
                 <div>
-                      <div>
+                     
                           <label class="text">사용 가능한 쿠폰</label>
-
-                      </div>
-                    <c:choose>
-	                    <c:when test="${!empty couponList}">
+                      
+                    
+	                   <%--  <c:when test="${!empty couponList}"> --%> 
 	                    <div class="couponBtn">
 	                    	<button type="button" class="cancelBtn">쿠폰 취소</button>
 			 				<button type="button" class="checkBtn">쿠폰 적용</button>
-			 			</div> 
+			 			</div> <c:choose>
+			 			<c:when test="${!empty couponList}">
 	                        <c:forEach items="${couponList}" var="coupon">	
                     			<fmt:formatDate value="${now}" pattern="yyyy-MM-dd hh:mm:ss" var="today" />  
 				 				<fmt:formatDate value="${coupon.couponEnd }" pattern="yyyy-MM-dd hh:mm:ss" var="myCoupon"/>
@@ -239,12 +244,24 @@
 			 						</div>
 					     		</c:if>
 							</c:forEach>
-	                    </c:when>
+							</c:when>
+							<c:otherwise> 
+							<c:if test="${today >= myCoupon }">
+								<script>
+									 $('.couponBtn').hide()
+								</script>
+								<div class="couponBox">사용가능한 쿠폰이 없습니다</div>
+							</c:if>
+							</c:otherwise>
+			 					</c:choose>
+	                   <%--  </c:when>
                     	<c:otherwise>
+                   
  	                    	<div class="couponBox">사용가능한 쿠폰이 없습니다</div>
-                    	</c:otherwise>
-                	</c:choose>             
+                     	</c:otherwise>  --%> 
+                	           
                 </div>
+                <hr>
                 <div>
                     총 금액
                     <div class="classPrice"><label for="classPrice">${offClass.classPrice}</label></div>
@@ -257,11 +274,13 @@
                 <hr>
                 <div>
                     최종 금액
-                    <div class="totalPrice"><input type="text" name="orderPrice" value="${offClass.classPrice}"></div>
+                    <div class="orderPrice"><input type="text" name="orderPrice" value="${offClass.classPrice}"></div>
                 </div>
             </div>
             <input type="submit" class="orderBtn" value="결제하기">
         </form:form>
     </div>
 </body>
+<c:import url="/WEB-INF/views/maintemplate/footer.jsp"></c:import>
+
 </html>

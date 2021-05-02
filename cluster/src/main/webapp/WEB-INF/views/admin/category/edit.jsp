@@ -8,19 +8,47 @@
 <jsp:include page="/WEB-INF/views/adminTemplate/header.jsp"></jsp:include>
 
 <style>
-	.outbox{
-		width:500px;
-		
+	a{
+		color:black;
 	}
-	.input {
-		margin:0.5rem 0;
-	
+	.outbox{
+		padding: 0 21rem;
+		margin: 0rem 10rem 0 10rem;
+	}
+	.input{
+		margin-bottom:1rem;
+   		height:50px;
+    	font-size:18px;
+	}
+	#editBtn{
+		cursor:pointer;
+		background-color:#ffc107;
+		border-color: #ffc107;
+	}
+	#edit{
+		color:#fff;
 	}
 </style>
 
 <script>
 	
 	$(function(){
+		
+		//카테고리 글자수 제한
+		$(".category").on("input", function(){
+			
+			var count = $(this).val().length;
+			
+			while(count > 10) {
+				var text = $(this).val();
+				text = text.substring(0, text.length-1);
+				$(this).val(text);
+				
+				count--;
+			}
+			
+			
+		});
 		
 		//수정하기 버튼 클릭시
 		$("#editBtn").click(function(){
@@ -46,23 +74,22 @@
 </script>
 
 <div class="outbox">
-	<h2>카테고리 수정</h2>
-	
+	<div class="row">
+		<h2>카테고리 수정</h2>
+	</div>
 	<div class="row">
 		<form:form modelAttribute="classCategory" action="edit" method="post">
-			
 			<form:hidden path="categoryNo"/>
-			
-			<form:input type="text" class="input" path="categoryBig"/>
-			<form:input type="text" class="input" path="categorySmall"/>
-			
+			<div class="row">
+				<form:input type="text" class="input category" path="categoryBig"/>
+			</div>
+			<div class="row">
+				<form:input type="text" class="input category" path="categorySmall"/>
+			</div>
 		</form:form>
-		
 		<div class="row">
 			<button type="submit" id="editBtn" class="input">수정하기</button>
 		</div>
-		
-	
 	</div>
 
 </div>

@@ -204,6 +204,20 @@ public class AdminServiceImpl implements AdminService {
 	public Integer countSearchClassList(String type, String key) throws Exception {
 		return repository.countSearchClassList(type, key);
 	}
+	
+	@Override
+	public void yesClassOpen(int classNo) throws Exception {
+		repository.yesClassOpen(classNo);
+	}
+	@Override
+	public void noClassOpen(int classNo) throws Exception {
+		repository.noClassOpen(classNo);
+	}
+	
+	@Override
+	public void waitClassOpen(int classNo) throws Exception {
+		repository.waitClassOpen(classNo);
+	}
 
 	@Override
 	public List<AdminOffclassVO> getOpenClassList(Map<String, Object> map) throws Exception {
@@ -296,6 +310,16 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
+	public List<AdminClassorderVO> getTotalSales() throws Exception {
+		return repository.getTotalSales();
+	}
+	
+	@Override
+	public List<AdminClassorderVO> getTotalSales(String yearMonth) throws Exception {
+		return repository.getSearchTotalSales(yearMonth);
+	}
+	
+	@Override
 	public List<Offclass> getOpenClassList() throws Exception {
 		return repository.getOpenClass();
 	}
@@ -328,6 +352,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminClassorderVO getParticularMonthSales() throws Exception {
 		return repository.getParticularThisMonthSales();
+	}
+	
+	@Override
+	public List<AdminClassorderVO> getParticularTotalSales() throws Exception {
+		return repository.getParticularTotalSales();
+	}
+	
+	@Override
+	public List<AdminClassorderVO> getParticularTotalSales(Map<String, Object> map) throws Exception {
+		return repository.getSearchParticularTotalSales(map);
 	}
 	
 
@@ -433,10 +467,7 @@ public class AdminServiceImpl implements AdminService {
 	public List<Event> getSearchEndEventList(String key) throws Exception {
 		return repository.getSearchEndEventList(key);
 	}
-
 	
-
 	
-
 	
 }

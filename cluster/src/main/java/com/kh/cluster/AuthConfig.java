@@ -26,9 +26,9 @@ public class AuthConfig implements WebMvcConfigurer{
 
 		registry.addInterceptor(authInterceptor)
  				.addPathPatterns("/login/result","/login/logout", "/signup/welcome", 
- 						"/class_detail/classQuestion/*/*", "/mypage/**", "/creator/**", 
+ 						"/class_detail/classQuestion/*/*", "/mypage/**", "/creator/**","/community/**",
  						"/join", "/joinForm")
- 				.excludePathPatterns("/login/", "/signup/", "/mypage/**", "/creator/**");
+ 				.excludePathPatterns("/login/", "/signup/", "/mypage/**", "/creator/**","/community/faq");
 		
 		registry.addInterceptor(creatorInterceptor)
         		.addPathPatterns("/creator/**")
@@ -40,4 +40,3 @@ public class AuthConfig implements WebMvcConfigurer{
  
 	}
 }
- 

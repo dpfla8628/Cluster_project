@@ -17,11 +17,11 @@ public class AdminOffclassVO {
 	private String classPlace;
 	private int classMemberSet;
 	private String classTalk;
-	private String[] files;
 	private int categoryNo;
 	private int creatorNo;
 	private String memberId;
 	private String memberNick;
+	private String fullname;
 	private int count;
 	
 	
@@ -100,12 +100,6 @@ public class AdminOffclassVO {
 	public void setClassTalk(String classTalk) {
 		this.classTalk = classTalk;
 	}
-	public String[] getFiles() {
-		return files;
-	}
-	public void setFiles(String[] files) {
-		this.files = files;
-	}
 	public int getCategoryNo() {
 		return categoryNo;
 	}
@@ -129,6 +123,13 @@ public class AdminOffclassVO {
 	}
 	public void setMemberNick(String memberNick) {
 		this.memberNick = memberNick;
+	}
+	
+	public String getFullname() {
+		return fullname;
+	}
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 	public int getCount() {
 		return count;
