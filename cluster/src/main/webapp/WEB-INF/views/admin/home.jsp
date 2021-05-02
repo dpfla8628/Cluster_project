@@ -15,18 +15,21 @@
 		color:#E2E2E2;
 	}
 	.table1 {
-		width: 600px;
-		height: 500px;
+		/*width: 600px;*/
+		/*height: 500px;*/
 		font-size: 15px;
 		color:#E2E2E2;
 	}
 	
 	.outbox > .row{
-		margin-left: 2rem;
+		/*margin-left: 2rem;*/
+		padding-left:2rem;
+		padding-right:2rem;
 	}
 	.outbox{
 		background-color:#000000;
 		margin:0;
+		margin-bottom:2rem;
 	}
 	
 	#home{
@@ -35,7 +38,7 @@
 	.dashboard{
 		font-weight:bolder;
 		font-size: 1.8em;
-		margin-left:13.8rem;
+		margin-left:5.8rem;
 		margin-top:2rem;
 	}
 	
@@ -56,7 +59,7 @@
 	<!-- 총 회원수 그래프 -->
 	<div class="row mychart1">
 	
-		<canvas id="myChart1" width="600" height="500"></canvas>
+		<canvas id="myChart1" width="700" height="500"></canvas>
 		<script>
 			
 			var labels = [];
@@ -155,7 +158,7 @@
 	<!-- 일별 회원가입 수 -->
 	<div class="row mychart2">
 		
-		<canvas id="myChart2" width="600" height="500"></canvas>
+		<canvas id="myChart2" width="700" height="500"></canvas>
 		
 		<script>
 		
@@ -268,7 +271,7 @@
 	<!-- 월매출  그래프-->
 	<div class="row mychart3">
 		
-		<canvas id="myChart3" width="600" height="500"></canvas>
+		<canvas id="myChart3" width="700" height="500"></canvas>
 		
 		<script>
 			
@@ -386,7 +389,7 @@
 	
 	<div class="row mychart4">
 		
-		<canvas id="myChart4" width="600" height="500"></canvas>
+		<canvas id="myChart4" width="700" height="500"></canvas>
 		
 		<script>
 			
@@ -506,10 +509,10 @@
 		<span>${serverTime} 기준</span>
 		<table class="swTable">
 				<tr>
-					<th width="15%">순위</th>
-					<th width="35%">크리에이터</th>
+					<th width="10%">순위</th>
+					<th width="30%">크리에이터</th>
 					<th>클래스</th>
-					<th>총 매출액</th>
+					<th width="20%">총 매출액</th>
 				</tr>
 				<c:choose>
 					<c:when test="${empty listForTop10Sales}">
@@ -539,10 +542,10 @@
 		<span>${serverTime} 기준</span>
 		<table class="swTable">
 				<tr>
-					<th width="15%">순위</th>
-					<th width="35%">크리에이터</th>
+					<th width="10%">순위</th>
+					<th width="30%">크리에이터</th>
 					<th>클래스</th>
-					<th>판매수</th>
+					<th width="20%">판매수</th>
 				</tr>
 				<c:choose>
 					<c:when test="${empty listForTop10Class}">
