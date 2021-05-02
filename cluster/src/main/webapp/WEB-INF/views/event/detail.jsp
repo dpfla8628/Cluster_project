@@ -103,8 +103,12 @@
 				
 				return;
 			}
-			
-			alert("종료된 이벤트입니다.");
+			else if(end < today){
+				alert("종료된 이벤트입니다.");
+				return;
+			}
+			alert("진행 예정인 이벤트입니다.");
+			return;
 		});
 		
 		$(".myCoupon").click(function(){

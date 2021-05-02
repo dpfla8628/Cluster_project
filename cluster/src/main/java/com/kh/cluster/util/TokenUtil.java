@@ -92,6 +92,7 @@ public class TokenUtil {
 		
 		try{
 			Claims claims = Jwts.parser().setSigningKey(secrect.getBytes()).parseClaimsJws(token).getBody();
+			System.out.println("exp:"+claims.getExpiration());
 			System.out.println("claim:"+claims.get("email", String.class));
 			return claims.get("email", String.class);//유효 토큰이면 email정보 반환
 		}

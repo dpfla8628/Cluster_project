@@ -31,7 +31,7 @@
 			}
 			
 			.fakebox{
-				height: 13rem; 
+				height: 10rem; 
 			}
 			
 			.btn-outline-warning:hover{

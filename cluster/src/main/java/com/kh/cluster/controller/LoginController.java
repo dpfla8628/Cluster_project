@@ -215,6 +215,6 @@ public class LoginController {
 	
 	@GetMapping("/test")
 	public String test() {
-		return "/auth/wrong-request";
+		return "/auth/signup-success";
 	}
 }

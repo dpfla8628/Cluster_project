@@ -13,7 +13,7 @@ public class MailTextUtil {
 		sb.append(authMember.getMemberAuthNum());
 		sb.append("&no=");
 		sb.append(authMember.getMemberNo());
-		sb.append("'>링크</a>를 눌러서 회원가입을 완료해 주세요!</p><small>*만일 CLUSTER에 가입한 적이 없으시다면 해당 이메일을 무시하셔도 됩니다.</small></div></body></html>");
+		sb.append("'>링크</a>를 눌러서 회원가입을 완료해 주세요!</p><small>*해당 이메일은 10분간 유효합니다.</small><br><small>*만일 CLUSTER에 가입한 적이 없으시다면 해당 이메일을 무시하셔도 됩니다.</small></div></body></html>");
 		String str = sb.toString();
 		
 		return str;
