@@ -103,6 +103,10 @@
     .top{
     	margin-top: 2rem;
     }
+    
+    #cluster:hover {
+    	text-decoration: none;
+    }
 </style>
 
 <title>Insert title here</title>
@@ -113,10 +117,9 @@
 			<div class="container" style="margin-top: 2rem">
 				<div class="row">
 					<div class="col-md-2">
-						<a href="/" class="logo">
-					<%-- <img class="logo" alt="Cluster" src="${pageContext.request.contextPath}/images/logo.png"> --%>
-							Cluster
-					    </a>
+				        <a href="/" id="cluster">
+				    		<span style="color: #ffc107; font-weight: bold; font-size: 32px;">Cluster</span>
+				        </a>
 					</div>
 					<div class="col-md-4">
 						<form class="form-inline" action="/search" method="get" id="searchForm">
@@ -137,7 +140,7 @@
 		                <c:when test="${member.memberAuth eq '일반'}">
 		                	<div class="col-md-6 right">
 								<button type="button" class="btn btn-info" id="btn-mypage">마이페이지</button>
-								<button type="button" class="btn btn-info" id="btn-join-creator">크리에이터 신청</button>
+								<button type="button" class="btn btn-info" id="btn-join-creator" style="margin-left: 0.5rem">크리에이터 신청</button>
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-logout">로그아웃</button>
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-service">고객센터</button>
 							</div>	
@@ -152,7 +155,7 @@
 		                <c:otherwise>
 		                   <div class="col-md-6 right">
 								<button type="button" class="btn btn-info" id="btn-admin">관리자페이지</button>
-								<button type="button" class="btn btn-info" id="btn-mypage">마이페이지</button>
+								<button type="button" class="btn btn-info" id="btn-mypage" style="margin-left: 0.5rem">마이페이지</button>
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-logout">로그아웃</button>
 								<button type="button" class="btn btn-secondary" style="margin-left: 0.5rem" id="btn-service">고객센터</button>
 							</div>
